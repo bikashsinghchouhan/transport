@@ -5,9 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // Note: If you deploy to https://<username>.github.io/b2-transport/
-  // you must uncomment the line below:
-  // basePath: '/b2-transport',
+  basePath: '/transport',
 };
 
 export default nextConfig;
