@@ -130,6 +130,14 @@ export default function Estimator() {
       specs: selectedVehicle.specs
     });
     setCalculated(true);
+
+    // Scroll down to results section (especially useful on mobile layouts)
+    setTimeout(() => {
+      const resultSection = document.getElementById('estimator-result');
+      if (resultSection) {
+        resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 100);
   };
 
   const getWhatsAppLink = () => {
@@ -220,7 +228,7 @@ export default function Estimator() {
           </div>
 
           {/* Results Side */}
-          <div className={styles.resultColumn}>
+          <div id="estimator-result" className={styles.resultColumn}>
             {!calculated ? (
               <div className={`glass-panel ${styles.promptCard}`}>
                 <div className={styles.aiOrb}>
