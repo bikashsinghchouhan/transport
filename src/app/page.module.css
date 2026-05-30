@@ -105,6 +105,14 @@
   gap: 24px;
 }
 
+@media (max-width: 600px) {
+  .heroTrust {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
 .trustItem {
   display: flex;
   align-items: center;

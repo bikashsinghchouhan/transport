@@ -1,15 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  Truck, 
-  MapPin, 
-  ShieldCheck, 
-  Phone, 
-  MessageSquare, 
-  Activity, 
-  ArrowRight, 
-  Users, 
+import {
+  Truck,
+  MapPin,
+  ShieldCheck,
+  Phone,
+  MessageSquare,
+  Activity,
+  ArrowRight,
+  Users,
   CheckCircle,
   HelpCircle,
   Compass
@@ -48,7 +48,7 @@ export default function Home() {
               <p className={styles.heroDescription}>
                 Need to shift your house or transport cargo from one place to another? **b2 Transport** Ranchi provides top-rated packers, movers, and instant pickup van bookings across all districts of Jharkhand.
               </p>
-              
+
               <div className={styles.heroCtas}>
                 <Link href="#estimator" className="btn-neon">
                   <span>Calculate Fare Estimate</span>
@@ -74,11 +74,11 @@ export default function Home() {
 
             <div className={styles.heroRight}>
               <div className={styles.imageContainer}>
-                <Image 
-                  src="/transport/hero.png" 
-                  alt="Futuristic Logistics Truck in Ranchi Jharkhand" 
-                  width={600} 
-                  height={450} 
+                <Image
+                  src="/transport/hero.png"
+                  alt="Futuristic Logistics Truck in Ranchi Jharkhand"
+                  width={600}
+                  height={450}
                   className={styles.heroImage}
                   priority
                 />

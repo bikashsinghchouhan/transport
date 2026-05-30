@@ -43,8 +43,8 @@ export default function Header() {
             <Phone size={16} />
             <span className={styles.phoneText}>7654722708</span>
           </a>
-          <button 
-            className={styles.mobileMenuBtn} 
+          <button
+            className={styles.mobileMenuBtn}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
