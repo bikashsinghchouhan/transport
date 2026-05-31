@@ -15,7 +15,7 @@ export default function Footer() {
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <Truck size={24} className={styles.truckIcon} />
-              <span>b2 <span className="text-gradient">Transport</span></span>
+              <span>B2 <span className="text-gradient">Transport</span></span>
             </Link>
             <p className={styles.desc}>
               Next-generation logistics & shifting solutions in Jharkhand. We provide transparent pricing, real-time dispatch, and professional shifting services.
@@ -65,7 +65,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.copy}>
-            &copy; {currentYear} b2 Transport. All Rights Reserved. Ranchi, Jharkhand.
+            &copy; {currentYear} B2 Transport. All Rights Reserved. Ranchi, Jharkhand.
           </p>
           <p className={styles.aiTag}>
             <Compass size={14} className={styles.aiIcon} />

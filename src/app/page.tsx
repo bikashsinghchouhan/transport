@@ -42,11 +42,11 @@ export default function Home() {
                 <span>ACTIVE SHIFTING DISPATCH NETWORK</span>
               </div>
               <h1 className={styles.heroTitle}>
-                Smart Transportation <br />
+                B2 Transport <br />
                 <span className="text-gradient">Simplified. Secure.</span>
               </h1>
               <p className={styles.heroDescription}>
-                Need to shift your house or transport cargo from one place to another? **b2 Transport** Ranchi provides top-rated packers, movers, and instant pickup van bookings across all districts of Jharkhand.
+                Need to shift your house or transport cargo from one place to another? **B2 Transport** Ranchi provides top-rated packers, movers, and instant pickup van bookings across all districts of Jharkhand.
               </p>
 
               <div className={styles.heroCtas}>

@@ -22,10 +22,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "b2 Transport | Packers & Movers, House Shifting Ranchi Jharkhand",
-    template: "%s | b2 Transport Jharkhand"
+    default: "B2 Transport | Packers & Movers, House Shifting Ranchi Jharkhand",
+    template: "%s | B2 Transport Jharkhand"
   },
-  description: "b2 Transport provides premium, affordable house shifting, goods logistics, and pickup van rental services in Ranchi and all districts of Jharkhand. Call 7654722708 today for a free quote.",
+  description: "B2 Transport provides premium, affordable house shifting, goods logistics, and pickup van rental services in Ranchi and all districts of Jharkhand. Call 7654722708 today for a free quote.",
   keywords: [
     "house shifting Ranchi",
     "packers and movers Ranchi",
@@ -43,10 +43,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "b2 Transport | House Shifting & Logistics Services Ranchi",
+    title: "B2 Transport | House Shifting & Logistics Services Ranchi",
     description: "Reliable packers, movers, and cargo vehicles in Ranchi and across Jharkhand. Transparent, affordable, and safe shifting.",
     url: "https://www.b2transport.in",
-    siteName: "b2 Transport",
+    siteName: "B2 Transport",
     locale: "en_IN",
     type: "website",
   },
@@ -72,7 +72,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "b2 Transport",
+    "name": "B2 Transport",
     "image": "https://www.b2transport.in/hero-og.jpg", // placeholder, can be generated
     "@id": "https://www.b2transport.in/#localbusiness",
     "url": "https://www.b2transport.in",

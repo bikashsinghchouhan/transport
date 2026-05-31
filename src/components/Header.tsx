@@ -22,11 +22,15 @@ export default function Header() {
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <div className={styles.logoIcon}>
-            <Truck size={24} className={styles.truckIcon} />
+            <img 
+              src="/transport/b2transport_logo_circle.png" 
+              alt="B2 Transport Logo" 
+              className={styles.logoImg} 
+            />
             <div className={styles.logoGlow}></div>
           </div>
           <span className={styles.logoText}>
-            b2 <span className="text-gradient">Transport</span>
+            B2 <span className="text-gradient">Transport</span>
           </span>
         </Link>
 
