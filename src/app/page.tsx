@@ -75,7 +75,7 @@ export default function Home() {
             <div className={styles.heroRight}>
               <div className={styles.imageContainer}>
                 <Image
-                  src="/transport/hero.png"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/hero.png`}
                   alt="Futuristic Logistics Truck in Ranchi Jharkhand"
                   width={600}
                   height={450}

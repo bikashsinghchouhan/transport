@@ -13,7 +13,8 @@ export default function Header() {
   const isHome = pathname === '/';
 
   const getLinkHref = (hash: string) => {
-    return isHome ? hash : `/transport/${hash}`;
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+    return isHome ? hash : `${basePath}/${hash}`;
   };
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Header() {
         <Link href="/" className={styles.logo}>
           <div className={styles.logoIcon}>
             <img 
-              src="/transport/b2transport_logo_circle.png" 
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/b2transport_logo_circle.png`} 
               alt="B2 Transport Logo" 
               className={styles.logoImg} 
             />
