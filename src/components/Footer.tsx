@@ -13,7 +13,7 @@ export default function Footer() {
         <div className={styles.grid}>
           {/* Brand Info */}
           <div className={styles.brand}>
-            <Link href="/transport" className={styles.logo}>
+            <Link href="/" className={styles.logo}>
               <Truck size={24} className={styles.truckIcon} />
               <span>B2 <span className="text-gradient">Transport</span></span>
             </Link>
@@ -36,10 +36,10 @@ export default function Footer() {
           <div className={styles.linksGroup}>
             <h3 className={styles.title}>Services</h3>
             <ul className={styles.list}>
-              <li><Link href="/transport/#services" className={styles.link}>House Shifting</Link></li>
-              <li><Link href="/transport/#services" className={styles.link}>Office Relocation</Link></li>
-              <li><Link href="/transport/#services" className={styles.link}>Interdistrict Logistics</Link></li>
-              <li><Link href="/transport/#services" className={styles.link}>Pickup Vehicle Hire</Link></li>
+              <li><Link href="/#services" className={styles.link}>House Shifting</Link></li>
+              <li><Link href="/#services" className={styles.link}>Office Relocation</Link></li>
+              <li><Link href="/#services" className={styles.link}>Interdistrict Logistics</Link></li>
+              <li><Link href="/#services" className={styles.link}>Pickup Vehicle Hire</Link></li>
             </ul>
           </div>
 
@@ -48,16 +48,16 @@ export default function Footer() {
             <h3 className={styles.title}>Service Areas</h3>
             <div className={styles.locationsGrid}>
               <ul className={styles.list}>
-                <li><Link href="/transport/locations/ranchi" className={styles.link}>Ranchi (HQ)</Link></li>
-                <li><Link href="/transport/locations/jamshedpur" className={styles.link}>Jamshedpur</Link></li>
-                <li><Link href="/transport/locations/dhanbad" className={styles.link}>Dhanbad</Link></li>
-                <li><Link href="/transport/locations/bokaro" className={styles.link}>Bokaro Steel City</Link></li>
+                <li><Link href="/locations/ranchi" className={styles.link}>Ranchi (HQ)</Link></li>
+                <li><Link href="/locations/jamshedpur" className={styles.link}>Jamshedpur</Link></li>
+                <li><Link href="/locations/dhanbad" className={styles.link}>Dhanbad</Link></li>
+                <li><Link href="/locations/bokaro" className={styles.link}>Bokaro Steel City</Link></li>
               </ul>
               <ul className={styles.list}>
-                <li><Link href="/transport/locations/hazaribagh" className={styles.link}>Hazaribagh</Link></li>
-                <li><Link href="/transport/locations/deoghar" className={styles.link}>Deoghar</Link></li>
-                <li><Link href="/transport/locations/giridih" className={styles.link}>Giridih</Link></li>
-                <li><Link href="/transport/locations/ramgarh" className={styles.link}>Ramgarh</Link></li>
+                <li><Link href="/locations/hazaribagh" className={styles.link}>Hazaribagh</Link></li>
+                <li><Link href="/locations/deoghar" className={styles.link}>Deoghar</Link></li>
+                <li><Link href="/locations/giridih" className={styles.link}>Giridih</Link></li>
+                <li><Link href="/locations/ramgarh" className={styles.link}>Ramgarh</Link></li>
               </ul>
             </div>
           </div>

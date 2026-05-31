@@ -207,7 +207,7 @@ export default function Home() {
 
           <div className={styles.locationsGrid}>
             {localDistricts.map((dist, idx) => (
-              <Link href={`/transport/locations/${dist.slug}`} key={`dist-${idx}`} className={`glass-panel ${styles.locationCard}`}>
+              <Link href={`/locations/${dist.slug}`} key={`dist-${idx}`} className={`glass-panel ${styles.locationCard}`}>
                 <div className={styles.locHeader}>
                   <MapPin size={18} className={styles.locPin} />
                   <h4>{dist.name}</h4>
