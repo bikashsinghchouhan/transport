@@ -83,28 +83,28 @@ export default function Estimator() {
 
   // Manual input state
   const [sourceState, setSourceState] = useState('Jharkhand');
-  const [sourceDistrict, setSourceDistrict] = useState('Ranchi');
-  const [sourceCity, setSourceCity] = useState('Ranchi');
+  const [sourceDistrict, setSourceDistrict] = useState('');
+  const [sourceCity, setSourceCity] = useState('');
   const [destState, setDestState] = useState('Jharkhand');
-  const [destDistrict, setDestDistrict] = useState('East Singhbhum (Jamshedpur)');
-  const [destCity, setDestCity] = useState('Jamshedpur');
+  const [destDistrict, setDestDistrict] = useState('');
+  const [destCity, setDestCity] = useState('');
 
   // Map markers and route state
-  // Default centered in Jharkhand (Ranchi to Jamshedpur default coordinates)
-  const [sourceCoords, setSourceCoords] = useState<[number, number] | null>([23.3441, 85.3096]);
-  const [destCoords, setDestCoords] = useState<[number, number] | null>([22.8046, 86.2029]);
+  const [sourceCoords, setSourceCoords] = useState<[number, number] | null>(null);
+  const [destCoords, setDestCoords] = useState<[number, number] | null>(null);
   const [routeCoords, setRouteCoords] = useState<[number, number][] | null>(null);
   
   // Calculation result state
   const [vehicleId, setVehicleId] = useState('tata-ace');
-  const [distance, setDistance] = useState<number>(130); // Default Ranchi - Jamshedpur distance
+  const [distance, setDistance] = useState<number>(0);
   const [calculated, setCalculated] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [routingError, setRoutingError] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const [result, setResult] = useState({
-    distance: 130,
-    baseFare: 1500,
+    distance: 0,
+    baseFare: 0,
     distanceFare: 0,
     fareMin: 0,
     fareMax: 0,
@@ -274,6 +274,29 @@ export default function Estimator() {
     e.preventDefault();
     setCalculating(true);
     setRoutingError(false);
+    setValidationError(null);
+
+    // Validation checks
+    if (sourceMode === 'search' && !sourceCoords) {
+      setValidationError('Please type and select a pickup location from the map search suggestions.');
+      setCalculating(false);
+      return;
+    }
+    if (destMode === 'search' && !destCoords) {
+      setValidationError('Please type and select a drop location from the map search suggestions.');
+      setCalculating(false);
+      return;
+    }
+    if (sourceMode === 'manual' && !sourceDistrict) {
+      setValidationError('Please select a pickup district.');
+      setCalculating(false);
+      return;
+    }
+    if (destMode === 'manual' && !destDistrict) {
+      setValidationError('Please select a drop district.');
+      setCalculating(false);
+      return;
+    }
 
     let startCoords = sourceCoords;
     let endCoords = destCoords;
@@ -479,13 +502,13 @@ export default function Estimator() {
   };
 
   const getSourceLabel = () => {
-    if (sourceMode === 'search') return sourceSearch || 'Ranchi, Jharkhand';
-    return `${sourceCity}, ${sourceDistrict}`;
+    if (sourceMode === 'search') return sourceSearch || 'Not selected';
+    return sourceDistrict ? `${sourceCity ? sourceCity + ', ' : ''}${sourceDistrict}` : 'Not selected';
   };
 
   const getDestLabel = () => {
-    if (destMode === 'search') return destSearch || 'Jamshedpur, Jharkhand';
-    return `${destCity}, ${destDistrict}`;
+    if (destMode === 'search') return destSearch || 'Not selected';
+    return destDistrict ? `${destCity ? destCity + ', ' : ''}${destDistrict}` : 'Not selected';
   };
 
   return (
@@ -592,6 +615,7 @@ export default function Estimator() {
                           onChange={(e) => setSourceDistrict(e.target.value)}
                           className="form-input"
                         >
+                          <option value="">Select District</option>
                           {sourceDistricts.map(d => <option key={`src-dt-${d}`} value={d}>{d}</option>)}
                         </select>
                       </div>
@@ -688,6 +712,7 @@ export default function Estimator() {
                           onChange={(e) => setDestDistrict(e.target.value)}
                           className="form-input"
                         >
+                          <option value="">Select District</option>
                           {destDistricts.map(d => <option key={`dest-dt-${d}`} value={d}>{d}</option>)}
                         </select>
                       </div>
@@ -737,6 +762,12 @@ export default function Estimator() {
                 <span>{calculating ? 'Optimizing GPS Dispatch...' : 'Compute Price Quote'}</span>
                 <ArrowRight size={18} />
               </button>
+
+              {validationError && (
+                <div className={styles.errorMessage}>
+                  {validationError}
+                </div>
+              )}
 
               {routingError && (
                 <div className={styles.errorMessage}>
