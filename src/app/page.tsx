@@ -46,7 +46,7 @@ export default function Home() {
                 <span className="text-gradient">Simplified. Secure.</span>
               </h1>
               <p className={styles.heroDescription}>
-                Need to shift your house or transport cargo from one place to another? **B2 Transport** Ranchi provides top-rated packers, movers, and instant pickup van bookings across all districts of Jharkhand.
+                Need to shift your house or transport cargo from one place to another? <strong>B2 Transport</strong> Ranchi provides top-rated packers, movers, and instant pickup van bookings across all districts of Jharkhand.
               </p>
 
               <div className={styles.heroCtas}>
@@ -239,7 +239,7 @@ export default function Home() {
                 <h4>How do I calculate the shifting cost?</h4>
               </div>
               <p className={styles.faqAnswer}>
-                You can use our interactive **AI Fare Estimator** above. Simply select your pickup and drop city, select the vehicle (like Tata Ace or Bolero Pickup), and the system will output the standard fare range.
+                You can use our interactive <strong>AI Fare Estimator</strong> above. Simply select your pickup and drop city, select the vehicle (like Tata Ace or Bolero Pickup), and the system will output the standard fare range.
               </p>
             </div>
 
