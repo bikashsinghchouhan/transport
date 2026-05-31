@@ -73,7 +73,7 @@ export default function Header() {
             <Link href="/#locations" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
               Locations
             </Link>
-            <a href="tel:7654722708" className="btn-neon" onClick={() => setIsOpen(false)} style={{ width: '100%', marginTop: '20px' }}>
+            <a href="tel:7654722708" className="btn-neon" onClick={() => setIsOpen(false)} style={{ width: '100%', marginTop: '12px' }}>
               <Phone size={18} />
               Call Now: 7654722708
             </a>

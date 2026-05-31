@@ -171,22 +171,28 @@
   background: rgba(3, 7, 18, 0.95);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-color);
-  padding: 30px 24px;
+  padding: 16px 20px;
   z-index: 99;
   animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-smooth);
+}
+
+.scrolled .mobileDrawer {
+  top: 70px;
+  height: calc(100vh - 70px);
 }
 
 .mobileNav {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .mobileNavLink {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-secondary);
-  padding: 12px 0;
+  padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: var(--transition-fast);
 }
