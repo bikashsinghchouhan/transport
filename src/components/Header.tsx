@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/transport" className={styles.logo}>
           <div className={styles.logoIcon}>
             <img 
               src="/transport/b2transport_logo_circle.png" 
@@ -36,10 +36,10 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className={styles.desktopNav}>
-          <Link href="/#services" className={styles.navLink}>Services</Link>
-          <Link href="/#fleet" className={styles.navLink}>Our Fleet</Link>
-          <Link href="/#estimator" className={styles.navLink}>Fare Estimator</Link>
-          <Link href="/#locations" className={styles.navLink}>Locations</Link>
+          <Link href="/transport/#services" className={styles.navLink}>Services</Link>
+          <Link href="/transport/#fleet" className={styles.navLink}>Our Fleet</Link>
+          <Link href="/transport/#estimator" className={styles.navLink}>Fare Estimator</Link>
+          <Link href="/transport/#locations" className={styles.navLink}>Locations</Link>
         </nav>
 
         <div className={styles.actions}>
@@ -61,16 +61,16 @@ export default function Header() {
       {isOpen && (
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
-            <Link href="/#services" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
+            <Link href="/transport/#services" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
               Services
             </Link>
-            <Link href="/#fleet" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
+            <Link href="/transport/#fleet" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
               Our Fleet
             </Link>
-            <Link href="/#estimator" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
+            <Link href="/transport/#estimator" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
               Fare Estimator
             </Link>
-            <Link href="/#locations" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
+            <Link href="/transport/#locations" onClick={() => setIsOpen(false)} className={styles.mobileNavLink}>
               Locations
             </Link>
             <a href="tel:7654722708" className="btn-neon" onClick={() => setIsOpen(false)} style={{ width: '100%', marginTop: '12px' }}>
