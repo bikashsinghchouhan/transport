@@ -257,9 +257,13 @@ export default function Estimator() {
     const baseFare = 0;
     const computedFare = distanceFare;
 
-    // Set range to exact calculated price
-    const fareMin = computedFare;
-    const fareMax = computedFare;
+    let fareMin = computedFare;
+    let fareMax = computedFare;
+
+    if (distKm < 50) {
+      fareMin = 1200;
+      fareMax = 1500;
+    }
 
     return {
       baseFare,
@@ -392,11 +396,14 @@ export default function Estimator() {
   const getWhatsAppLink = () => {
     const originLabel = sourceMode === 'search' ? sourceSearch : `${sourceCity}, ${sourceDistrict}, ${sourceState}`;
     const destLabel = destMode === 'search' ? destSearch : `${destCity}, ${destDistrict}, ${destState}`;
+    const priceString = result.fareMin !== result.fareMax 
+      ? `₹${result.fareMin.toLocaleString('en-IN')} - ₹${result.fareMax.toLocaleString('en-IN')}`
+      : `₹${result.fareMin.toLocaleString('en-IN')}`;
     const text = encodeURIComponent(
       `Hello B2 Transport! I would like to book a ${result.vehicleName} for a distance of ${result.distance} KM.\n` + 
       `Pickup: ${originLabel}\n` +
       `Drop: ${destLabel}\n` +
-      `Estimated Price: ₹${result.fareMin} - ₹${result.fareMax}.\n` +
+      `Estimated Price: ${priceString}.\n` +
       `Please confirm driver availability and final rates.`
     );
     return `https://wa.me/917654722708?text=${text}`;
@@ -823,7 +830,11 @@ export default function Estimator() {
                   <div className={styles.priceLabel}>Estimated Shifting Price (Jharkhand Special Rate)</div>
                   <div className={styles.priceValue}>
                     <IndianRupee size={30} className={styles.rupeeIcon} />
-                    <span>{result.distanceFare.toLocaleString('en-IN')}</span>
+                    {result.fareMin !== result.fareMax ? (
+                      <span>{result.fareMin.toLocaleString('en-IN')} - {result.fareMax.toLocaleString('en-IN')}</span>
+                    ) : (
+                      <span>{result.distanceFare.toLocaleString('en-IN')}</span>
+                    )}
                   </div>
                   <div className={styles.priceDisclaimer}>*Tolls, parking, and helper loading/unloading labor costs extra.</div>
                 </div>
@@ -833,15 +844,27 @@ export default function Estimator() {
                   <h4 className={styles.breakdownTitle}>Fare Computation Details</h4>
                   <div className={styles.breakdownRow}>
                     <span>Distance Fare ({result.distance} KM):</span>
-                    <span>₹{result.distanceFare}</span>
+                    {result.fareMin !== result.fareMax ? (
+                      <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')} (Min. Charge)</span>
+                    ) : (
+                      <span>₹{result.distanceFare.toLocaleString('en-IN')}</span>
+                    )}
                   </div>
                   <div className={styles.breakdownDivider}></div>
                   <div className={styles.breakdownRow} style={{ color: 'var(--accent-cyan)', fontWeight: 'bold' }}>
                     <span>Computed Total:</span>
-                    <span>₹{result.distanceFare}</span>
+                    {result.fareMin !== result.fareMax ? (
+                      <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
+                    ) : (
+                      <span>₹{result.distanceFare.toLocaleString('en-IN')}</span>
+                    )}
                   </div>
                   <p className={styles.formulaDetailText}>
-                    Formula: First 100km @ ₹{selectedVehicle.rateFirst100}/km, remainder @ ₹{selectedVehicle.rateAfter100}/km.
+                    {result.fareMin !== result.fareMax ? (
+                      `Minimum booking rate of ₹1,200 - ₹1,500 applies for distances less than 50 KM.`
+                    ) : (
+                      `Formula: First 100km @ ₹${selectedVehicle.rateFirst100}/km, remainder @ ₹${selectedVehicle.rateAfter100}/km.`
+                    )}
                   </p>
                 </div>
 
