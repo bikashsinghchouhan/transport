@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Truck, 
-  Navigation, 
-  IndianRupee, 
-  Phone, 
-  Calendar, 
-  ArrowRight, 
-  Search, 
-  MapPin, 
+import {
+  Truck,
+  Navigation,
+  IndianRupee,
+  Phone,
+  Calendar,
+  ArrowRight,
+  Search,
+  MapPin,
   Info,
   ChevronDown,
   Locate
@@ -19,7 +19,7 @@ import styles from './Estimator.module.css';
 import { getStatesList, getDistrictsOfState } from '@/utils/indiaGeoData';
 
 // Dynamically import Leaflet Map Component with SSR disabled
-const MapComponent = dynamic(() => import('./MapComponent'), { 
+const MapComponent = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => (
     <div className={styles.mapPlaceholder}>
@@ -35,17 +35,19 @@ const vehicles = [
     id: 'tata-ace',
     name: 'Tata Ace (Chota Hathi)',
     capacity: '850 Kg',
-    rateFirst100: 25,
-    rateAfter100: 20,
+    rateFirst100: 32,
+    rateAfter100: 26,
+    minFareRange: { min: 1200, max: 1500 },
     specs: '7 x 4.8 x 4.8 Feet',
     description: 'Best for house shifting of 1 BHK/Bachelor items and small cargo.'
   },
   {
     id: 'bolero-pickup',
     name: 'Mahindra Bolero Pickup',
-    capacity: '1.5 Tons (1500 Kg)',
-    rateFirst100: 30,
-    rateAfter100: 25,
+    capacity: '2.0 Tons (2000 Kg)',
+    rateFirst100: 35,
+    rateAfter100: 30,
+    minFareRange: { min: 1500, max: 1800 },
     specs: '8.2 x 5.2 x 5 Feet',
     description: 'Perfect for 2 BHK shifting, heavier commercial cargo, and industrial loads.'
   },
@@ -53,17 +55,19 @@ const vehicles = [
     id: 'three-wheeler',
     name: '3-Wheeler Loader',
     capacity: '500 Kg',
-    rateFirst100: 20,
-    rateAfter100: 15,
+    rateFirst100: 25,
+    rateAfter100: 20,
+    minFareRange: { min: 900, max: 1200 },
     specs: '5.5 x 4 x 4 Feet',
     description: 'Ideal for narrow streets, single appliance move, or local market delivery.'
   },
   {
     id: 'tata-407',
     name: 'Tata 407 Truck',
-    capacity: '2.5 Tons (2500 Kg)',
-    rateFirst100: 40,
-    rateAfter100: 32,
+    capacity: '3.5 Tons (3500 Kg)',
+    rateFirst100: 48,
+    rateAfter100: 40,
+    minFareRange: { min: 2000, max: 2400 },
     specs: '9.5 x 5.5 x 6 Feet',
     description: 'Suitable for 3 BHK house shifting, large office setups, and heavy loads.'
   }
@@ -93,9 +97,9 @@ export default function Estimator() {
   const [sourceCoords, setSourceCoords] = useState<[number, number] | null>(null);
   const [destCoords, setDestCoords] = useState<[number, number] | null>(null);
   const [routeCoords, setRouteCoords] = useState<[number, number][] | null>(null);
-  
+
   // Calculation result state
-  const [vehicleId, setVehicleId] = useState('tata-ace');
+  const [vehicleId, setVehicleId] = useState('bolero-pickup');
   const [distance, setDistance] = useState<number>(0);
   const [calculated, setCalculated] = useState(false);
   const [calculating, setCalculating] = useState(false);
@@ -106,11 +110,11 @@ export default function Estimator() {
     distance: 0,
     baseFare: 0,
     distanceFare: 0,
-    fareMin: 0,
-    fareMax: 0,
-    vehicleName: 'Tata Ace (Chota Hathi)',
-    capacity: '850 Kg',
-    specs: '7 x 4.8 x 4.8 Feet'
+    fareMin: 1500,
+    fareMax: 1800,
+    vehicleName: 'Mahindra Bolero Pickup',
+    capacity: '2.0 Tons (2000 Kg)',
+    specs: '8.2 x 5.2 x 5 Feet'
   });
 
   const selectedVehicle = vehicles.find(v => v.id === vehicleId) || vehicles[0];
@@ -236,16 +240,16 @@ export default function Estimator() {
     const R = 6371; // Earth radius in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
+    const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const dist = R * c;
     return Math.round(dist * 1.35); // Scale factor for driving road routing
   };
 
-  // Calculate pricing based on rule: first 100km - ₹25/km, thereafter ₹20/km
+  // Calculate pricing range dynamically based on distance and rates
   const computePriceBreakdown = (distKm: number, selectedVehicle: typeof vehicles[0]) => {
     let distanceFare = 0;
     if (distKm <= 100) {
@@ -257,12 +261,24 @@ export default function Estimator() {
     const baseFare = 0;
     const computedFare = distanceFare;
 
-    let fareMin = computedFare;
-    let fareMax = computedFare;
+    // Show a range (+/- variance) for all distances
+    const variance = Math.max(150, Math.round((computedFare * 0.035) / 50) * 50);
+    
+    let fareMin = Math.round((computedFare - variance) / 100) * 100;
+    let fareMax = Math.round((computedFare + variance) / 100) * 100;
 
-    if (distKm < 50) {
-      fareMin = 1200;
-      fareMax = 1500;
+    // Enforce vehicle-specific minimum ranges
+    if (fareMin < selectedVehicle.minFareRange.min) {
+      fareMin = selectedVehicle.minFareRange.min;
+    }
+    if (fareMax < selectedVehicle.minFareRange.max) {
+      fareMax = selectedVehicle.minFareRange.max;
+    }
+
+    // Explicitly clamp within 25km to exact minFareRange
+    if (distKm <= 25) {
+      fareMin = selectedVehicle.minFareRange.min;
+      fareMax = selectedVehicle.minFareRange.max;
     }
 
     return {
@@ -345,7 +361,7 @@ export default function Estimator() {
         `https://router.project-osrm.org/route/v1/driving/${startCoords[1]},${startCoords[0]};${endCoords[1]},${endCoords[0]}?overview=full&geometries=geojson`
       );
       const data = await res.json();
-      
+
       if (data.routes && data.routes.length > 0) {
         const route = data.routes[0];
         computedDistance = Math.round(route.distance / 1000);
@@ -358,7 +374,7 @@ export default function Estimator() {
       console.warn("OSRM Route API failed, falling back to Haversine approximation:", err);
       // Fallback
       computedDistance = calculateHaversineDistance(
-        startCoords[0], startCoords[1], 
+        startCoords[0], startCoords[1],
         endCoords[0], endCoords[1]
       );
       setRouteCoords([[startCoords[0], startCoords[1]], [endCoords[0], endCoords[1]]]);
@@ -396,11 +412,11 @@ export default function Estimator() {
   const getWhatsAppLink = () => {
     const originLabel = sourceMode === 'search' ? sourceSearch : `${sourceCity}, ${sourceDistrict}, ${sourceState}`;
     const destLabel = destMode === 'search' ? destSearch : `${destCity}, ${destDistrict}, ${destState}`;
-    const priceString = result.fareMin !== result.fareMax 
+    const priceString = result.fareMin !== result.fareMax
       ? `₹${result.fareMin.toLocaleString('en-IN')} - ₹${result.fareMax.toLocaleString('en-IN')}`
       : `₹${result.fareMin.toLocaleString('en-IN')}`;
     const text = encodeURIComponent(
-      `Hello B2 Transport! I would like to book a ${result.vehicleName} for a distance of ${result.distance} KM.\n` + 
+      `Hello B2 Transport! I would like to book a ${result.vehicleName} for a distance of ${result.distance} KM.\n` +
       `Pickup: ${originLabel}\n` +
       `Drop: ${destLabel}\n` +
       `Estimated Price: ${priceString}.\n` +
@@ -416,14 +432,14 @@ export default function Estimator() {
       fetch(
         `https://router.project-osrm.org/route/v1/driving/${sourceCoords[1]},${sourceCoords[0]};${destCoords[1]},${destCoords[0]}?overview=full&geometries=geojson`
       )
-      .then(res => res.json())
-      .then(data => {
-        if (data.routes && data.routes.length > 0) {
-          const route = data.routes[0];
-          setRouteCoords(route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]));
-        }
-      })
-      .catch(e => console.error("Initial routing error:", e));
+        .then(res => res.json())
+        .then(data => {
+          if (data.routes && data.routes.length > 0) {
+            const route = data.routes[0];
+            setRouteCoords(route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]));
+          }
+        })
+        .catch(e => console.error("Initial routing error:", e));
     }
   }, []);
 
@@ -432,7 +448,7 @@ export default function Estimator() {
       alert("Geolocation is not supported by your browser.");
       return;
     }
-    
+
     setSourceMode('search');
     setSourceSearch('Locating current address...');
 
@@ -448,7 +464,7 @@ export default function Estimator() {
           const data = await res.json();
           if (data && data.display_name) {
             setSourceSearch(data.display_name);
-            
+
             // Populate manual selectors in background
             const addr = data.address;
             if (addr) {
@@ -533,22 +549,22 @@ export default function Estimator() {
           {/* Form Panel */}
           <div className={`glass-panel-glow ${styles.formContainer}`}>
             <form onSubmit={handleCalculate} className={styles.form}>
-              
+
               {/* PICKUP ADDRESS SELECTOR */}
               <div className={styles.addressBlock}>
                 <div className={styles.blockTitleRow}>
                   <div className={styles.blockIndicator} style={{ backgroundColor: 'var(--accent-cyan)' }}></div>
                   <h3 className={styles.blockTitle}>1. Pickup Location (Origin)</h3>
                   <div className={styles.toggleGroup}>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setSourceMode('search')}
                       className={`${styles.toggleBtn} ${sourceMode === 'search' ? styles.toggleActive : ''}`}
                     >
                       Search Map
                     </button>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setSourceMode('manual')}
                       className={`${styles.toggleBtn} ${sourceMode === 'manual' ? styles.toggleActive : ''}`}
                     >
@@ -561,9 +577,9 @@ export default function Estimator() {
                   <div className={styles.inputGroup} style={{ position: 'relative' }}>
                     <div className={styles.inputWrapper}>
                       <Search size={18} className={styles.inputIcon} />
-                      <input 
-                        type="text" 
-                        placeholder="Search city, town, or road in India..." 
+                      <input
+                        type="text"
+                        placeholder="Search city, town, or road in India..."
                         value={sourceSearch}
                         onChange={(e) => setSourceSearch(e.target.value)}
                         className="form-input"
@@ -584,8 +600,8 @@ export default function Estimator() {
                     {sourceSuggestions.length > 0 && (
                       <div className={styles.suggestionsList}>
                         {sourceSuggestions.map((item, idx) => (
-                          <div 
-                            key={`src-sug-${idx}`} 
+                          <div
+                            key={`src-sug-${idx}`}
                             className={styles.suggestionItem}
                             onClick={() => handleSelectSourceSuggestion(item)}
                           >
@@ -601,8 +617,8 @@ export default function Estimator() {
                     <div className={styles.inputGroup}>
                       <label className="form-label">State</label>
                       <div className={styles.selectWrapper}>
-                        <select 
-                          value={sourceState} 
+                        <select
+                          value={sourceState}
                           onChange={(e) => {
                             setSourceState(e.target.value);
                             const districts = getDistrictsOfState(e.target.value);
@@ -617,8 +633,8 @@ export default function Estimator() {
                     <div className={styles.inputGroup}>
                       <label className="form-label">District</label>
                       <div className={styles.selectWrapper}>
-                        <select 
-                          value={sourceDistrict} 
+                        <select
+                          value={sourceDistrict}
                           onChange={(e) => setSourceDistrict(e.target.value)}
                           className="form-input"
                         >
@@ -629,10 +645,10 @@ export default function Estimator() {
                     </div>
                     <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                       <label className="form-label">City / Town / Area</label>
-                      <input 
-                        type="text" 
-                        value={sourceCity} 
-                        onChange={(e) => setSourceCity(e.target.value)} 
+                      <input
+                        type="text"
+                        value={sourceCity}
+                        onChange={(e) => setSourceCity(e.target.value)}
                         className="form-input"
                         placeholder="E.g. Kanke Road, Lalpur, Doranda"
                       />
@@ -647,15 +663,15 @@ export default function Estimator() {
                   <div className={styles.blockIndicator} style={{ backgroundColor: 'var(--accent-purple)' }}></div>
                   <h3 className={styles.blockTitle}>2. Drop Location (Destination)</h3>
                   <div className={styles.toggleGroup}>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setDestMode('search')}
                       className={`${styles.toggleBtn} ${destMode === 'search' ? styles.toggleActive : ''}`}
                     >
                       Search Map
                     </button>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setDestMode('manual')}
                       className={`${styles.toggleBtn} ${destMode === 'manual' ? styles.toggleActive : ''}`}
                     >
@@ -668,9 +684,9 @@ export default function Estimator() {
                   <div className={styles.inputGroup} style={{ position: 'relative' }}>
                     <div className={styles.inputWrapper}>
                       <Search size={18} className={styles.inputIcon} />
-                      <input 
-                        type="text" 
-                        placeholder="Search city, town, or road in India..." 
+                      <input
+                        type="text"
+                        placeholder="Search city, town, or road in India..."
                         value={destSearch}
                         onChange={(e) => setDestSearch(e.target.value)}
                         className="form-input"
@@ -681,8 +697,8 @@ export default function Estimator() {
                     {destSuggestions.length > 0 && (
                       <div className={styles.suggestionsList}>
                         {destSuggestions.map((item, idx) => (
-                          <div 
-                            key={`dest-sug-${idx}`} 
+                          <div
+                            key={`dest-sug-${idx}`}
                             className={styles.suggestionItem}
                             onClick={() => handleSelectDestSuggestion(item)}
                           >
@@ -698,8 +714,8 @@ export default function Estimator() {
                     <div className={styles.inputGroup}>
                       <label className="form-label">State</label>
                       <div className={styles.selectWrapper}>
-                        <select 
-                          value={destState} 
+                        <select
+                          value={destState}
                           onChange={(e) => {
                             setDestState(e.target.value);
                             const districts = getDistrictsOfState(e.target.value);
@@ -714,8 +730,8 @@ export default function Estimator() {
                     <div className={styles.inputGroup}>
                       <label className="form-label">District</label>
                       <div className={styles.selectWrapper}>
-                        <select 
-                          value={destDistrict} 
+                        <select
+                          value={destDistrict}
                           onChange={(e) => setDestDistrict(e.target.value)}
                           className="form-input"
                         >
@@ -726,10 +742,10 @@ export default function Estimator() {
                     </div>
                     <div className={styles.inputGroup} style={{ gridColumn: 'span 2' }}>
                       <label className="form-label">City / Town / Area</label>
-                      <input 
-                        type="text" 
-                        value={destCity} 
-                        onChange={(e) => setDestCity(e.target.value)} 
+                      <input
+                        type="text"
+                        value={destCity}
+                        onChange={(e) => setDestCity(e.target.value)}
                         className="form-input"
                         placeholder="E.g. Sakchi, Bistupur, Mango"
                       />
@@ -743,8 +759,8 @@ export default function Estimator() {
                 <label className="form-label">3. Select Transportation Vehicle</label>
                 <div className={styles.vehicleOptions}>
                   {vehicles.map(v => (
-                    <div 
-                      key={v.id} 
+                    <div
+                      key={v.id}
                       className={`${styles.vehicleCard} ${vehicleId === v.id ? styles.selectedVehicle : ''}`}
                       onClick={() => setVehicleId(v.id)}
                     >
@@ -761,9 +777,9 @@ export default function Estimator() {
                 </div>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={calculating} 
+              <button
+                type="submit"
+                disabled={calculating}
                 className={`btn-neon ${styles.submitBtn}`}
               >
                 <span>{calculating ? 'Optimizing GPS Dispatch...' : 'Compute Price Quote'}</span>
@@ -787,7 +803,7 @@ export default function Estimator() {
           {/* Results & Interactive Map Panel */}
           <div id="estimator-result" className={styles.resultColumn}>
             <div className={`glass-panel ${styles.interactiveMapBox}`}>
-              <MapComponent 
+              <MapComponent
                 sourceCoords={sourceCoords}
                 destCoords={destCoords}
                 routeCoords={routeCoords}
@@ -806,11 +822,11 @@ export default function Estimator() {
                 <div className={styles.pricingFormulaAlert}>
                   <div className={styles.formulaHeader}>
                     <Info size={14} style={{ color: 'var(--accent-cyan)' }} />
-                    <span>Standard Shifting Rates (Tata Ace):</span>
+                    <span>Mahindra Bolero Pickup Shifting Rates:</span>
                   </div>
                   <ul>
-                    <li>First 100 KM: ₹25/KM</li>
-                    <li>Above 100 KM: ₹20/KM</li>
+                    <li>First 100 KM: ₹38/KM</li>
+                    <li>Above 100 KM: ₹32/KM</li>
                     <li>Rates tailored dynamically based on selected vehicle size</li>
                   </ul>
                 </div>
@@ -820,8 +836,8 @@ export default function Estimator() {
                 <div className={styles.resultHeader}>
                   <span className={styles.routeBadge}>ROUTE ESTIMATION SUMMARY</span>
                   <h3 className={styles.routeDisplay}>
-                    <span className={styles.locName}>{getSourceLabel()}</span> 
-                    <ArrowRight size={16} style={{ color: 'var(--accent-cyan)', flexShrink: 0 }} /> 
+                    <span className={styles.locName}>{getSourceLabel()}</span>
+                    <ArrowRight size={16} style={{ color: 'var(--accent-cyan)', flexShrink: 0 }} />
                     <span className={styles.locName}>{getDestLabel()}</span>
                   </h3>
                 </div>
@@ -830,41 +846,28 @@ export default function Estimator() {
                   <div className={styles.priceLabel}>Estimated Shifting Price (Jharkhand Special Rate)</div>
                   <div className={styles.priceValue}>
                     <IndianRupee size={30} className={styles.rupeeIcon} />
-                    {result.fareMin !== result.fareMax ? (
-                      <span>{result.fareMin.toLocaleString('en-IN')} - {result.fareMax.toLocaleString('en-IN')}</span>
-                    ) : (
-                      <span>{result.distanceFare.toLocaleString('en-IN')}</span>
-                    )}
+                    <span>{result.fareMin.toLocaleString('en-IN')} - {result.fareMax.toLocaleString('en-IN')}</span>
                   </div>
                   <div className={styles.priceDisclaimer}>*Tolls, parking, and helper loading/unloading labor costs extra.</div>
+                  <div className={styles.priceDisclaimer} style={{ color: 'var(--accent-cyan)', marginTop: '4px', fontWeight: '500' }}>
+                    *Price may differ according to the material loaded.
+                  </div>
                 </div>
 
                 {/* Pricing Breakdown */}
                 <div className={styles.breakdownBox}>
                   <h4 className={styles.breakdownTitle}>Fare Computation Details</h4>
-                  <div className={styles.breakdownRow}>
+                  <div className={styles.breakdownRowStacked}>
                     <span>Distance Fare ({result.distance} KM):</span>
-                    {result.fareMin !== result.fareMax ? (
-                      <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')} (Min. Charge)</span>
-                    ) : (
-                      <span>₹{result.distanceFare.toLocaleString('en-IN')}</span>
-                    )}
+                    <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
                   </div>
                   <div className={styles.breakdownDivider}></div>
                   <div className={styles.breakdownRow} style={{ color: 'var(--accent-cyan)', fontWeight: 'bold' }}>
                     <span>Computed Total:</span>
-                    {result.fareMin !== result.fareMax ? (
-                      <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
-                    ) : (
-                      <span>₹{result.distanceFare.toLocaleString('en-IN')}</span>
-                    )}
+                    <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
                   </div>
                   <p className={styles.formulaDetailText}>
-                    {result.fareMin !== result.fareMax ? (
-                      `Minimum booking rate of ₹1,200 - ₹1,500 applies for distances less than 50 KM.`
-                    ) : (
-                      `Formula: First 100km @ ₹${selectedVehicle.rateFirst100}/km, remainder @ ₹${selectedVehicle.rateAfter100}/km.`
-                    )}
+                    Formula: First 100km @ ₹{selectedVehicle.rateFirst100}/km, remainder @ ₹{selectedVehicle.rateAfter100}/km (indicated as estimated range).
                   </p>
                 </div>
 
@@ -889,12 +892,14 @@ export default function Estimator() {
 
                 <div className={styles.ctaGroup}>
                   <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className={`btn-neon ${styles.whatsappBtn}`}>
-                    <Calendar size={18} />
-                    <span>Confirm Booking & Route (WhatsApp)</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width={18} height={18} fill="currentColor">
+                      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L3 512l148.5-39c32.8 17.9 69.6 27.3 107.4 27.3 122.4 0 222-99.6 222-222 0-59.3-23.2-115-65-156.9zM223.9 448c-33.2 0-65.7-8.9-94-25.7l-6.7-4-88 23.1 23.5-85.8-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.3 5.7 23.7 9.1 31.9 11.7 13.4 4.3 25.7 3.7 35.5 2.2 10.9-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+                    </svg>
+                    <span>Confirm Booking</span>
                   </a>
                   <a href="tel:7654722708" className={`btn-secondary ${styles.callBtn}`}>
                     <Phone size={18} />
-                    <span>Call Dispatch: 7654722708</span>
+                    <span>Call 7654722708</span>
                   </a>
                 </div>
               </div>

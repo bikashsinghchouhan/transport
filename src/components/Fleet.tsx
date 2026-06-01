@@ -19,21 +19,21 @@ const fleetData = [
     capacity: 'Up to 850 Kg',
     size: '7 x 4.8 x 4.8 Feet',
     useCase: 'Best for 1 BHK apartment shifting, PG luggage transport, and local distribution.',
-    badge: 'POPULAR SHIFTER',
-    recommended: true
+    badge: 'POPULAR SHIFTER'
   },
   {
     id: 'bolero-pickup',
     name: 'Mahindra Bolero Pickup',
-    capacity: 'Up to 1.5 Tons (1500 Kg)',
+    capacity: 'Up to 2.0 Tons (2000 Kg)',
     size: '8.2 x 5.2 x 5 Feet',
     useCase: 'Perfect for 2 BHK house shifting, electronic appliances, commercial loads, and agricultural products.',
-    badge: 'HEAVY DUTY PICKUP'
+    badge: 'HEAVY DUTY PICKUP',
+    recommended: true
   },
   {
     id: 'tata-407',
     name: 'Tata 407 Truck',
-    capacity: 'Up to 2.5 Tons (2500 Kg)',
+    capacity: 'Up to 3.5 Tons (3500 Kg)',
     size: '9.5 x 5.5 x 6 Feet',
     useCase: 'Ideal for 3 BHK luxury house shifting, large office setups, machinery cargo, and long distance trips.',
     badge: 'MAX LOGISTICS'

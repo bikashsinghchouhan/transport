@@ -185,6 +185,9 @@
 
 .actionBtn {
   width: 100%;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .recommendedBtn {
