@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteLayout from "@/components/SiteLayout";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -68,12 +67,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // LocalBusiness structured data
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "B2 Transport",
-    "image": "https://www.b2transport.in/hero-og.jpg", // placeholder, can be generated
+    "image": "https://www.b2transport.in/hero-og.jpg",
     "@id": "https://www.b2transport.in/#localbusiness",
     "url": "https://www.b2transport.in",
     "telephone": "+91-7654722708",
@@ -117,11 +115,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Header />
-        <main style={{ flex: 1, paddingTop: '80px' }}>
-          {children}
-        </main>
-        <Footer />
+        <SiteLayout>{children}</SiteLayout>
       </body>
     </html>
   );

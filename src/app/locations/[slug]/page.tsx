@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MapPin, Phone, MessageSquare, Shield, Clock, Compass, Truck, Star } from 'lucide-react';
 import Estimator from '@/components/Estimator';
+import LocationCallButtons from '@/components/LocationCallButtons';
 import styles from './LocationPage.module.css';
 
 // Interface for page params in Next.js 15+
@@ -229,16 +230,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
                 Hire local Tata Ace, Bolero Pickup, and loaders for stress-free home, luggage, or commercial transport. 24/7 Service.
               </p>
               
-              <div className={styles.actionRow}>
-                <a href="tel:7654722708" className="btn-neon">
-                  <Phone size={18} />
-                  <span>Call: 7654722708</span>
-                </a>
-                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  <MessageSquare size={18} />
-                  <span>WhatsApp Booking</span>
-                </a>
-              </div>
+              <LocationCallButtons locationName={location.name} stylesActionRowClass={styles.actionRow} />
             </div>
           </div>
         </section>

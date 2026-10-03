@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
 const isNetlify = process.env.NETLIFY === 'true';
-const basePath = isNetlify ? '' : '/transport';
+const isStaticExport = process.env.STATIC_EXPORT === 'true';
+const basePath = isNetlify ? '' : (process.env.NODE_ENV === 'production' && isStaticExport ? '/transport' : '');
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  ...(isStaticExport ? { output: 'export' } : {}),
   images: {
     unoptimized: true,
   },

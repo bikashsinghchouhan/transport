@@ -263,7 +263,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
   .section-padding {
-    padding: 60px 0;
+    padding: 40px 0;
+  }
+
+  .btn-neon, .btn-secondary {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    width: 100%;
+    justify-content: center;
   }
 }

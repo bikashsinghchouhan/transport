@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,9 +18,12 @@ import {
 } from 'lucide-react';
 import Estimator from '@/components/Estimator';
 import Fleet from '@/components/Fleet';
+import { useContact } from '@/context/ContactContext';
 import styles from './page.module.css';
 
 export default function Home() {
+  const { contact } = useContact();
+
   const localDistricts = [
     { name: "Ranchi", slug: "ranchi", role: "Company Headquarter (HQ)" },
     { name: "Jamshedpur", slug: "jamshedpur", role: "Industrial Logistical Node" },
@@ -54,9 +59,9 @@ export default function Home() {
                   <span>Calculate Fare Estimate</span>
                   <ArrowRight size={18} />
                 </Link>
-                <a href="tel:7654722708" className="btn-secondary">
+                <a href={`tel:${contact.phone}`} className="btn-secondary">
                   <Phone size={18} />
-                  <span>Call 7654722708</span>
+                  <span>Call {contact.phone}</span>
                 </a>
               </div>
 
@@ -82,18 +87,20 @@ export default function Home() {
                   className={styles.heroImage}
                   priority
                 />
-                <div className={styles.glassBadgeHq}>
-                  <MapPin size={18} className={styles.hqPin} />
-                  <div>
-                    <h5>Ranchi HQ</h5>
-                    <p>Jharkhand Central Hub</p>
+                <div className={styles.heroBadgesWrapper}>
+                  <div className={styles.glassBadgeHq}>
+                    <MapPin size={18} className={styles.hqPin} />
+                    <div>
+                      <h5>Ranchi HQ</h5>
+                      <p>Jharkhand Central Hub</p>
+                    </div>
                   </div>
-                </div>
-                <div className={styles.glassBadgeActive}>
-                  <Users size={18} className={styles.activeUsers} />
-                  <div>
-                    <h5>99.8% Safe</h5>
-                    <p>Damage-Free Moves</p>
+                  <div className={styles.glassBadgeActive}>
+                    <Users size={18} className={styles.activeUsers} />
+                    <div>
+                      <h5>99.8% Safe</h5>
+                      <p>Damage-Free Moves</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -275,11 +282,11 @@ export default function Home() {
               Get immediate vehicle allocation from Ranchi HQ. Quick booking with expert loading assistance.
             </p>
             <div className={styles.ctaButtonGroup}>
-              <a href="tel:7654722708" className="btn-neon">
+              <a href={`tel:${contact.phone}`} className="btn-neon">
                 <Phone size={18} />
-                <span>Call Now: 7654722708</span>
+                <span>Call Now: {contact.phone}</span>
               </a>
-              <a href="https://wa.me/917654722708?text=Hello%20b2%20Transport,%20I%20want%20to%20book%20a%20vehicle%20for%20household%20shifting." target="_blank" rel="noopener noreferrer" className={`btn-secondary ${styles.whatsappBtn}`}>
+              <a href={`https://wa.me/${contact.whatsapp}?text=Hello%20b2%20Transport,%20I%20want%20to%20book%20a%20vehicle%20for%20household%20shifting.`} target="_blank" rel="noopener noreferrer" className={`btn-secondary ${styles.whatsappBtn}`}>
                 <MessageSquare size={18} />
                 <span>Inquire on WhatsApp</span>
               </a>

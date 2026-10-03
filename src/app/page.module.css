@@ -155,6 +155,10 @@
   }
 }
 
+.heroBadgesWrapper {
+  display: contents;
+}
+
 .glassBadgeHq {
   position: absolute;
   bottom: 30px;
@@ -222,8 +226,8 @@
 }
 
 @media (max-width: 992px) {
-  .glassBadgeHq, .glassBadgeActive {
-    display: none;
+  .heroBadgesWrapper, .glassBadgeHq, .glassBadgeActive {
+    display: none !important;
   }
 }
 
@@ -530,4 +534,217 @@
 .whatsappBtn:hover {
   border-color: transparent;
   box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+/* Mobile Breakpoint Optimizations for 99% Mobile Traffic */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 64px 0 20px;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .heroLeft {
+    align-items: center;
+    gap: 16px;
+  }
+
+  .badgeRow {
+    font-size: 0.68rem;
+    padding: 4px 10px;
+  }
+
+  .heroTitle {
+    font-size: 1.85rem;
+    line-height: 1.2;
+  }
+
+  .heroDescription {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .heroCtas {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .heroCtas a {
+    width: 100%;
+  }
+
+  .heroTrust {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    font-size: 0.8rem;
+  }
+
+  .heroRight {
+    width: 100%;
+  }
+
+  .imageContainer {
+    width: 100%;
+    padding: 6px;
+    border-radius: 14px;
+    box-sizing: border-box;
+  }
+
+  .heroImage {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+
+
+  .statsSection {
+    padding: 16px 0;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 16px 12px;
+  }
+
+  .statNum {
+    font-size: 1.6rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  .sectionHeader {
+    margin-bottom: 24px;
+  }
+
+  .secBadge {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    margin-bottom: 12px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 1.45rem;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+
+  .sectionHeader p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .serviceCard {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+  .serviceIconWrapper {
+    width: 42px;
+    height: 42px;
+  }
+
+  .serviceCard h3 {
+    font-size: 1.15rem;
+  }
+
+  .serviceText {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .serviceList {
+    padding-top: 14px;
+    gap: 8px;
+  }
+
+  .serviceList li {
+    font-size: 0.8rem;
+  }
+
+  .locationsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .locationCard {
+    padding: 14px 10px;
+    gap: 6px;
+  }
+
+  .locationCard h4 {
+    font-size: 0.95rem;
+  }
+
+  .locRole {
+    font-size: 0.75rem;
+  }
+
+  .locAction {
+    font-size: 0.78rem;
+  }
+
+  .faqContainer {
+    gap: 12px;
+  }
+
+  .faqCard {
+    padding: 16px 14px;
+    gap: 8px;
+  }
+
+  .faqCard h4 {
+    font-size: 0.98rem;
+  }
+
+  .faqAnswer {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding-left: 0;
+    margin-top: 4px;
+  }
+
+  .ctaBar {
+    padding: 30px 0;
+  }
+
+  .ctaContainer {
+    padding: 28px 16px;
+    gap: 14px;
+  }
+
+  .ctaTitle {
+    font-size: 1.45rem;
+  }
+
+  .ctaSubtitle {
+    font-size: 0.88rem;
+  }
+
+  .ctaButtonGroup {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .ctaButtonGroup a {
+    width: 100%;
+  }
 }

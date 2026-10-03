@@ -1,9 +1,13 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Truck, Shield, Clock, Compass } from 'lucide-react';
+import { useContact } from '@/context/ContactContext';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+  const { contact } = useContact();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -21,13 +25,13 @@ export default function Footer() {
               Next-generation logistics & shifting solutions in Jharkhand. We provide transparent pricing, real-time dispatch, and professional shifting services.
             </p>
             <div className={styles.contactList}>
-              <a href="tel:7654722708" className={styles.contactItem}>
+              <a href={`tel:${contact.phone}`} className={styles.contactItem}>
                 <Phone size={16} />
-                <span>+91-7654722708</span>
+                <span>+91-{contact.phone}</span>
               </a>
               <div className={styles.contactItem}>
                 <MapPin size={16} />
-                <span>Ranchi, Jharkhand (HQ)</span>
+                <span>{contact.address}</span>
               </div>
             </div>
           </div>

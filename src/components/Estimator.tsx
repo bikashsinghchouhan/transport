@@ -1,24 +1,21 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Truck,
-  Navigation,
   IndianRupee,
   Phone,
-  Calendar,
   ArrowRight,
   Search,
   MapPin,
   Info,
-  ChevronDown,
   Locate
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import styles from './Estimator.module.css';
 import { getStatesList, getDistrictsOfState } from '@/utils/indiaGeoData';
+import { useContact } from '@/context/ContactContext';
 
-// Dynamically import Leaflet Map Component with SSR disabled
 const MapComponent = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => (
@@ -29,12 +26,22 @@ const MapComponent = dynamic(() => import('./MapComponent'), {
   )
 });
 
-// Configure Vehicles with Base price and Distance multiplier
-const vehicles = [
+export interface VehicleRateInfo {
+  id: string;
+  name: string;
+  capacity: string;
+  rateFirst100: number;
+  rateAfter100: number;
+  minFareRange: { min: number; max: number };
+  specs: string;
+  description: string;
+}
+
+const defaultVehicles: VehicleRateInfo[] = [
   {
     id: 'tata-ace',
     name: 'Tata Ace (Chota Hathi)',
-    capacity: '850 Kg',
+    capacity: '750 Kg',
     rateFirst100: 32,
     rateAfter100: 26,
     minFareRange: { min: 1200, max: 1500 },
@@ -44,7 +51,7 @@ const vehicles = [
   {
     id: 'bolero-pickup',
     name: 'Mahindra Bolero Pickup',
-    capacity: '2.0 Tons (2000 Kg)',
+    capacity: '1300 Kg (1.3 Tons)',
     rateFirst100: 35,
     rateAfter100: 30,
     minFareRange: { min: 1500, max: 1800 },
@@ -63,17 +70,20 @@ const vehicles = [
   },
   {
     id: 'tata-407',
-    name: 'Tata 407 Truck',
+    name: '14 Ft Container Truck',
     capacity: '3.5 Tons (3500 Kg)',
     rateFirst100: 48,
     rateAfter100: 40,
     minFareRange: { min: 2000, max: 2400 },
-    specs: '9.5 x 5.5 x 6 Feet',
+    specs: '14 x 6 x 6.5 Feet',
     description: 'Suitable for 3 BHK house shifting, large office setups, and heavy loads.'
   }
 ];
 
 export default function Estimator() {
+  const { contact } = useContact();
+  const [vehicles, setVehicles] = useState<VehicleRateInfo[]>(defaultVehicles);
+
   // Input Modes: 'search' (Map search) or 'manual' (State/District/City dropdowns)
   const [sourceMode, setSourceMode] = useState<'search' | 'manual'>('search');
   const [destMode, setDestMode] = useState<'search' | 'manual'>('search');
@@ -113,9 +123,44 @@ export default function Estimator() {
     fareMin: 1500,
     fareMax: 1800,
     vehicleName: 'Mahindra Bolero Pickup',
-    capacity: '2.0 Tons (2000 Kg)',
+    capacity: '1300 Kg (1.3 Tons)',
     specs: '8.2 x 5.2 x 5 Feet'
   });
+
+  // Fetch dynamic vehicles & fare rates from MongoDB API
+  useEffect(() => {
+    fetchDynamicVehicles();
+  }, []);
+
+  const fetchDynamicVehicles = async () => {
+    try {
+      const res = await fetch('/api/vehicles');
+      const data = await res.json();
+
+      if (data.success && data.vehicles && data.vehicles.length > 0) {
+        const mappedVehicles: VehicleRateInfo[] = data.vehicles.map((v: any, idx: number) => ({
+          id: v._id || `v-${idx}`,
+          name: v.name,
+          capacity: v.capacity,
+          rateFirst100: Number(v.rateFirst100) || 35,
+          rateAfter100: Number(v.rateAfter100) || 30,
+          minFareRange: {
+            min: Number(v.minFareMin) || 1500,
+            max: Number(v.minFareMax) || 1800,
+          },
+          specs: v.dimensions || 'Standard Cargo Box',
+          description: v.description || 'Reliable shifting and goods transport.',
+        }));
+
+        setVehicles(mappedVehicles);
+        if (mappedVehicles.length > 0) {
+          setVehicleId(mappedVehicles[0].id);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load dynamic vehicles for estimator:', err);
+    }
+  };
 
   const selectedVehicle = vehicles.find(v => v.id === vehicleId) || vehicles[0];
   const statesList = getStatesList();
@@ -172,7 +217,6 @@ export default function Estimator() {
     return () => clearTimeout(timer);
   }, [destSearch, destMode]);
 
-  // Handle select source suggestion
   const handleSelectSourceSuggestion = (item: any) => {
     const lat = parseFloat(item.lat);
     const lon = parseFloat(item.lon);
@@ -180,7 +224,6 @@ export default function Estimator() {
     setSourceSearch(item.display_name);
     setSourceSuggestions([]);
 
-    // Populate manual selectors as fallback
     const addr = item.address;
     if (addr) {
       const stateName = addr.state || '';
@@ -196,7 +239,6 @@ export default function Estimator() {
     }
   };
 
-  // Handle select destination suggestion
   const handleSelectDestSuggestion = (item: any) => {
     const lat = parseFloat(item.lat);
     const lon = parseFloat(item.lon);
@@ -204,7 +246,6 @@ export default function Estimator() {
     setDestSearch(item.display_name);
     setDestSuggestions([]);
 
-    // Populate manual selectors as fallback
     const addr = item.address;
     if (addr) {
       const stateName = addr.state || '';
@@ -220,7 +261,6 @@ export default function Estimator() {
     }
   };
 
-  // Helper: Geocode location manually
   const geocodeManualLocation = async (state: string, district: string, city: string): Promise<[number, number] | null> => {
     const query = `${city ? city + ', ' : ''}${district}, ${state}, India`;
     try {
@@ -235,9 +275,8 @@ export default function Estimator() {
     return null;
   };
 
-  // Helper: Haversine distance for routing fallback
   const calculateHaversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a =
@@ -246,39 +285,35 @@ export default function Estimator() {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const dist = R * c;
-    return Math.round(dist * 1.35); // Scale factor for driving road routing
+    return Math.round(dist * 1.35);
   };
 
-  // Calculate pricing range dynamically based on distance and rates
-  const computePriceBreakdown = (distKm: number, selectedVehicle: typeof vehicles[0]) => {
+  // Compute price breakdown based on Super Admin configured rates per vehicle
+  const computePriceBreakdown = (distKm: number, selectedVeh: VehicleRateInfo) => {
     let distanceFare = 0;
     if (distKm <= 100) {
-      distanceFare = distKm * selectedVehicle.rateFirst100;
+      distanceFare = distKm * selectedVeh.rateFirst100;
     } else {
-      distanceFare = (100 * selectedVehicle.rateFirst100) + ((distKm - 100) * selectedVehicle.rateAfter100);
+      distanceFare = (100 * selectedVeh.rateFirst100) + ((distKm - 100) * selectedVeh.rateAfter100);
     }
 
     const baseFare = 0;
     const computedFare = distanceFare;
 
-    // Show a range (+/- variance) for all distances
     const variance = Math.max(150, Math.round((computedFare * 0.035) / 50) * 50);
-    
     let fareMin = Math.round((computedFare - variance) / 100) * 100;
     let fareMax = Math.round((computedFare + variance) / 100) * 100;
 
-    // Enforce vehicle-specific minimum ranges
-    if (fareMin < selectedVehicle.minFareRange.min) {
-      fareMin = selectedVehicle.minFareRange.min;
+    if (fareMin < selectedVeh.minFareRange.min) {
+      fareMin = selectedVeh.minFareRange.min;
     }
-    if (fareMax < selectedVehicle.minFareRange.max) {
-      fareMax = selectedVehicle.minFareRange.max;
+    if (fareMax < selectedVeh.minFareRange.max) {
+      fareMax = selectedVeh.minFareRange.max;
     }
 
-    // Explicitly clamp within 25km to exact minFareRange
     if (distKm <= 25) {
-      fareMin = selectedVehicle.minFareRange.min;
-      fareMax = selectedVehicle.minFareRange.max;
+      fareMin = selectedVeh.minFareRange.min;
+      fareMax = selectedVeh.minFareRange.max;
     }
 
     return {
@@ -289,14 +324,12 @@ export default function Estimator() {
     };
   };
 
-  // Main compute and route fetcher
   const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     setCalculating(true);
     setRoutingError(false);
     setValidationError(null);
 
-    // Validation checks
     if (sourceMode === 'search' && !sourceCoords) {
       setValidationError('Please type and select a pickup location from the map search suggestions.');
       setCalculating(false);
@@ -321,7 +354,6 @@ export default function Estimator() {
     let startCoords = sourceCoords;
     let endCoords = destCoords;
 
-    // 1. Geocode manual choices if selected mode is manual
     if (sourceMode === 'manual') {
       const coords = await geocodeManualLocation(sourceState, sourceDistrict, sourceCity);
       if (coords) {
@@ -352,9 +384,7 @@ export default function Estimator() {
       return;
     }
 
-    // 2. Fetch OSRM Road Route
     let computedDistance = 0;
-    let coordsRoute: [number, number][] = [];
 
     try {
       const res = await fetch(
@@ -365,14 +395,12 @@ export default function Estimator() {
       if (data.routes && data.routes.length > 0) {
         const route = data.routes[0];
         computedDistance = Math.round(route.distance / 1000);
-        coordsRoute = route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]);
-        setRouteCoords(coordsRoute);
+        setRouteCoords(route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]));
       } else {
         throw new Error("No routes returned");
       }
     } catch (err) {
-      console.warn("OSRM Route API failed, falling back to Haversine approximation:", err);
-      // Fallback
+      console.warn("OSRM Route API failed, using Haversine approximation:", err);
       computedDistance = calculateHaversineDistance(
         startCoords[0], startCoords[1],
         endCoords[0], endCoords[1]
@@ -380,10 +408,9 @@ export default function Estimator() {
       setRouteCoords([[startCoords[0], startCoords[1]], [endCoords[0], endCoords[1]]]);
     }
 
-    if (computedDistance === 0) computedDistance = 15; // Local city fallback
+    if (computedDistance === 0) computedDistance = 15;
     setDistance(computedDistance);
 
-    // 3. Compute pricing breakdown
     const prices = computePriceBreakdown(computedDistance, selectedVehicle);
 
     setResult({
@@ -400,7 +427,6 @@ export default function Estimator() {
     setCalculated(true);
     setCalculating(false);
 
-    // Smooth scroll down to results section
     setTimeout(() => {
       const resultSection = document.getElementById('estimator-result');
       if (resultSection) {
@@ -422,26 +448,8 @@ export default function Estimator() {
       `Estimated Price: ${priceString}.\n` +
       `Please confirm driver availability and final rates.`
     );
-    return `https://wa.me/917654722708?text=${text}`;
+    return `https://wa.me/${contact.whatsapp}?text=${text}`;
   };
-
-  // Sync initial map route when coordinates are set
-  useEffect(() => {
-    if (sourceCoords && destCoords) {
-      // Background route fetch
-      fetch(
-        `https://router.project-osrm.org/route/v1/driving/${sourceCoords[1]},${sourceCoords[0]};${destCoords[1]},${destCoords[0]}?overview=full&geometries=geojson`
-      )
-        .then(res => res.json())
-        .then(data => {
-          if (data.routes && data.routes.length > 0) {
-            const route = data.routes[0];
-            setRouteCoords(route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]));
-          }
-        })
-        .catch(e => console.error("Initial routing error:", e));
-    }
-  }, []);
 
   const handleUseCurrentLocation = () => {
     if (typeof window === 'undefined' || !navigator.geolocation) {
@@ -458,38 +466,20 @@ export default function Estimator() {
         const lon = position.coords.longitude;
         setSourceCoords([lat, lon]);
 
-        // Reverse geocode to get display address name
         try {
           const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`);
           const data = await res.json();
           if (data && data.display_name) {
             setSourceSearch(data.display_name);
-
-            // Populate manual selectors in background
-            const addr = data.address;
-            if (addr) {
-              const stateName = addr.state || '';
-              const matchedState = statesList.find(s => s.toLowerCase() === stateName.toLowerCase() || stateName.toLowerCase().includes(s.toLowerCase()));
-              if (matchedState) {
-                setSourceState(matchedState);
-                const districts = getDistrictsOfState(matchedState);
-                const districtName = addr.county || addr.district || addr.state_district || '';
-                const matchedDistrict = districts.find(d => d.toLowerCase() === districtName.toLowerCase() || districtName.toLowerCase().includes(d.toLowerCase()));
-                if (matchedDistrict) setSourceDistrict(matchedDistrict);
-              }
-              setSourceCity(addr.city || addr.town || addr.village || addr.suburb || addr.neighbourhood || 'Current Location');
-            }
           } else {
             setSourceSearch(`GPS Coords: ${lat.toFixed(4)}, ${lon.toFixed(4)}`);
           }
         } catch (err) {
-          console.error("Reverse geocoding current location failed:", err);
           setSourceSearch(`GPS Coords: ${lat.toFixed(4)}, ${lon.toFixed(4)}`);
         }
       },
       (error) => {
-        console.error("GPS access error:", error);
-        alert("Failed to access your location. Please check your browser permissions.");
+        alert("Failed to access your location.");
         setSourceSearch('');
       },
       { enableHighAccuracy: true, timeout: 8000 }
@@ -499,28 +489,18 @@ export default function Estimator() {
   const handleMarkerDrag = async (type: 'source' | 'destination', coords: [number, number]) => {
     if (type === 'source') {
       setSourceCoords(coords);
-      // Reverse geocode to update label
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`);
         const data = await res.json();
-        if (data && data.display_name) {
-          setSourceSearch(data.display_name);
-        }
-      } catch (err) {
-        console.error(err);
-      }
+        if (data && data.display_name) setSourceSearch(data.display_name);
+      } catch (err) {}
     } else {
       setDestCoords(coords);
-      // Reverse geocode
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`);
         const data = await res.json();
-        if (data && data.display_name) {
-          setDestSearch(data.display_name);
-        }
-      } catch (err) {
-        console.error(err);
-      }
+        if (data && data.display_name) setDestSearch(data.display_name);
+      } catch (err) {}
     }
   };
 
@@ -822,11 +802,11 @@ export default function Estimator() {
                 <div className={styles.pricingFormulaAlert}>
                   <div className={styles.formulaHeader}>
                     <Info size={14} style={{ color: 'var(--accent-cyan)' }} />
-                    <span>Mahindra Bolero Pickup Shifting Rates:</span>
+                    <span style={{ textTransform: 'uppercase' }}>{selectedVehicle.name} Shifting Rates:</span>
                   </div>
                   <ul>
-                    <li>First 100 KM: ₹38/KM</li>
-                    <li>Above 100 KM: ₹32/KM</li>
+                    <li>First 100 KM: ₹{selectedVehicle.rateFirst100}/KM</li>
+                    <li>Above 100 KM: ₹{selectedVehicle.rateAfter100}/KM</li>
                     <li>Rates tailored dynamically based on selected vehicle size</li>
                   </ul>
                 </div>
@@ -897,9 +877,9 @@ export default function Estimator() {
                     </svg>
                     <span>Confirm Booking</span>
                   </a>
-                  <a href="tel:7654722708" className={`btn-secondary ${styles.callBtn}`}>
+                  <a href={`tel:${contact.phone}`} className={`btn-secondary ${styles.callBtn}`}>
                     <Phone size={18} />
-                    <span>Call 7654722708</span>
+                    <span>Call {contact.phone}</span>
                   </a>
                 </div>
               </div>
