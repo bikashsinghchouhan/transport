@@ -506,25 +506,25 @@ export default function AdminDashboardPage() {
               className={`${styles.navItem} ${activeTab === 'overview' ? styles.navItemActive : ''}`}
               onClick={() => handleTabChange('overview')}
             >
-              <Layers size={18} /> Overview
+              <Layers size={18} style={{ flexShrink: 0 }} /> Overview
             </button>
             <button
               className={`${styles.navItem} ${activeTab === 'vehicles' ? styles.navItemActive : ''}`}
               onClick={() => handleTabChange('vehicles')}
             >
-              <Truck size={18} /> Manage Vehicles & Rates
+              <Truck size={18} style={{ flexShrink: 0 }} /> Manage Vehicles & Rates
             </button>
             <button
               className={`${styles.navItem} ${activeTab === 'contact' ? styles.navItemActive : ''}`}
               onClick={() => handleTabChange('contact')}
             >
-              <PhoneCall size={18} /> Contact & Business Settings
+              <PhoneCall size={18} style={{ flexShrink: 0 }} /> Contact & Business Settings
             </button>
             <button
               className={`${styles.navItem} ${activeTab === 'security' ? styles.navItemActive : ''}`}
               onClick={() => handleTabChange('security')}
             >
-              <KeyRound size={18} /> Password & Security
+              <KeyRound size={18} style={{ flexShrink: 0 }} /> Password & Security
             </button>
           </nav>
         </div>
