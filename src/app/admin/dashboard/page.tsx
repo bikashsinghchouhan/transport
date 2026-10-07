@@ -28,9 +28,20 @@ import {
   Menu,
   PhoneCall,
   MapPin,
-  MessageSquare
+  MessageSquare,
+  TrendingUp,
+  ChevronDown,
+  ChevronRight,
+  LayoutDashboard,
+  Navigation,
+  CalendarCheck,
+  Receipt,
+  CreditCard,
+  Users,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
+import FleetManagement, { FleetSubTab } from '@/components/fleet/FleetManagement';
 import styles from '../admin.module.css';
 
 interface AdminInfo {
@@ -62,7 +73,9 @@ export default function AdminDashboardPage() {
   const { contact, refetchContact } = useContact();
   const [admin, setAdmin] = useState<AdminInfo | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'vehicles' | 'contact' | 'security'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'vehicles' | 'fleet' | 'contact' | 'security'>('overview');
+  const [fleetSubTab, setFleetSubTab] = useState<FleetSubTab>('dashboard');
+  const [fleetMenuExpanded, setFleetMenuExpanded] = useState<boolean>(true);
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -137,6 +150,13 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     fetchAdminInfo();
     fetchVehicles();
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam === 'fleet') {
+        setActiveTab('fleet');
+      }
+    }
   }, []);
 
   const fetchAdminInfo = async () => {
@@ -184,8 +204,34 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleTabChange = (tab: 'overview' | 'vehicles' | 'contact' | 'security') => {
+  const handleTabChange = (tab: 'overview' | 'vehicles' | 'fleet' | 'contact' | 'security') => {
     setActiveTab(tab);
+    if (tab === 'fleet') {
+      setFleetSubTab('dashboard');
+      setFleetMenuExpanded(true);
+    }
+    setMobileSidebarOpen(false);
+  };
+
+  const handleFleetMenuClick = () => {
+    if (activeTab !== 'fleet') {
+      setActiveTab('fleet');
+      setFleetSubTab('dashboard'); // By default open dashboard
+      setFleetMenuExpanded(true);
+      setMobileSidebarOpen(false);
+    } else {
+      if (fleetSubTab !== 'dashboard') {
+        setFleetSubTab('dashboard');
+        setMobileSidebarOpen(false);
+      } else {
+        setFleetMenuExpanded((prev) => !prev);
+      }
+    }
+  };
+
+  const handleFleetSubTabClick = (subTab: FleetSubTab) => {
+    setActiveTab('fleet');
+    setFleetSubTab(subTab);
     setMobileSidebarOpen(false);
   };
 
@@ -508,6 +554,80 @@ export default function AdminDashboardPage() {
             >
               <Layers size={18} style={{ flexShrink: 0 }} /> Overview
             </button>
+            {/* Fleet & Income Menu with Expandable Submenu */}
+            <div>
+              <button
+                className={`${styles.navItem} ${activeTab === 'fleet' ? styles.navItemActive : ''}`}
+                onClick={handleFleetMenuClick}
+              >
+                <TrendingUp size={18} style={{ flexShrink: 0 }} />
+                <span>Fleet & Income</span>
+                <span
+                  style={{
+                    marginLeft: 'auto',
+                    fontSize: '0.65rem',
+                    background: 'rgba(56, 189, 248, 0.2)',
+                    color: '#38bdf8',
+                    padding: '0.1rem 0.45rem',
+                    borderRadius: '999px',
+                    fontWeight: 700,
+                  }}
+                >
+                  PRO
+                </span>
+                <span style={{ marginLeft: '0.35rem', color: '#94a3b8', display: 'flex', alignItems: 'center' }}>
+                  {fleetMenuExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </span>
+              </button>
+
+              {/* Expandable Submenu Items (Trips, Attendance, Expenses, Payments, Drivers, Vehicles, Reports) */}
+              {fleetMenuExpanded && (
+                <div className={styles.sidebarSubmenu}>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'trips' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('trips')}
+                  >
+                    <Navigation size={14} /> Trips
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'attendance' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('attendance')}
+                  >
+                    <CalendarCheck size={14} /> Attendance
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'expenses' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('expenses')}
+                  >
+                    <Receipt size={14} /> Expenses
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'payments' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('payments')}
+                  >
+                    <CreditCard size={14} /> Payments
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'drivers' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('drivers')}
+                  >
+                    <Users size={14} /> Drivers
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'vehicles' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('vehicles')}
+                  >
+                    <Truck size={14} /> Vehicles
+                  </button>
+                  <button
+                    className={`${styles.sidebarSubmenuItem} ${activeTab === 'fleet' && fleetSubTab === 'reports' ? styles.sidebarSubmenuItemActive : ''}`}
+                    onClick={() => handleFleetSubTabClick('reports')}
+                  >
+                    <FileSpreadsheet size={14} /> Reports
+                  </button>
+                </div>
+              )}
+            </div>
             <button
               className={`${styles.navItem} ${activeTab === 'vehicles' ? styles.navItemActive : ''}`}
               onClick={() => handleTabChange('vehicles')}
@@ -554,6 +674,7 @@ export default function AdminDashboardPage() {
 
             <h2 className={styles.topTitle}>
               {activeTab === 'overview' && 'Dashboard Overview'}
+              {activeTab === 'fleet' && 'Fleet & Vehicle Income Management'}
               {activeTab === 'vehicles' && 'Vehicle Fleet & Fare Rate Controls'}
               {activeTab === 'contact' && 'Contact & Business Settings'}
               {activeTab === 'security' && 'Security & Password Settings'}
@@ -620,7 +741,56 @@ export default function AdminDashboardPage() {
                     Manage Vehicles & Fare Control →
                   </button>
                 </div>
+
+                {/* Fleet Operations Card */}
+                <div className={styles.infoCard}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                    <h3 className={styles.infoTitle} style={{ margin: 0 }}>
+                      <TrendingUp size={18} color="#38bdf8" /> Fleet & Vehicle Income
+                    </h3>
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        background: 'rgba(16, 185, 129, 0.15)',
+                        color: '#34d399',
+                        padding: '0.15rem 0.55rem',
+                        borderRadius: '999px',
+                        fontWeight: 600,
+                      }}
+                    >
+                      PRO
+                    </span>
+                  </div>
+                  <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.5rem 0 1rem 0' }}>
+                    Track daily vehicle trips, driver duty roster, fuel & toll expenses, pending customer receivables, and net profit.
+                  </p>
+                  <button
+                    onClick={handleFleetMenuClick}
+                    className={styles.actionBtn}
+                    style={{ width: '100%', justifyContent: 'center' }}
+                  >
+                    Open Fleet Management →
+                  </button>
+                </div>
               </div>
+            </div>
+          )}
+
+          {/* TAB: FLEET & VEHICLE INCOME MANAGEMENT */}
+          {activeTab === 'fleet' && (
+            <div>
+              <div className={styles.sectionHeader} style={{ marginBottom: '1.25rem' }}>
+                <div>
+                  <h3 className={styles.sectionTitle}>Fleet & Vehicle Income Management</h3>
+                  <p className={styles.sectionDesc}>
+                    Complete operational control: Vehicles, Drivers, Daily Trips, Attendance, Expenses, Collections & Reports
+                  </p>
+                </div>
+              </div>
+              <FleetManagement
+                activeSubTab={fleetSubTab}
+                onSubTabChange={(tab) => setFleetSubTab(tab)}
+              />
             </div>
           )}
 
