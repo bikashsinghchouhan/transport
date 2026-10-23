@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Truck,
   Plus,
@@ -15,6 +15,8 @@ import {
   X,
 } from 'lucide-react';
 import styles from './fleet.module.css';
+import FleetMobileFilterPill from './FleetMobileFilterPill';
+import FleetMobileFilterDrawer from './FleetMobileFilterDrawer';
 
 interface VehicleProps {
   vehicles: any[];
@@ -22,6 +24,8 @@ interface VehicleProps {
   loading: boolean;
   onRefresh: () => void;
   onSelectVehicleForTrips?: (vehicleId: string) => void;
+  action?: string | null;
+  onActionChange?: (action: string | null) => void;
 }
 
 export default function FleetVehicles({
@@ -30,9 +34,20 @@ export default function FleetVehicles({
   loading,
   onRefresh,
   onSelectVehicleForTrips,
+  action,
+  onActionChange,
 }: VehicleProps) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const activeFiltersCount = (search ? 1 : 0) + (statusFilter ? 1 : 0);
+
+  const handleResetFilters = () => {
+    setSearch('');
+    setStatusFilter('');
+  };
+
   const [showModal, setShowModal] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<any | null>(null);
 
@@ -50,6 +65,12 @@ export default function FleetVehicles({
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingVehicle(null);
+    if (onActionChange) onActionChange(null);
+  };
+
   const openAddModal = () => {
     setEditingVehicle(null);
     setForm({
@@ -63,7 +84,14 @@ export default function FleetVehicles({
     });
     setErrorMsg('');
     setShowModal(true);
+    if (onActionChange) onActionChange('add');
   };
+
+  useEffect(() => {
+    if (action === 'add' && !showModal) {
+      openAddModal();
+    }
+  }, [action]);
 
   const openEditModal = (v: any) => {
     setEditingVehicle(v);
@@ -101,7 +129,7 @@ export default function FleetVehicles({
         throw new Error(data.error || 'Failed to save vehicle');
       }
 
-      setShowModal(false);
+      closeModal();
       onRefresh();
     } catch (err: any) {
       setErrorMsg(err.message || 'Error saving vehicle');
@@ -138,9 +166,9 @@ export default function FleetVehicles({
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
-      {/* Search & Actions Bar */}
-      <div className={styles.filterBar}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}>
+      {/* Desktop Search & Actions Bar (hidden on mobile) */}
+      <div className={styles.desktopFilterBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, flexWrap: 'wrap' }}>
           <div className={styles.searchBox}>
             <Search size={16} color="#64748b" />
@@ -169,6 +197,65 @@ export default function FleetVehicles({
           <Plus size={16} /> Add Vehicle
         </button>
       </div>
+
+      {/* Mobile Filter Bar with Pill & Action Button */}
+      <div className={styles.mobileFilterBar}>
+        <FleetMobileFilterPill
+          onClick={() => setShowMobileFilters(true)}
+          activeCount={activeFiltersCount}
+          searchQuery={search}
+        />
+        <button onClick={openAddModal} className={styles.primaryActionBtn}>
+          <Plus size={16} /> Add Vehicle
+        </button>
+      </div>
+
+      {/* Mobile Filter Bottom-Sheet Drawer */}
+      <FleetMobileFilterDrawer
+        isOpen={showMobileFilters}
+        onClose={() => setShowMobileFilters(false)}
+        title="Filter & Search Vehicles"
+        activeCount={activeFiltersCount}
+        onReset={handleResetFilters}
+      >
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Search Vehicles</label>
+          <div className={styles.searchBox}>
+            <Search size={16} color="#64748b" />
+            <input
+              type="text"
+              placeholder="Search by vehicle number, model..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className={styles.clearInputBtn}
+                type="button"
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Vehicle Status</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="">All Statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="IN_MAINTENANCE">In Maintenance</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+      </FleetMobileFilterDrawer>
 
       {/* Desktop Table View */}
       <div className={styles.tableWrapper}>
@@ -347,7 +434,7 @@ export default function FleetVehicles({
               <h3 className={styles.modalTitle}>
                 {editingVehicle ? 'Edit Fleet Vehicle' : 'Add New Fleet Vehicle'}
               </h3>
-              <button onClick={() => setShowModal(false)} className={styles.modalCloseBtn}>
+              <button onClick={closeModal} className={styles.modalCloseBtn}>
                 <X size={20} />
               </button>
             </div>
@@ -459,7 +546,7 @@ export default function FleetVehicles({
               <div className={styles.modalFooter}>
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={closeModal}
                   className={styles.secondaryActionBtn}
                   disabled={saving}
                 >

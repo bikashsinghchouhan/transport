@@ -122,12 +122,22 @@ export async function DELETE(req: Request) {
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
+    const tripId = searchParams.get('tripId');
 
-    if (!id) {
-      return NextResponse.json({ success: false, error: 'Expense ID is required' }, { status: 400 });
+    if (!id && !tripId) {
+      return NextResponse.json({ success: false, error: 'Expense ID or Trip ID is required' }, { status: 400 });
     }
 
     await connectToDatabase();
+
+    if (tripId) {
+      await FleetExpense.deleteMany({ tripId });
+      return NextResponse.json({
+        success: true,
+        message: 'Trip expenses deleted successfully',
+      });
+    }
+
     await FleetExpense.findByIdAndDelete(id);
 
     return NextResponse.json({

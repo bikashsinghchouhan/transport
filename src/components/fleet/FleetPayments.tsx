@@ -12,20 +12,27 @@ import {
   X,
   History,
   Truck,
+  Search,
   User,
 } from 'lucide-react';
 import styles from './fleet.module.css';
+import FleetMobileFilterPill from './FleetMobileFilterPill';
+import FleetMobileFilterDrawer from './FleetMobileFilterDrawer';
 
 interface PaymentsProps {
   onRefreshStats?: () => void;
   targetTripId?: string | null;
   onClearTargetTrip?: () => void;
+  action?: string | null;
+  onActionChange?: (action: string | null) => void;
 }
 
 export default function FleetPayments({
   onRefreshStats,
   targetTripId,
   onClearTargetTrip,
+  action,
+  onActionChange,
 }: PaymentsProps) {
   const [pendingData, setPendingData] = useState<any>({
     pendingTrips: [],
@@ -33,6 +40,8 @@ export default function FleetPayments({
     totalPendingTrips: 0,
     uniqueCustomers: 0,
   });
+  const [search, setSearch] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Record Payment Modal State
@@ -78,6 +87,12 @@ export default function FleetPayments({
     }
   }, [targetTripId, pendingData.pendingTrips]);
 
+  useEffect(() => {
+    if ((action === 'add' || action === 'record-payment') && !showModal && pendingData.pendingTrips.length > 0) {
+      openPaymentModal(pendingData.pendingTrips[0]);
+    }
+  }, [action, pendingData.pendingTrips]);
+
   const openPaymentModal = async (trip: any) => {
     setSelectedTrip(trip);
     setPaymentForm({
@@ -89,6 +104,7 @@ export default function FleetPayments({
     });
     setErrorMsg('');
     setShowModal(true);
+    if (onActionChange) onActionChange('add');
 
     // Fetch payment transaction history for this trip
     try {
@@ -106,6 +122,7 @@ export default function FleetPayments({
     setShowModal(false);
     setSelectedTrip(null);
     if (onClearTargetTrip) onClearTargetTrip();
+    if (onActionChange) onActionChange(null);
   };
 
   const handleSubmitPayment = async (e: React.FormEvent) => {
@@ -146,8 +163,19 @@ export default function FleetPayments({
     }
   };
 
+  const filteredPendingTrips = (pendingData.pendingTrips || []).filter((t: any) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      (t.customerName || '').toLowerCase().includes(q) ||
+      (t.customerMobile || '').toLowerCase().includes(q) ||
+      (t.tripRoute || '').toLowerCase().includes(q) ||
+      (t.vehicleId?.registrationNumber || '').toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}>
       {/* Pending Summary KPI Cards */}
       <div className={styles.kpiGrid}>
         <div className={styles.kpiCard} style={{ borderColor: 'rgba(245, 158, 11, 0.4)' }}>
@@ -186,6 +214,60 @@ export default function FleetPayments({
         </div>
       </div>
 
+      {/* Search Bar for Desktop and Floating Pill for Mobile */}
+      <div className={styles.desktopFilterBar}>
+        <div className={styles.searchBox}>
+          <Search size={16} color="#64748b" />
+          <input
+            type="text"
+            placeholder="Search pending by customer name, mobile, route..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={styles.searchInput}
+          />
+          {search && (
+            <button onClick={() => setSearch('')} className={styles.clearInputBtn} type="button">
+              <X size={14} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Floating Pill on Mobile at Bottom Center */}
+      <FleetMobileFilterPill
+        onClick={() => setShowMobileFilters(true)}
+        activeCount={search ? 1 : 0}
+        searchQuery={search}
+      />
+
+      {/* Mobile Filter Bottom-Sheet Drawer */}
+      <FleetMobileFilterDrawer
+        isOpen={showMobileFilters}
+        onClose={() => setShowMobileFilters(false)}
+        title="Search Pending Receivables"
+        activeCount={search ? 1 : 0}
+        onReset={() => setSearch('')}
+      >
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Search Customer or Route</label>
+          <div className={styles.searchBox}>
+            <Search size={16} color="#64748b" />
+            <input
+              type="text"
+              placeholder="Customer name, mobile, vehicle, route..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+            {search && (
+              <button onClick={() => setSearch('')} className={styles.clearInputBtn} type="button">
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+      </FleetMobileFilterDrawer>
+
       {/* Desktop Pending List Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.dataTable}>
@@ -203,15 +285,15 @@ export default function FleetPayments({
             </tr>
           </thead>
           <tbody>
-            {pendingData.pendingTrips.length === 0 ? (
+            {filteredPendingTrips.length === 0 ? (
               <tr>
                 <td colSpan={9} style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
                   <CheckCircle2 size={32} color="#34d399" style={{ margin: '0 auto 0.5rem auto' }} />
-                  <div>All receivables are clear! No pending customer payments.</div>
+                  <div>{search ? 'No pending payments match your search.' : 'All receivables are clear! No pending customer payments.'}</div>
                 </td>
               </tr>
             ) : (
-              pendingData.pendingTrips.map((t: any) => {
+              filteredPendingTrips.map((t: any) => {
                 const totalCollected = (t.driverReceived || 0) + (t.managerReceived || 0);
                 const cleanPhone = (t.customerMobile || '').replace(/\D/g, '');
 
@@ -291,7 +373,12 @@ export default function FleetPayments({
 
       {/* Mobile Responsive Cards */}
       <div className={styles.mobileCardsGrid}>
-        {pendingData.pendingTrips.map((t: any) => {
+        {filteredPendingTrips.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#94a3b8' }}>
+            No pending payments match your search.
+          </div>
+        ) : (
+          filteredPendingTrips.map((t: any) => {
           const totalCollected = (t.driverReceived || 0) + (t.managerReceived || 0);
           const cleanPhone = (t.customerMobile || '').replace(/\D/g, '');
 
@@ -361,7 +448,7 @@ export default function FleetPayments({
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
 
       {/* Record Payment Collection Modal */}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Truck,
   Plus,
@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import styles from './fleet.module.css';
 import { calculateTripFinancials } from '@/lib/fleetCalculations';
+import FleetMobileFilterPill from './FleetMobileFilterPill';
+import FleetMobileFilterDrawer from './FleetMobileFilterDrawer';
 
 interface TripsProps {
   trips: any[];
@@ -27,6 +29,8 @@ interface TripsProps {
   loading: boolean;
   onRefresh: () => void;
   onOpenRecordPayment: (tripId: string) => void;
+  action?: string | null;
+  onActionChange?: (action: string | null) => void;
 }
 
 export default function FleetTrips({
@@ -36,6 +40,8 @@ export default function FleetTrips({
   loading,
   onRefresh,
   onOpenRecordPayment,
+  action,
+  onActionChange,
 }: TripsProps) {
   const [search, setSearch] = useState('');
   const [vehicleFilter, setVehicleFilter] = useState('');
@@ -44,6 +50,24 @@ export default function FleetTrips({
   const [dateRange, setDateRange] = useState('all');
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const activeFiltersCount =
+    (search ? 1 : 0) +
+    (dateRange !== 'all' ? 1 : 0) +
+    (vehicleFilter ? 1 : 0) +
+    (driverFilter ? 1 : 0) +
+    (statusFilter ? 1 : 0);
+
+  const handleResetFilters = () => {
+    setSearch('');
+    setDateRange('all');
+    setCustomStart('');
+    setCustomEnd('');
+    setVehicleFilter('');
+    setDriverFilter('');
+    setStatusFilter('');
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [editingTrip, setEditingTrip] = useState<any | null>(null);
@@ -88,6 +112,12 @@ export default function FleetTrips({
     totalKm: form.totalKm,
   });
 
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingTrip(null);
+    if (onActionChange) onActionChange(null);
+  };
+
   const openAddModal = () => {
     setEditingTrip(null);
     setForm({
@@ -112,7 +142,14 @@ export default function FleetTrips({
     });
     setErrorMsg('');
     setShowModal(true);
+    if (onActionChange) onActionChange('add');
   };
+
+  useEffect(() => {
+    if (action === 'add' && !showModal) {
+      openAddModal();
+    }
+  }, [action]);
 
   const openEditModal = (t: any) => {
     setEditingTrip(t);
@@ -185,7 +222,7 @@ export default function FleetTrips({
         throw new Error(data.error || 'Failed to save trip');
       }
 
-      setShowModal(false);
+      closeModal();
       onRefresh();
     } catch (err: any) {
       setErrorMsg(err.message || 'Error saving trip');
@@ -262,9 +299,9 @@ export default function FleetTrips({
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
-      {/* Search & Comprehensive Filters Bar */}
-      <div className={styles.filterBar}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}>
+      {/* Desktop Search & Filters Bar (hidden on mobile) */}
+      <div className={styles.desktopFilterBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, flexWrap: 'wrap' }}>
           <div className={styles.searchBox}>
             <Search size={16} color="#64748b" />
@@ -350,6 +387,139 @@ export default function FleetTrips({
           <Plus size={16} /> Record Trip
         </button>
       </div>
+
+      {/* Mobile Filter Bar with Pill & Action Button (visible only on mobile) */}
+      <div className={styles.mobileFilterBar}>
+        <FleetMobileFilterPill
+          onClick={() => setShowMobileFilters(true)}
+          activeCount={activeFiltersCount}
+          searchQuery={search}
+        />
+        <button onClick={openAddModal} className={styles.primaryActionBtn}>
+          <Plus size={16} /> Record Trip
+        </button>
+      </div>
+
+      {/* Mobile Filter Bottom-Sheet Drawer */}
+      <FleetMobileFilterDrawer
+        isOpen={showMobileFilters}
+        onClose={() => setShowMobileFilters(false)}
+        title="Filter & Search Trips"
+        activeCount={activeFiltersCount}
+        onReset={handleResetFilters}
+      >
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Search Trips</label>
+          <div className={styles.searchBox}>
+            <Search size={16} color="#64748b" />
+            <input
+              type="text"
+              placeholder="Search vehicle, driver, customer, route..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className={styles.clearInputBtn}
+                type="button"
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Date Range</label>
+          <select
+            value={dateRange}
+            onChange={(e) => setDateRange(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="all">All Dates</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="thisWeek">This Week</option>
+            <option value="thisMonth">This Month</option>
+            <option value="custom">Custom Range</option>
+          </select>
+        </div>
+
+        {dateRange === 'custom' && (
+          <div className={styles.drawerFieldGroup}>
+            <label className={styles.drawerLabel}>Custom Date Range</label>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+              <div>
+                <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '0.2rem' }}>From</span>
+                <input
+                  type="date"
+                  value={customStart}
+                  onChange={(e) => setCustomStart(e.target.value)}
+                  className={styles.drawerSelect}
+                />
+              </div>
+              <div>
+                <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '0.2rem' }}>To</span>
+                <input
+                  type="date"
+                  value={customEnd}
+                  onChange={(e) => setCustomEnd(e.target.value)}
+                  className={styles.drawerSelect}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Vehicle</label>
+          <select
+            value={vehicleFilter}
+            onChange={(e) => setVehicleFilter(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="">All Vehicles</option>
+            {vehicles.map((v) => (
+              <option key={v._id} value={v._id}>
+                {v.registrationNumber} {v.model ? `(${v.model})` : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Driver</label>
+          <select
+            value={driverFilter}
+            onChange={(e) => setDriverFilter(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="">All Drivers</option>
+            {drivers.map((d) => (
+              <option key={d._id} value={d._id}>
+                {d.fullName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Payment Status</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="">All Statuses</option>
+            <option value="PAID">PAID</option>
+            <option value="PARTIAL">PARTIAL</option>
+            <option value="PENDING">PENDING</option>
+          </select>
+        </div>
+      </FleetMobileFilterDrawer>
 
       {/* Desktop Table View */}
       <div className={styles.tableWrapper}>
@@ -621,12 +791,12 @@ export default function FleetTrips({
       {/* Record / Edit Trip Modal */}
       {showModal && (
         <div className={styles.modalOverlay}>
-          <div className={styles.modalCard} style={{ maxWidth: '780px' }}>
+          <div className={`${styles.modalCard} ${styles.modalCardLg}`}>
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}>
                 {editingTrip ? 'Edit Trip Record' : 'Record New Vehicle Trip'}
               </h3>
-              <button onClick={() => setShowModal(false)} className={styles.modalCloseBtn}>
+              <button onClick={closeModal} className={styles.modalCloseBtn}>
                 <X size={20} />
               </button>
             </div>
@@ -971,7 +1141,7 @@ export default function FleetTrips({
               <div className={styles.modalFooter}>
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={closeModal}
                   className={styles.secondaryActionBtn}
                   disabled={saving}
                 >

@@ -13,6 +13,8 @@ import {
   Activity,
 } from 'lucide-react';
 import styles from './fleet.module.css';
+import FleetMobileFilterPill from './FleetMobileFilterPill';
+import FleetMobileFilterDrawer from './FleetMobileFilterDrawer';
 
 export default function FleetReports() {
   const [reportType, setReportType] = useState<'vehicle' | 'driver' | 'daily' | 'monthly'>('vehicle');
@@ -20,6 +22,16 @@ export default function FleetReports() {
   const [endDate, setEndDate] = useState('');
   const [reportData, setReportData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const activeFiltersCount =
+    (reportType !== 'vehicle' ? 1 : 0) + (startDate || endDate ? 1 : 0);
+
+  const handleResetFilters = () => {
+    setReportType('vehicle');
+    setStartDate('');
+    setEndDate('');
+  };
 
   const fetchReport = async () => {
     setLoading(true);
@@ -79,9 +91,9 @@ export default function FleetReports() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
-      {/* Report Controls & Export Actions */}
-      <div className={styles.filterBar}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}>
+      {/* Desktop Controls Bar (hidden on mobile) */}
+      <div className={styles.desktopFilterBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
           <select
             value={reportType}
@@ -126,6 +138,70 @@ export default function FleetReports() {
           </button>
         </div>
       </div>
+
+      {/* Mobile Filter Bar with Actions & Bottom Center Floating Pill */}
+      <div className={styles.mobileFilterBar}>
+        <FleetMobileFilterPill
+          onClick={() => setShowMobileFilters(true)}
+          activeCount={activeFiltersCount}
+          searchQuery={reportType}
+        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <button onClick={() => handleExportCSV(false)} className={styles.secondaryActionBtn} style={{ padding: '0.45rem 0.65rem' }}>
+            <Download size={14} /> CSV
+          </button>
+          <button onClick={handlePrint} className={styles.primaryActionBtn} style={{ padding: '0.45rem 0.75rem' }}>
+            <Printer size={14} /> Print
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Filter Bottom-Sheet Drawer */}
+      <FleetMobileFilterDrawer
+        isOpen={showMobileFilters}
+        onClose={() => setShowMobileFilters(false)}
+        title="Configure Report Filters"
+        activeCount={activeFiltersCount}
+        onReset={handleResetFilters}
+      >
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Report Category</label>
+          <select
+            value={reportType}
+            onChange={(e) => setReportType(e.target.value as any)}
+            className={styles.drawerSelect}
+          >
+            <option value="vehicle">Vehicle Performance Report</option>
+            <option value="driver">Driver Productivity Report</option>
+            <option value="daily">Daily Financial Report</option>
+            <option value="monthly">Monthly Financial Report</option>
+          </select>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Date Range</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+            <div>
+              <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '0.2rem' }}>From</span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className={styles.drawerSelect}
+              />
+            </div>
+            <div>
+              <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '0.2rem' }}>To</span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className={styles.drawerSelect}
+              />
+            </div>
+          </div>
+        </div>
+      </FleetMobileFilterDrawer>
 
       {/* Printable Report View */}
       <div className={`${styles.tableWrapper} ${styles.printableReport}`}>

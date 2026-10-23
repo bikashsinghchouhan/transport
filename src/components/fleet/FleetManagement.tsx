@@ -39,11 +39,17 @@ export type FleetSubTab =
 export interface FleetManagementProps {
   activeSubTab?: FleetSubTab;
   onSubTabChange?: (tab: FleetSubTab) => void;
+  action?: string | null;
+  onActionChange?: (action: string | null) => void;
+  onNavigateTabAndAction?: (tab: FleetSubTab, action?: string | null) => void;
 }
 
 export default function FleetManagement({
   activeSubTab: externalSubTab,
   onSubTabChange,
+  action,
+  onActionChange,
+  onNavigateTabAndAction,
 }: FleetManagementProps = {}) {
   const [internalSubTab, setInternalSubTab] = useState<FleetSubTab>('dashboard');
   const activeSubTab = externalSubTab || internalSubTab;
@@ -125,101 +131,7 @@ export default function FleetManagement({
 
   return (
     <div className={styles.fleetContainer}>
-      {/* Sub-Navigation & Quick Action Bar */}
-      <div className={styles.subNavBar}>
-        <div className={styles.subNavList}>
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'dashboard' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('dashboard')}
-          >
-            <LayoutDashboard size={15} /> Dashboard
-          </button>
 
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'trips' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('trips')}
-          >
-            <Navigation size={15} /> Trips ({trips.length})
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'attendance' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('attendance')}
-          >
-            <CalendarCheck size={15} /> Attendance
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'expenses' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('expenses')}
-          >
-            <Receipt size={15} /> Expenses
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'payments' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('payments')}
-          >
-            <CreditCard size={15} /> Payments
-            {stats?.kpis?.pendingReceivables > 0 && (
-              <span className={styles.subNavItemBadge}>
-                ₹{(stats.kpis.pendingReceivables / 1000).toFixed(0)}k
-              </span>
-            )}
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'drivers' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('drivers')}
-          >
-            <Users size={15} /> Drivers ({drivers.length})
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'vehicles' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('vehicles')}
-          >
-            <Truck size={15} /> Vehicles ({vehicles.length})
-          </button>
-
-          <button
-            className={`${styles.subNavItem} ${activeSubTab === 'reports' ? styles.subNavItemActive : ''}`}
-            onClick={() => setActiveSubTab('reports')}
-          >
-            <FileSpreadsheet size={15} /> Reports
-          </button>
-        </div>
-
-        <div className={styles.actionBtnGroup}>
-          <button
-            onClick={fetchAllFleetData}
-            className={styles.secondaryActionBtn}
-            title="Refresh fleet data"
-          >
-            <RefreshCw size={14} className={loading ? styles.spinner : ''} />
-          </button>
-
-          {vehicles.length === 0 && (
-            <button
-              onClick={handleSeedDemoData}
-              className={styles.secondaryActionBtn}
-              style={{ color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.4)' }}
-              disabled={seeding}
-            >
-              <Sparkles size={14} /> {seeding ? 'Seeding...' : 'Load Demo Fleet'}
-            </button>
-          )}
-
-          {activeSubTab !== 'trips' && (
-            <button
-              onClick={() => setActiveSubTab('trips')}
-              className={styles.primaryActionBtn}
-            >
-              <Plus size={15} /> Record Trip
-            </button>
-          )}
-        </div>
-      </div>
 
       {seedSuccessMsg && (
         <div style={{ background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#4ade80', padding: '0.75rem 1rem', borderRadius: '10px', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -232,9 +144,23 @@ export default function FleetManagement({
         <FleetDashboard
           stats={stats}
           loading={loading}
-          onNavigateTab={(tab) => setActiveSubTab(tab as any)}
-          onOpenRecordTrip={() => setActiveSubTab('trips')}
+          onNavigateTab={(tab) => {
+            if (onNavigateTabAndAction) {
+              onNavigateTabAndAction(tab as any);
+            } else {
+              setActiveSubTab(tab as any);
+            }
+          }}
+          onOpenRecordTrip={() => {
+            if (onNavigateTabAndAction) {
+              onNavigateTabAndAction('trips', 'add');
+            } else {
+              setActiveSubTab('trips');
+              if (onActionChange) onActionChange('add');
+            }
+          }}
           onOpenRecordPayment={handleOpenRecordPayment}
+          onRefresh={fetchAllFleetData}
         />
       )}
 
@@ -244,6 +170,8 @@ export default function FleetManagement({
           drivers={drivers}
           loading={loading}
           onRefresh={fetchAllFleetData}
+          action={activeSubTab === 'vehicles' ? action : null}
+          onActionChange={onActionChange}
         />
       )}
 
@@ -253,6 +181,8 @@ export default function FleetManagement({
           vehicles={vehicles}
           loading={loading}
           onRefresh={fetchAllFleetData}
+          action={activeSubTab === 'drivers' ? action : null}
+          onActionChange={onActionChange}
         />
       )}
 
@@ -264,6 +194,8 @@ export default function FleetManagement({
           loading={loading}
           onRefresh={fetchAllFleetData}
           onOpenRecordPayment={handleOpenRecordPayment}
+          action={activeSubTab === 'trips' ? action : null}
+          onActionChange={onActionChange}
         />
       )}
 
@@ -280,6 +212,8 @@ export default function FleetManagement({
           vehicles={vehicles}
           drivers={drivers}
           onRefreshStats={fetchAllFleetData}
+          action={activeSubTab === 'expenses' ? action : null}
+          onActionChange={onActionChange}
         />
       )}
 
@@ -288,6 +222,8 @@ export default function FleetManagement({
           onRefreshStats={fetchAllFleetData}
           targetTripId={targetTripForPayment}
           onClearTargetTrip={() => setTargetTripForPayment(null)}
+          action={activeSubTab === 'payments' ? action : null}
+          onActionChange={onActionChange}
         />
       )}
 

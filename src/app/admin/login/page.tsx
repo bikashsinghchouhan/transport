@@ -1,13 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, User, Eye, EyeOff, ShieldCheck, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
 import styles from '../admin.module.css';
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect');
+
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -34,10 +37,13 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Login failed');
       }
 
-      setSuccess('Login successful! Redirecting to dashboard...');
+      setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
-        router.push('/admin/dashboard');
-      }, 1000);
+        const destination = redirectTarget && redirectTarget.startsWith('/admin')
+          ? redirectTarget
+          : '/admin/dashboard';
+        router.push(destination);
+      }, 800);
     } catch (err: any) {
       setError(err.message || 'An error occurred during login');
     } finally {
@@ -137,5 +143,22 @@ export default function AdminLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.adminContainer}>
+          <div className={styles.card} style={{ textAlign: 'center', padding: '3rem' }}>
+            <div className={styles.spinner} style={{ margin: '0 auto 1rem' }} />
+            <p style={{ color: '#94a3b8' }}>Loading login portal...</p>
+          </div>
+        </div>
+      }
+    >
+      <AdminLoginForm />
+    </Suspense>
   );
 }

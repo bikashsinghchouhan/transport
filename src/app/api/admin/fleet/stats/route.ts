@@ -16,29 +16,84 @@ export async function GET(req: Request) {
 
     await connectToDatabase();
 
-    // 1. Overall Aggregates
-    const overallAgg = await Trip.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalTrips: { $sum: 1 },
-          totalKm: { $sum: '$totalKm' },
-          grossRevenue: { $sum: '$tripAmount' },
-          driverReceived: { $sum: '$driverReceived' },
-          managerReceived: { $sum: '$managerReceived' },
-          pendingReceivables: { $sum: '$pendingAmount' },
-          totalExpenses: { $sum: '$totalVehicleExpense' },
-          netProfit: { $sum: '$netBalance' },
-          totalFuelExpense: { $sum: '$fuelExpense' },
-          totalTollExpense: { $sum: '$tollExpense' },
-          totalParkingExpense: { $sum: '$parkingExpense' },
-          totalLoadingExpense: { $sum: '$loadingExpense' },
-          totalRepairExpense: { $sum: '$repairExpense' },
-          totalMaintenanceExpense: { $sum: '$maintenanceExpense' },
-          totalOtherExpense: { $sum: '$otherExpense' },
-        },
+    const { searchParams } = new URL(req.url);
+    const startDate = searchParams.get('startDate') || '';
+    const endDate = searchParams.get('endDate') || '';
+    const dateRange = searchParams.get('dateRange') || '';
+
+    // Date filtering logic (Start date inclusive, End date EXCLUSIVE)
+    const matchStage: Record<string, any> = {};
+    let startObj: Date | null = null;
+    let endObj: Date | null = null;
+
+    const now = new Date();
+
+    if (dateRange === 'today') {
+      startObj = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+      endObj = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+    } else if (dateRange === 'yesterday') {
+      startObj = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
+      endObj = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    } else if (dateRange === 'thisWeek') {
+      const day = now.getDay() || 7; // Monday = 1
+      startObj = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day + 1, 0, 0, 0, 0);
+      endObj = new Date(startObj.getFullYear(), startObj.getMonth(), startObj.getDate() + 7, 0, 0, 0, 0);
+    } else if (dateRange === 'thisMonth') {
+      startObj = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+      endObj = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0);
+    } else if (dateRange === 'lastMonth') {
+      startObj = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
+      endObj = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    } else if (startDate || endDate) {
+      if (startDate) {
+        const [sY, sM, sD] = startDate.split('-').map(Number);
+        if (!isNaN(sY) && !isNaN(sM) && !isNaN(sD)) {
+          startObj = new Date(sY, sM - 1, sD, 0, 0, 0, 0);
+        }
+      }
+      if (endDate) {
+        const [eY, eM, eD] = endDate.split('-').map(Number);
+        if (!isNaN(eY) && !isNaN(eM) && !isNaN(eD)) {
+          // Rule: Start date is INCLUDED, End date is EXCLUDED ($lt)
+          endObj = new Date(eY, eM - 1, eD, 0, 0, 0, 0);
+        }
+      }
+    }
+
+    if (startObj || endObj) {
+      const dateFilter: Record<string, Date> = {};
+      if (startObj) dateFilter.$gte = startObj;
+      if (endObj) dateFilter.$lt = endObj; // Strictly less than end date
+      matchStage.date = dateFilter;
+    }
+
+    // 1. Overall Aggregates with date filter
+    const overallPipeline: any[] = [];
+    if (matchStage.date) {
+      overallPipeline.push({ $match: matchStage });
+    }
+    overallPipeline.push({
+      $group: {
+        _id: null,
+        totalTrips: { $sum: 1 },
+        totalKm: { $sum: '$totalKm' },
+        grossRevenue: { $sum: '$tripAmount' },
+        driverReceived: { $sum: '$driverReceived' },
+        managerReceived: { $sum: '$managerReceived' },
+        pendingReceivables: { $sum: '$pendingAmount' },
+        totalExpenses: { $sum: '$totalVehicleExpense' },
+        netProfit: { $sum: '$netBalance' },
+        totalFuelExpense: { $sum: '$fuelExpense' },
+        totalTollExpense: { $sum: '$tollExpense' },
+        totalParkingExpense: { $sum: '$parkingExpense' },
+        totalLoadingExpense: { $sum: '$loadingExpense' },
+        totalRepairExpense: { $sum: '$repairExpense' },
+        totalMaintenanceExpense: { $sum: '$maintenanceExpense' },
+        totalOtherExpense: { $sum: '$otherExpense' },
       },
-    ]);
+    });
+
+    const overallAgg = await Trip.aggregate(overallPipeline);
 
     const stats = overallAgg[0] || {
       totalTrips: 0,
@@ -79,14 +134,19 @@ export async function GET(req: Request) {
         ? Math.round(stats.netProfit / stats.totalTrips)
         : 0;
 
-    // 2. Trend: Last 14 days daily revenue and expenses
-    const now = new Date();
-    const fourteenDaysAgo = new Date();
-    fourteenDaysAgo.setDate(now.getDate() - 13);
-    fourteenDaysAgo.setHours(0, 0, 0, 0);
+    // 2. Trend: Revenue & Expenses over time
+    const trendMatch: Record<string, any> = {};
+    if (matchStage.date) {
+      trendMatch.date = matchStage.date;
+    } else {
+      const fourteenDaysAgo = new Date();
+      fourteenDaysAgo.setDate(now.getDate() - 13);
+      fourteenDaysAgo.setHours(0, 0, 0, 0);
+      trendMatch.date = { $gte: fourteenDaysAgo };
+    }
 
     const trendAgg = await Trip.aggregate([
-      { $match: { date: { $gte: fourteenDaysAgo } } },
+      { $match: trendMatch },
       {
         $group: {
           _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
@@ -98,23 +158,44 @@ export async function GET(req: Request) {
       { $sort: { _id: 1 } },
     ]);
 
-    // Build continuous 14-day array
     const trendMap = new Map();
     trendAgg.forEach((t) => trendMap.set(t._id, t));
 
-    const trend14Days = [];
-    for (let i = 13; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(now.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
-      const match = trendMap.get(dateStr);
-      trend14Days.push({
-        date: dateStr,
-        label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        revenue: match ? match.revenue : 0,
-        expense: match ? match.expense : 0,
-        trips: match ? match.trips : 0,
-      });
+    const trendDays: Array<{ date: string; label: string; revenue: number; expense: number; trips: number }> = [];
+
+    if (startObj && endObj) {
+      // Generate days between startObj and endObj (exclusive of endObj, capped at 60 days to prevent oversized response)
+      const cur = new Date(startObj);
+      const maxDays = 60;
+      let count = 0;
+      while (cur < endObj && count < maxDays) {
+        const dateStr = cur.toISOString().split('T')[0];
+        const match = trendMap.get(dateStr);
+        trendDays.push({
+          date: dateStr,
+          label: cur.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          revenue: match ? match.revenue : 0,
+          expense: match ? match.expense : 0,
+          trips: match ? match.trips : 0,
+        });
+        cur.setDate(cur.getDate() + 1);
+        count++;
+      }
+    } else {
+      // Default: Last 14 days
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(now.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const match = trendMap.get(dateStr);
+        trendDays.push({
+          date: dateStr,
+          label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          revenue: match ? match.revenue : 0,
+          expense: match ? match.expense : 0,
+          trips: match ? match.trips : 0,
+        });
+      }
     }
 
     // 3. Expense Breakdown by Category
@@ -129,7 +210,11 @@ export async function GET(req: Request) {
     ];
 
     // 4. Vehicle Performance Comparison
-    const vehicleComparison = await Trip.aggregate([
+    const vehiclePipeline: any[] = [];
+    if (matchStage.date) {
+      vehiclePipeline.push({ $match: matchStage });
+    }
+    vehiclePipeline.push(
       {
         $group: {
           _id: '$vehicleId',
@@ -141,8 +226,10 @@ export async function GET(req: Request) {
         },
       },
       { $sort: { revenue: -1 } },
-      { $limit: 10 },
-    ]);
+      { $limit: 10 }
+    );
+
+    const vehicleComparison = await Trip.aggregate(vehiclePipeline);
 
     const populatedVehicles = await FleetVehicle.populate(vehicleComparison, {
       path: '_id',
@@ -162,19 +249,35 @@ export async function GET(req: Request) {
     }));
 
     // 5. Pending collections quick highlights
-    const pendingTrips = await Trip.find({ pendingAmount: { $gt: 0 } })
+    const pendingQuery: Record<string, any> = { pendingAmount: { $gt: 0 } };
+    if (matchStage.date) {
+      pendingQuery.date = matchStage.date;
+    }
+
+    const pendingTrips = await Trip.find(pendingQuery)
       .populate('vehicleId', 'registrationNumber model')
       .populate('driverId', 'fullName phone')
       .sort({ pendingAmount: -1 })
       .limit(5)
       .lean();
 
-    const pendingCount = await Trip.countDocuments({ pendingAmount: { $gt: 0 } });
+    const pendingCount = await Trip.countDocuments(pendingQuery);
     const totalVehiclesCount = await FleetVehicle.countDocuments();
     const totalDriversCount = await Driver.countDocuments();
 
+    const formatDateForDisplay = (d: Date | null) => {
+      if (!d) return null;
+      return d.toISOString().split('T')[0];
+    };
+
     return NextResponse.json({
       success: true,
+      filter: {
+        startDate: startDate || formatDateForDisplay(startObj),
+        endDate: endDate || formatDateForDisplay(endObj),
+        dateRange: dateRange || 'all',
+        isFiltered: Boolean(startObj || endObj),
+      },
       kpis: {
         totalTrips: stats.totalTrips,
         totalKm: stats.totalKm,
@@ -192,7 +295,7 @@ export async function GET(req: Request) {
         avgProfitPerTrip,
       },
       charts: {
-        trend14Days,
+        trend14Days: trendDays,
         expenseBreakdown,
         vehiclePerformance: formattedVehiclePerf,
       },

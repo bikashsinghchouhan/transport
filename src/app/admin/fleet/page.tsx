@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import AdminDashboard from '@/components/admin/AdminDashboard';
 
-export default function AdminFleetRedirect() {
-  redirect('/admin/dashboard?tab=fleet');
+export default function AdminFleetPage() {
+  return <AdminDashboard defaultTab="fleet" />;
 }

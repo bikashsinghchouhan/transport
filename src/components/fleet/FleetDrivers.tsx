@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   Plus,
@@ -17,12 +17,16 @@ import {
   CreditCard,
 } from 'lucide-react';
 import styles from './fleet.module.css';
+import FleetMobileFilterPill from './FleetMobileFilterPill';
+import FleetMobileFilterDrawer from './FleetMobileFilterDrawer';
 
 interface DriverProps {
   drivers: any[];
   vehicles: any[];
   loading: boolean;
   onRefresh: () => void;
+  action?: string | null;
+  onActionChange?: (action: string | null) => void;
 }
 
 export default function FleetDrivers({
@@ -30,9 +34,20 @@ export default function FleetDrivers({
   vehicles,
   loading,
   onRefresh,
+  action,
+  onActionChange,
 }: DriverProps) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const activeFiltersCount = (search ? 1 : 0) + (statusFilter ? 1 : 0);
+
+  const handleResetFilters = () => {
+    setSearch('');
+    setStatusFilter('');
+  };
+
   const [showModal, setShowModal] = useState(false);
   const [editingDriver, setEditingDriver] = useState<any | null>(null);
 
@@ -50,6 +65,12 @@ export default function FleetDrivers({
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingDriver(null);
+    if (onActionChange) onActionChange(null);
+  };
+
   const openAddModal = () => {
     setEditingDriver(null);
     setForm({
@@ -63,7 +84,14 @@ export default function FleetDrivers({
     });
     setErrorMsg('');
     setShowModal(true);
+    if (onActionChange) onActionChange('add');
   };
+
+  useEffect(() => {
+    if (action === 'add' && !showModal) {
+      openAddModal();
+    }
+  }, [action]);
 
   const openEditModal = (d: any) => {
     setEditingDriver(d);
@@ -103,7 +131,7 @@ export default function FleetDrivers({
         throw new Error(data.error || 'Failed to save driver');
       }
 
-      setShowModal(false);
+      closeModal();
       onRefresh();
     } catch (err: any) {
       setErrorMsg(err.message || 'Error saving driver');
@@ -140,9 +168,9 @@ export default function FleetDrivers({
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
-      {/* Search & Actions Bar */}
-      <div className={styles.filterBar}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}>
+      {/* Desktop Search & Actions Bar (hidden on mobile) */}
+      <div className={styles.desktopFilterBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, flexWrap: 'wrap' }}>
           <div className={styles.searchBox}>
             <Search size={16} color="#64748b" />
@@ -170,6 +198,64 @@ export default function FleetDrivers({
           <Plus size={16} /> Add Driver
         </button>
       </div>
+
+      {/* Mobile Filter Bar with Pill & Action Button */}
+      <div className={styles.mobileFilterBar}>
+        <FleetMobileFilterPill
+          onClick={() => setShowMobileFilters(true)}
+          activeCount={activeFiltersCount}
+          searchQuery={search}
+        />
+        <button onClick={openAddModal} className={styles.primaryActionBtn}>
+          <Plus size={16} /> Add Driver
+        </button>
+      </div>
+
+      {/* Mobile Filter Bottom-Sheet Drawer */}
+      <FleetMobileFilterDrawer
+        isOpen={showMobileFilters}
+        onClose={() => setShowMobileFilters(false)}
+        title="Filter & Search Drivers"
+        activeCount={activeFiltersCount}
+        onReset={handleResetFilters}
+      >
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Search Drivers</label>
+          <div className={styles.searchBox}>
+            <Search size={16} color="#64748b" />
+            <input
+              type="text"
+              placeholder="Search by driver name, phone, license..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className={styles.clearInputBtn}
+                type="button"
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.drawerFieldGroup}>
+          <label className={styles.drawerLabel}>Driver Status</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className={styles.drawerSelect}
+          >
+            <option value="">All Statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+      </FleetMobileFilterDrawer>
 
       {/* Desktop Table View */}
       <div className={styles.tableWrapper}>
@@ -398,7 +484,7 @@ export default function FleetDrivers({
               <h3 className={styles.modalTitle}>
                 {editingDriver ? 'Edit Driver Profile' : 'Add New Driver'}
               </h3>
-              <button onClick={() => setShowModal(false)} className={styles.modalCloseBtn}>
+              <button onClick={closeModal} className={styles.modalCloseBtn}>
                 <X size={20} />
               </button>
             </div>
@@ -507,7 +593,7 @@ export default function FleetDrivers({
               <div className={styles.modalFooter}>
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={closeModal}
                   className={styles.secondaryActionBtn}
                   disabled={saving}
                 >

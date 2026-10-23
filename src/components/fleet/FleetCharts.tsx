@@ -296,16 +296,17 @@ export function ExpenseDonutChart({ data }: { data: ExpenseCategory[] }) {
   );
 }
 
-export function VehiclePerformanceChart({ vehicles }: { vehicles: VehiclePerf[] }) {
-  if (!vehicles || vehicles.length === 0) {
+export function VehiclePerformanceChart({ vehicles, data }: { vehicles?: VehiclePerf[]; data?: VehiclePerf[] }) {
+  const list = vehicles || data || [];
+  if (!list || list.length === 0) {
     return <div style={{ color: '#64748b', textAlign: 'center', padding: '1.5rem' }}>No vehicle data recorded yet</div>;
   }
 
-  const maxRevenue = Math.max(...vehicles.map((v) => v.revenue), 1000);
+  const maxRevenue = Math.max(...list.map((v) => v.revenue), 1000);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', width: '100%' }}>
-      {vehicles.map((v, idx) => {
+      {list.map((v, idx) => {
         const revPct = Math.min(100, Math.round((v.revenue / maxRevenue) * 100));
         const expPct = Math.min(100, Math.round((v.expense / maxRevenue) * 100));
 

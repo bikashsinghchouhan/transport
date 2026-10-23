@@ -19,15 +19,65 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const dateParam = searchParams.get('date'); // YYYY-MM-DD
     const driverId = searchParams.get('driverId');
-
-    const todayStr = new Date().toISOString().split('T')[0];
-    const targetDate = dateParam || todayStr;
+    const monthParam = searchParams.get('month'); // YYYY-MM
 
     // Fetch all active drivers
     const drivers = await Driver.find({ status: 'ACTIVE' })
       .populate('assignedVehicleId', 'registrationNumber model vehicleType')
       .sort({ fullName: 1 })
       .lean();
+
+    // 1. Monthly query for calendar
+    if (monthParam) {
+      const monthlyQuery: Record<string, any> = {
+        date: { $regex: `^${monthParam}` },
+      };
+      if (driverId) {
+        monthlyQuery.driverId = driverId;
+      }
+
+      const monthlyAttendances = await DriverAttendance.find(monthlyQuery)
+        .populate('driverId', 'fullName phone licenseNumber')
+        .populate('vehicleId', 'registrationNumber model')
+        .sort({ date: 1 })
+        .lean();
+
+      let presentCount = 0;
+      let halfDayCount = 0;
+      let absentCount = 0;
+      let leaveCount = 0;
+      let totalDutyHours = 0;
+
+      const dateMap: Record<string, any> = {};
+      monthlyAttendances.forEach((att: any) => {
+        dateMap[att.date] = att;
+        if (att.attendance === 'PRESENT') presentCount++;
+        else if (att.attendance === 'HALF_DAY') halfDayCount++;
+        else if (att.attendance === 'ABSENT') absentCount++;
+        else if (att.attendance === 'LEAVE') leaveCount++;
+        totalDutyHours += Number(att.totalDutyHours) || 0;
+      });
+
+      return NextResponse.json({
+        success: true,
+        month: monthParam,
+        driverId,
+        attendances: monthlyAttendances,
+        attendanceByDate: dateMap,
+        summary: {
+          present: presentCount,
+          halfDay: halfDayCount,
+          absent: absentCount,
+          leave: leaveCount,
+          totalDutyHours: Math.round(totalDutyHours * 10) / 10,
+          totalMarkedDays: monthlyAttendances.length,
+        },
+      });
+    }
+
+    // 2. Daily query for roster table
+    const todayStr = new Date().toISOString().split('T')[0];
+    const targetDate = dateParam || todayStr;
 
     // Query attendance records for the date
     const attendanceQuery: Record<string, unknown> = { date: targetDate };
