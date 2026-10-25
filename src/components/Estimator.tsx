@@ -15,13 +15,14 @@ import dynamic from 'next/dynamic';
 import styles from './Estimator.module.css';
 import { getStatesList, getDistrictsOfState } from '@/utils/indiaGeoData';
 import { useContact } from '@/context/ContactContext';
+import { telHref } from '@/lib/seo';
 
 const MapComponent = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => (
     <div className={styles.mapPlaceholder}>
       <div className={styles.pulseOrb}></div>
-      <p>Loading GPS Satellite Map...</p>
+      <p>Loading map...</p>
     </div>
   )
 });
@@ -560,6 +561,7 @@ export default function Estimator() {
                       <input
                         type="text"
                         placeholder="Search city, town, or road in India..."
+                        aria-label="Search pickup location"
                         value={sourceSearch}
                         onChange={(e) => setSourceSearch(e.target.value)}
                         className="form-input"
@@ -572,7 +574,8 @@ export default function Estimator() {
                         type="button"
                         onClick={handleUseCurrentLocation}
                         className={styles.locateBtn}
-                        title="Use current GPS location"
+                        title="Use current location"
+                        aria-label="Use current location"
                       >
                         <Locate size={18} />
                       </button>
@@ -667,6 +670,7 @@ export default function Estimator() {
                       <input
                         type="text"
                         placeholder="Search city, town, or road in India..."
+                        aria-label="Search drop location"
                         value={destSearch}
                         onChange={(e) => setDestSearch(e.target.value)}
                         className="form-input"
@@ -762,7 +766,7 @@ export default function Estimator() {
                 disabled={calculating}
                 className={`btn-neon ${styles.submitBtn}`}
               >
-                <span>{calculating ? 'Optimizing GPS Dispatch...' : 'Compute Price Quote'}</span>
+                <span>{calculating ? 'Calculating...' : 'Compute Price Quote'}</span>
                 <ArrowRight size={18} />
               </button>
 
@@ -797,7 +801,7 @@ export default function Estimator() {
 
             {!calculated ? (
               <div className={`glass-panel ${styles.promptCard}`}>
-                <h3>AI Route Pricing Activated</h3>
+                <h3>Get Your Fare Estimate</h3>
                 <p>Click "Compute Price Quote" to get the exact road mileage distance and a transparent breakdown of your logistics fare.</p>
                 <div className={styles.pricingFormulaAlert}>
                   <div className={styles.formulaHeader}>
@@ -877,7 +881,7 @@ export default function Estimator() {
                     </svg>
                     <span>Confirm Booking</span>
                   </a>
-                  <a href={`tel:${contact.phone}`} className={`btn-secondary ${styles.callBtn}`}>
+                  <a href={telHref(contact.phone)} className={`btn-secondary ${styles.callBtn}`}>
                     <Phone size={18} />
                     <span>Call {contact.phone}</span>
                   </a>

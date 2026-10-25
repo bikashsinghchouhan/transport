@@ -3,6 +3,7 @@
 import React from 'react';
 import { Phone, MessageSquare } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
+import { telHref } from '@/lib/seo';
 
 interface LocationCallButtonsProps {
   locationName: string;
@@ -21,7 +22,7 @@ export default function LocationCallButtons({ locationName, stylesActionRowClass
 
   return (
     <div className={stylesActionRowClass}>
-      <a href={`tel:${contact.phone}`} className="btn-neon">
+      <a href={telHref(contact.phone)} className="btn-neon">
         <Phone size={18} />
         <span>Call: {contact.phone}</span>
       </a>

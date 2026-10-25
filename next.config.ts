@@ -6,8 +6,10 @@ const basePath = isNetlify ? '' : (process.env.NODE_ENV === 'production' && isSt
 
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: 'export' } : {}),
+  // Static export (GitHub Pages) has no image optimizer. On Vercel, let Next.js
+  // resize and compress images (hero.png goes from ~764 KB to ~46 KB).
   images: {
-    unoptimized: true,
+    unoptimized: isStaticExport,
   },
   basePath: basePath || undefined,
   env: {

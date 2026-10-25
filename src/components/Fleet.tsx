@@ -84,9 +84,9 @@ export default function Fleet() {
       <div className="container">
         <div className={styles.header}>
           <div className={styles.badge}>OUR LOGISTICS FLEET</div>
-          <h2 className={styles.title}>High-Performance Vehicles for Every Need</h2>
+          <h2 className={styles.title}>Goods Vehicles for Every Load Size</h2>
           <p className={styles.subtitle}>
-            Choose from our modern, fully-maintained fleet of pickup vans and cargo trucks. Serviced regularly for zero delays.
+            Choose a 3-wheeler loader, pickup van or truck based on how much you need to move.
           </p>
         </div>
 
@@ -149,8 +149,8 @@ export default function Fleet() {
           <div className={styles.bannerItem}>
             <ShieldCheck size={24} className={styles.bannerIcon} />
             <div>
-              <h4>Safe Cargo Guarantee</h4>
-              <p>Every trip is handled by experienced, verified drivers with GPS tracking.</p>
+              <h3>Careful Loading</h3>
+              <p>Our crew loads and secures your goods. Packing material and extra labour are available on request.</p>
             </div>
           </div>
         </div>

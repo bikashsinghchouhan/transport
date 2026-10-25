@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
 import SiteLayout from "@/components/SiteLayout";
+import { BUSINESS_ID, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -19,46 +20,22 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Site-wide defaults only. Canonical, Open Graph URL and robots are set per page
+// (see src/lib/seo.ts) so the 404 page and future pages never inherit the homepage's.
 export const metadata: Metadata = {
   title: {
-    default: "B2 Transport | Packers & Movers, House Shifting Ranchi Jharkhand",
-    template: "%s | B2 Transport Jharkhand"
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "B2 Transport provides premium, affordable house shifting, goods logistics, and pickup van rental services in Ranchi and all districts of Jharkhand. Call 7654722708 today for a free quote.",
-  keywords: [
-    "house shifting Ranchi",
-    "packers and movers Ranchi",
-    "b2 Transport Ranchi",
-    "goods transport Jharkhand",
-    "pickup van hire Ranchi",
-    "chota hathi Ranchi",
-    "transport vehicle Jharkhand",
-    "house item moving Ranchi",
-    "office shifting Ranchi",
-    "best packers and movers Jharkhand"
-  ],
-  metadataBase: new URL("https://www.b2transport.in"),
-  alternates: {
-    canonical: "/",
-  },
+  description: "B2 Transport: home shifting, packers and movers, pickup and truck hire, and goods transport from Ranchi across Jharkhand.",
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    title: "B2 Transport | House Shifting & Logistics Services Ranchi",
-    description: "Reliable packers, movers, and cargo vehicles in Ranchi and across Jharkhand. Transparent, affordable, and safe shifting.",
-    url: "https://www.b2transport.in",
-    siteName: "B2 Transport",
+    siteName: SITE_NAME,
     locale: "en_IN",
     type: "website",
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
@@ -67,47 +44,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Only verified facts here. Add streetAddress, postalCode, geo and
+  // openingHoursSpecification once the exact office address and hours are confirmed.
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "B2 Transport",
-    "image": "https://www.b2transport.in/hero-og.jpg",
-    "@id": "https://www.b2transport.in/#localbusiness",
-    "url": "https://www.b2transport.in",
+    "@type": "MovingCompany",
+    "@id": BUSINESS_ID,
+    "name": SITE_NAME,
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/b2transport_logo.png`,
+    "image": `${SITE_URL}/b2transport_logo.png`,
     "telephone": "+91-7654722708",
-    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Main Road",
       "addressLocality": "Ranchi",
       "addressRegion": "Jharkhand",
-      "postalCode": "834001",
       "addressCountry": "IN"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 23.3441,
-      "longitude": 85.3096
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    },
-    "sameAs": []
+    "areaServed": {
+      "@type": "State",
+      "name": "Jharkhand"
+    }
   };
 
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+    <html lang="en-IN" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
       <head>
         <script
           type="application/ld+json"

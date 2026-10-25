@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Truck, Shield, Clock, Compass } from 'lucide-react';
+import { Phone, MapPin, Truck } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
+import { telHref } from '@/lib/seo';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -22,10 +23,10 @@ export default function Footer() {
               <span>B2 <span className="text-gradient">Transport</span></span>
             </Link>
             <p className={styles.desc}>
-              Next-generation logistics & shifting solutions in Jharkhand. We provide transparent pricing, real-time dispatch, and professional shifting services.
+              Packers and movers and goods transport based in Ranchi, serving all districts of Jharkhand and neighbouring states.
             </p>
             <div className={styles.contactList}>
-              <a href={`tel:${contact.phone}`} className={styles.contactItem}>
+              <a href={telHref(contact.phone)} className={styles.contactItem}>
                 <Phone size={16} />
                 <span>+91-{contact.phone}</span>
               </a>
@@ -40,10 +41,11 @@ export default function Footer() {
           <div className={styles.linksGroup}>
             <h3 className={styles.title}>Services</h3>
             <ul className={styles.list}>
-              <li><Link href="/#services" className={styles.link}>House Shifting</Link></li>
-              <li><Link href="/#services" className={styles.link}>Office Relocation</Link></li>
-              <li><Link href="/#services" className={styles.link}>Interdistrict Logistics</Link></li>
-              <li><Link href="/#services" className={styles.link}>Pickup Vehicle Hire</Link></li>
+              <li><Link href="/#services" className={styles.link}>Home Shifting &amp; Packing</Link></li>
+              <li><Link href="/#services" className={styles.link}>Office &amp; Shop Shifting</Link></li>
+              <li><Link href="/#services" className={styles.link}>Goods Transport</Link></li>
+              <li><Link href="/services/house-shifting-van-ranchi" className={styles.link}>House Shifting Van Ranchi</Link></li>
+              <li><Link href="/#services" className={styles.link}>Bike &amp; Car Transport</Link></li>
             </ul>
           </div>
 
@@ -70,10 +72,6 @@ export default function Footer() {
         <div className={styles.bottom}>
           <p className={styles.copy}>
             &copy; {currentYear} B2 Transport. All Rights Reserved. Ranchi, Jharkhand.
-          </p>
-          <p className={styles.aiTag}>
-            <Compass size={14} className={styles.aiIcon} />
-            <span>AI-Optimized Route & Dispatch Systems</span>
           </p>
         </div>
       </div>

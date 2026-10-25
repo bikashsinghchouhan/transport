@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Phone, Menu, X, ArrowRight, MessageSquare } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
+import { telHref } from '@/lib/seo';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -46,7 +47,7 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       {/* Top Call Bar for Mobile Devices */}
       <div className={styles.topNoticeBar}>
-        <a href={`tel:${contact.phone}`} className={styles.topNoticeLink}>
+        <a href={telHref(contact.phone)} className={styles.topNoticeLink}>
           <Phone size={13} />
           <span>Call for Booking: <strong>{contact.phone}</strong></span>
         </a>
@@ -55,10 +56,12 @@ export default function Header() {
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <div className={styles.logoIcon}>
-            <img 
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/b2transport_logo_circle.png`} 
-              alt="B2 Transport Logo" 
-              className={styles.logoImg} 
+            <img
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/b2transport_logo_circle.png`}
+              alt="B2 Transport Logo"
+              width={40}
+              height={40}
+              className={styles.logoImg}
             />
             <div className={styles.logoGlow}></div>
           </div>
@@ -70,14 +73,14 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className={styles.desktopNav}>
           <a href={getLinkHref('#services')} className={styles.navLink}>Services</a>
+          <Link href="/services/house-shifting-van-ranchi" className={styles.navLink}>Shifting Van &amp; Rates</Link>
           <a href={getLinkHref('#fleet')} className={styles.navLink}>Our Fleet</a>
           <a href={getLinkHref('#estimator')} className={styles.navLink}>Fare Estimator</a>
           <a href={getLinkHref('#locations')} className={styles.navLink}>Locations</a>
-          <Link href="/admin/login" className={styles.navLink} style={{ color: '#38bdf8' }}>Admin</Link>
         </nav>
 
         <div className={styles.actions}>
-          <a href={`tel:${contact.phone}`} className={`${styles.headerPhoneBtn} btn-neon`}>
+          <a href={telHref(contact.phone)} className={`${styles.headerPhoneBtn} btn-neon`}>
             <Phone size={16} />
             <span className={styles.phoneText}>{contact.phone}</span>
           </a>
@@ -104,10 +107,12 @@ export default function Header() {
                 <img
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/b2transport_logo_circle.png`}
                   alt="B2 Transport Logo"
+                  width={36}
+                  height={36}
                   className={styles.drawerLogoImg}
                 />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className={styles.drawerBrandTitle}>b2 Transport</div>
+                  <div className={styles.drawerBrandTitle}>B2 Transport</div>
                   <div className={styles.drawerBrandSubtitle}>Jharkhand Transit Hub</div>
                 </div>
                 <button onClick={handleCloseDrawer} className={styles.closeBtn} aria-label="Close menu">
@@ -124,6 +129,14 @@ export default function Header() {
                   <span>Services</span>
                   <ArrowRight size={16} style={{ opacity: 0.6 }} />
                 </a>
+                <Link
+                  href="/services/house-shifting-van-ranchi"
+                  onClick={handleCloseDrawer}
+                  className={styles.drawerNavLink}
+                >
+                  <span>Shifting Van &amp; Rates</span>
+                  <ArrowRight size={16} style={{ opacity: 0.6 }} />
+                </Link>
                 <a
                   href={getLinkHref('#fleet')}
                   onClick={handleCloseDrawer}
@@ -148,24 +161,15 @@ export default function Header() {
                   <span>Locations</span>
                   <ArrowRight size={16} style={{ opacity: 0.6 }} />
                 </a>
-                <Link
-                  href="/admin/login"
-                  onClick={handleCloseDrawer}
-                  className={styles.drawerNavLink}
-                  style={{ color: '#38bdf8' }}
-                >
-                  <span>Admin Portal</span>
-                  <ArrowRight size={16} color="#38bdf8" />
-                </Link>
               </nav>
             </div>
 
             <div className={styles.drawerFooter}>
-              <a href={`tel:${contact.phone}`} className="btn-neon" onClick={handleCloseDrawer} style={{ width: '100%', justifyContent: 'center' }}>
+              <a href={telHref(contact.phone)} className="btn-neon" onClick={handleCloseDrawer} style={{ width: '100%', justifyContent: 'center' }}>
                 <Phone size={18} />
                 <span>Call Now: {contact.phone}</span>
               </a>
-              <a href={`https://wa.me/${contact.whatsapp}?text=Hello%20b2%20Transport,%20I%20want%20to%20book%20a%20vehicle.`} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={handleCloseDrawer} style={{ width: '100%', justifyContent: 'center' }}>
+              <a href={`https://wa.me/${contact.whatsapp}?text=Hello%20B2%20Transport,%20I%20want%20to%20book%20a%20vehicle.`} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={handleCloseDrawer} style={{ width: '100%', justifyContent: 'center' }}>
                 <MessageSquare size={18} />
                 <span>WhatsApp Booking</span>
               </a>

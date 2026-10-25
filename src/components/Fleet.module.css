@@ -231,7 +231,7 @@
   animation: pulse-slow 3s ease-in-out infinite;
 }
 
-.bannerItem h4 {
+.bannerItem h3 {
   font-size: 1.1rem;
   margin-bottom: 4px;
 }
@@ -303,7 +303,7 @@
     margin-top: 24px;
   }
 
-  .bannerItem h4 {
+  .bannerItem h3 {
     font-size: 0.98rem;
   }
 
