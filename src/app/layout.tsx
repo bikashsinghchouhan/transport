@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       { url: "/icon.png", type: "image/png", sizes: "512x512" },
     ],
     shortcut: "/favicon.ico",
-    apple: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -73,8 +73,8 @@ export default function RootLayout({
     "alternateName": ["B2Transport", "B2 Transport Ranchi"],
     "description": "Packers and movers, house shifting, goods transport, and bike and car transport from Ranchi to all districts of Jharkhand and other states.",
     "url": SITE_URL,
-    "logo": `${SITE_URL}/b2transport_logo.png`,
-    "image": `${SITE_URL}/b2transport_logo.png`,
+    "logo": `${SITE_URL}/brand/b2-logo-512.png`,
+    "image": `${SITE_URL}/opengraph-image`,
     "telephone": "+91-7654722708",
     "address": {
       "@type": "PostalAddress",
