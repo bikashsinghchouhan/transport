@@ -16,6 +16,7 @@ import styles from './Estimator.module.css';
 import { getStatesList, getDistrictsOfState } from '@/utils/indiaGeoData';
 import { useContact } from '@/context/ContactContext';
 import { telHref } from '@/lib/seo';
+import { calculateFare } from '@/lib/fare';
 
 const MapComponent = dynamic(() => import('./MapComponent'), {
   ssr: false,
@@ -119,8 +120,8 @@ export default function Estimator() {
 
   const [result, setResult] = useState({
     distance: 0,
-    baseFare: 0,
-    distanceFare: 0,
+    oneWayFare: 0,
+    roundTripFare: 0,
     fareMin: 1500,
     fareMax: 1800,
     vehicleName: 'Mahindra Bolero Pickup',
@@ -289,41 +290,15 @@ export default function Estimator() {
     return Math.round(dist * 1.35);
   };
 
-  // Compute price breakdown based on Super Admin configured rates per vehicle
-  const computePriceBreakdown = (distKm: number, selectedVeh: VehicleRateInfo) => {
-    let distanceFare = 0;
-    if (distKm <= 100) {
-      distanceFare = distKm * selectedVeh.rateFirst100;
-    } else {
-      distanceFare = (100 * selectedVeh.rateFirst100) + ((distKm - 100) * selectedVeh.rateAfter100);
-    }
-
-    const baseFare = 0;
-    const computedFare = distanceFare;
-
-    const variance = Math.max(150, Math.round((computedFare * 0.035) / 50) * 50);
-    let fareMin = Math.round((computedFare - variance) / 100) * 100;
-    let fareMax = Math.round((computedFare + variance) / 100) * 100;
-
-    if (fareMin < selectedVeh.minFareRange.min) {
-      fareMin = selectedVeh.minFareRange.min;
-    }
-    if (fareMax < selectedVeh.minFareRange.max) {
-      fareMax = selectedVeh.minFareRange.max;
-    }
-
-    if (distKm <= 25) {
-      fareMin = selectedVeh.minFareRange.min;
-      fareMax = selectedVeh.minFareRange.max;
-    }
-
-    return {
-      baseFare,
-      distanceFare,
-      fareMin,
-      fareMax
-    };
-  };
+  // Price based on admin-configured rates per vehicle. The van returns empty,
+  // so calculateFare doubles the one-way price (see src/lib/fare.ts).
+  const computePriceBreakdown = (distKm: number, selectedVeh: VehicleRateInfo) =>
+    calculateFare(distKm, {
+      rateFirst100: selectedVeh.rateFirst100,
+      rateAfter100: selectedVeh.rateAfter100,
+      minFareMin: selectedVeh.minFareRange.min,
+      minFareMax: selectedVeh.minFareRange.max,
+    });
 
   const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -416,8 +391,8 @@ export default function Estimator() {
 
     setResult({
       distance: computedDistance,
-      baseFare: prices.baseFare,
-      distanceFare: prices.distanceFare,
+      oneWayFare: prices.oneWayFare,
+      roundTripFare: prices.roundTripFare,
       fareMin: prices.fareMin,
       fareMax: prices.fareMax,
       vehicleName: selectedVehicle.name,
@@ -446,7 +421,7 @@ export default function Estimator() {
       `Hello B2 Transport! I would like to book a ${result.vehicleName} for a distance of ${result.distance} KM.\n` +
       `Pickup: ${originLabel}\n` +
       `Drop: ${destLabel}\n` +
-      `Estimated Price: ${priceString}.\n` +
+      `Estimated Price (including van return trip): ${priceString}.\n` +
       `Please confirm driver availability and final rates.`
     );
     return `https://wa.me/${contact.whatsapp}?text=${text}`;
@@ -811,7 +786,7 @@ export default function Estimator() {
                   <ul>
                     <li>First 100 KM: ₹{selectedVehicle.rateFirst100}/KM</li>
                     <li>Above 100 KM: ₹{selectedVehicle.rateAfter100}/KM</li>
-                    <li>Rates tailored dynamically based on selected vehicle size</li>
+                    <li>Fare is charged both ways (pickup to drop + van return), so the distance price is doubled</li>
                   </ul>
                 </div>
               </div>
@@ -842,16 +817,24 @@ export default function Estimator() {
                 <div className={styles.breakdownBox}>
                   <h4 className={styles.breakdownTitle}>Fare Computation Details</h4>
                   <div className={styles.breakdownRowStacked}>
-                    <span>Distance Fare ({result.distance} KM):</span>
-                    <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
+                    <span>Pickup to Drop ({result.distance} KM):</span>
+                    <span>₹{result.oneWayFare.toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className={styles.breakdownRowStacked}>
+                    <span>Van Return Trip ({result.distance} KM):</span>
+                    <span>₹{(result.roundTripFare - result.oneWayFare).toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className={styles.breakdownRowStacked}>
+                    <span>Round-Trip Fare (× 2):</span>
+                    <span>₹{result.roundTripFare.toLocaleString('en-IN')}</span>
                   </div>
                   <div className={styles.breakdownDivider}></div>
                   <div className={styles.breakdownRow} style={{ color: 'var(--accent-cyan)', fontWeight: 'bold' }}>
-                    <span>Computed Total:</span>
+                    <span>Estimated Total:</span>
                     <span>₹{result.fareMin.toLocaleString('en-IN')} - ₹{result.fareMax.toLocaleString('en-IN')}</span>
                   </div>
                   <p className={styles.formulaDetailText}>
-                    Formula: First 100km @ ₹{selectedVehicle.rateFirst100}/km, remainder @ ₹{selectedVehicle.rateAfter100}/km (indicated as estimated range).
+                    Formula: first 100 km @ ₹{selectedVehicle.rateFirst100}/km, remaining km @ ₹{selectedVehicle.rateAfter100}/km, then × 2 because the van returns to the pickup point. Minimum fare ₹{selectedVehicle.minFareRange.min.toLocaleString('en-IN')}.
                   </p>
                 </div>
 

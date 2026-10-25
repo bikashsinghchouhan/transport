@@ -1,5 +1,6 @@
 import connectToDatabase from '@/lib/db';
 import Vehicle from '@/models/Vehicle';
+import { calculateFare } from '@/lib/fare';
 
 export interface VehicleRate {
   name: string;
@@ -69,19 +70,10 @@ export async function getActiveVehicleRates(): Promise<VehicleRate[]> {
   }
 }
 
-// Same fare-range formula as the on-page Estimator (src/components/Estimator.tsx,
-// computePriceBreakdown). Keep the two in sync.
+// Same formula as the on-page Estimator, including the van's return trip.
 export function estimateFareRange(distKm: number, v: VehicleRate): { min: number; max: number } {
-  const distanceFare = distKm <= 100
-    ? distKm * v.rateFirst100
-    : 100 * v.rateFirst100 + (distKm - 100) * v.rateAfter100;
-
-  if (distKm <= 25) return { min: v.minFareMin, max: v.minFareMax };
-
-  const variance = Math.max(150, Math.round((distanceFare * 0.035) / 50) * 50);
-  const min = Math.max(Math.round((distanceFare - variance) / 100) * 100, v.minFareMin);
-  const max = Math.max(Math.round((distanceFare + variance) / 100) * 100, v.minFareMax);
-  return { min, max };
+  const { fareMin, fareMax } = calculateFare(distKm, v);
+  return { min: fareMin, max: fareMax };
 }
 
 export function formatInr(n: number): string {

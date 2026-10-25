@@ -54,11 +54,24 @@ export default function RootLayout({
 }>) {
   // Only verified facts here. Add streetAddress, postalCode, geo and
   // openingHoursSpecification once the exact office address and hours are confirmed.
+  // WebSite + business, with brand spellings people type ("b2transport").
+  const websiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    "name": SITE_NAME,
+    "alternateName": ["B2Transport", "B2 Transport Ranchi", "b2transport.in"],
+    "url": SITE_URL,
+    "publisher": { "@id": BUSINESS_ID }
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "MovingCompany",
     "@id": BUSINESS_ID,
     "name": SITE_NAME,
+    "alternateName": ["B2Transport", "B2 Transport Ranchi"],
+    "description": "Packers and movers, house shifting, goods transport, and bike and car transport from Ranchi to all districts of Jharkhand and other states.",
     "url": SITE_URL,
     "logo": `${SITE_URL}/b2transport_logo.png`,
     "image": `${SITE_URL}/b2transport_logo.png`,
@@ -80,7 +93,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([websiteLd, jsonLd]) }}
         />
       </head>
       <body>

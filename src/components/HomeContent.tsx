@@ -162,6 +162,10 @@ export default function HomeContent() {
                 <li>Loading &amp; Unloading Labour</li>
                 <li>Local, Intercity &amp; Interstate Moves</li>
               </ul>
+              <Link href="/locations/ranchi" className={styles.locAction}>
+                <span>Packers and movers in Ranchi</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
 
             <div className={`glass-panel ${styles.serviceCard}`}>
@@ -179,6 +183,10 @@ export default function HomeContent() {
                 <li>Interstate Transport</li>
                 <li>Door-to-Door Pickup and Drop</li>
               </ul>
+              <Link href="/services/goods-transport-ranchi" className={styles.locAction}>
+                <span>Transport service in Ranchi</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
 
             <div className={`glass-panel ${styles.serviceCard}`}>
@@ -234,6 +242,10 @@ export default function HomeContent() {
                 <li>Car Transport</li>
                 <li>Local &amp; Interstate</li>
               </ul>
+              <Link href="/services/bike-car-transport-ranchi" className={styles.locAction}>
+                <span>Bike and car transport in Ranchi</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
           </div>
         </div>
@@ -308,7 +320,7 @@ export default function HomeContent() {
                 <h3>Can I book vehicles for moving outside Ranchi?</h3>
               </div>
               <p className={styles.faqAnswer}>
-                Yes. Our head office is in Ranchi, and we transport goods to all 24 districts of Jharkhand, including Jamshedpur, Dhanbad, Bokaro, Hazaribagh, and Giridih, as well as to other states.
+                Yes. Our head office is in Ranchi, and we transport goods to all 24 districts of Jharkhand, including Jamshedpur, Dhanbad, Bokaro, Hazaribagh, and Giridih, as well as to other states such as West Bengal, Bihar and Odisha. See <Link href="/services/interstate-shifting-ranchi">interstate shifting from Ranchi</Link>.
               </p>
             </div>
 

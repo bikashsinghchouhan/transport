@@ -41,6 +41,7 @@ import {
   FileSpreadsheet,
 } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
+import { calculateFare } from '@/lib/fare';
 import FleetManagement, { FleetSubTab } from '@/components/fleet/FleetManagement';
 import styles from '@/app/admin/admin.module.css';
 
@@ -706,38 +707,21 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
     const minMin = Number(vehicleForm.minFareMin) || 0;
     const minMax = Number(vehicleForm.minFareMax) || 0;
 
-    let distanceFare = 0;
-    let part1 = 0;
-    let part2 = 0;
-
-    if (distKm <= 100) {
-      part1 = distKm * r100;
-      distanceFare = part1;
-    } else {
-      part1 = 100 * r100;
-      part2 = (distKm - 100) * rAfter;
-      distanceFare = part1 + part2;
-    }
-
-    const variance = Math.max(150, Math.round((distanceFare * 0.035) / 50) * 50);
-    let fareMin = Math.round((distanceFare - variance) / 100) * 100;
-    let fareMax = Math.round((distanceFare + variance) / 100) * 100;
-
-    if (fareMin < minMin) fareMin = minMin;
-    if (fareMax < minMax) fareMax = minMax;
-
-    if (distKm <= 25) {
-      fareMin = minMin;
-      fareMax = minMax;
-    }
+    // Same formula customers see (src/lib/fare.ts), including the × 2 return trip.
+    const safeKm = Number.isFinite(distKm) && distKm > 0 ? distKm : 0;
+    const fare = calculateFare(safeKm, {
+      rateFirst100: r100,
+      rateAfter100: rAfter,
+      minFareMin: minMin,
+      minFareMax: minMax,
+    });
 
     return {
-      distKm,
-      part1,
-      part2,
-      distanceFare,
-      fareMin,
-      fareMax,
+      distKm: safeKm,
+      oneWayFare: fare.oneWayFare,
+      roundTripFare: fare.roundTripFare,
+      fareMin: fare.fareMin,
+      fareMax: fare.fareMax,
     };
   };
 
@@ -1585,17 +1569,15 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
 
                   <div className={styles.simResult}>
                     <div>
-                      {Number(previewResult.distKm) <= 25 ? (
+                      <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                        {previewResult.distKm <= 100
+                          ? <>{previewResult.distKm} km &times; ₹{vehicleForm.rateFirst100}</>
+                          : <>(100 km &times; ₹{vehicleForm.rateFirst100}) + ({previewResult.distKm - 100} km &times; ₹{vehicleForm.rateAfter100})</>}
+                        {' '}= ₹{previewResult.oneWayFare} one way &times; 2 (return) = ₹{previewResult.roundTripFare}
+                      </div>
+                      {previewResult.roundTripFare < (Number(vehicleForm.minFareMin) || 0) && (
                         <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
-                          Local minimum fare bracket applies (&le; 25 KM)
-                        </div>
-                      ) : Number(previewResult.distKm) <= 100 ? (
-                        <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
-                          {previewResult.distKm} km &times; ₹{vehicleForm.rateFirst100} = ₹{previewResult.part1}
-                        </div>
-                      ) : (
-                        <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
-                          (100 km &times; ₹{vehicleForm.rateFirst100}) + ({Number(previewResult.distKm) - 100} km &times; ₹{vehicleForm.rateAfter100}) = ₹{previewResult.distanceFare}
+                          Below minimum, so the minimum fare applies
                         </div>
                       )}
                     </div>

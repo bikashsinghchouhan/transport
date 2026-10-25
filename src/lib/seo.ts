@@ -5,7 +5,7 @@ export const SITE_NAME = 'B2 Transport';
 export const BUSINESS_ID = `${SITE_URL}/#business`;
 
 // Bump when page content changes; used for sitemap <lastmod>.
-export const CONTENT_LAST_UPDATED = '2026-10-25';
+export const CONTENT_LAST_UPDATED = '2026-10-26';
 
 // Build a tel: href with country code. Stored numbers may or may not include it.
 export function telHref(phone: string): string {

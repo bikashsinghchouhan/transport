@@ -33,12 +33,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 1.0,
     },
-    {
-      url: `${SITE_URL}/services/house-shifting-van-ranchi`,
+    ...[
+      '/services/house-shifting-van-ranchi',
+      '/services/goods-transport-ranchi',
+      '/services/interstate-shifting-ranchi',
+      '/services/bike-car-transport-ranchi',
+    ].map((path) => ({
+      url: `${SITE_URL}${path}`,
       lastModified,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
-    },
+    })),
     ...locationUrls,
   ];
 }

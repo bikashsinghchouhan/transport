@@ -6,7 +6,7 @@ import LocationCallButtons from '@/components/LocationCallButtons';
 import { BUSINESS_ID, SITE_URL, pageMetadata } from '@/lib/seo';
 import { estimateFareRange, formatInr, getActiveVehicleRates } from '@/lib/vehicleRates';
 import hero from '@/app/locations/[slug]/LocationPage.module.css';
-import styles from './ServicePage.module.css';
+import styles from '@/components/ServicePage.module.css';
 
 // Prices come from the admin rate settings; refresh the page at most once an hour.
 export const revalidate = 3600;
@@ -43,11 +43,19 @@ const faqs = [
   },
   {
     q: 'How is the house shifting van charge calculated?',
-    a: 'The vehicle fare is calculated per kilometre, with a lower rate after the first 100 km and a minimum fare for short local trips. Use the fare estimator on this page for your exact route, then call us to confirm the final price.',
+    a: 'The vehicle fare is calculated per kilometre from pickup to drop, with a lower rate after the first 100 km. That price is then doubled, because the van has to drive back after your drop. Short local trips have a minimum fare. Use the fare estimator on this page for your exact route, then call us to confirm the final price.',
   },
   {
     q: 'Can I book a shifting van from Ranchi to another district or state?',
     a: 'Yes. We send vans from Ranchi to all 24 districts of Jharkhand and to other states. For long trips, please book in advance.',
+  },
+  {
+    q: 'How do I book a Chota Hathi for shifting in Ranchi?',
+    a: 'Call or WhatsApp 7654722708 with your pickup and drop address, date and item list. We confirm the Chota Hathi (Tata Ace) or a bigger vehicle if needed, plus the price, before the booking.',
+  },
+  {
+    q: 'Ghar ka saman shift karne ke liye gadi kaise book karein?',
+    a: 'Humein 7654722708 par call ya WhatsApp karein. Pickup aur drop address, date aur saman ki list batayein. Hum sahi gadi (3-wheeler, Chota Hathi, Pickup ya 14 ft truck), loading labour aur kiraya confirm kar denge.',
   },
 ];
 
@@ -119,7 +127,7 @@ export default async function HouseShiftingVanRanchiPage() {
             <div className={`glass-panel ${styles.card}`}>
               <h2>Shifting Vans and Rates</h2>
               <p>
-                Choose a vehicle by how much you are moving. Rates are per kilometre and include the vehicle and driver. Loading labour and packing are extra.
+                Choose a vehicle by how much you are moving. Rates are per kilometre and include the vehicle and driver. Because the van has to drive back after your drop, the distance price is charged both ways (doubled). Loading labour and packing are extra.
               </p>
               <div className={styles.tableWrap}>
                 <table className={styles.table}>
@@ -138,7 +146,7 @@ export default async function HouseShiftingVanRanchiPage() {
                         <td><strong>{v.name}</strong></td>
                         <td>{v.capacity}<br />{v.dimensions}</td>
                         <td>{v.description}</td>
-                        <td>{formatInr(v.rateFirst100)} (first 100 km)<br />{formatInr(v.rateAfter100)} after</td>
+                        <td>{formatInr(v.rateFirst100)} (first 100 km)<br />{formatInr(v.rateAfter100)} after<br />× 2 for return trip</td>
                         <td>{formatInr(v.minFareMin)} - {formatInr(v.minFareMax)}</td>
                       </tr>
                     ))}
@@ -153,7 +161,7 @@ export default async function HouseShiftingVanRanchiPage() {
           <div className={`container ${styles.narrow}`}>
             <div className={`glass-panel ${styles.card}`}>
               <h2>Example Shifting Van Charges from Ranchi</h2>
-              <p>Estimated vehicle fare for common trips, using the same formula as our fare estimator.</p>
+              <p>Estimated vehicle fare for common trips, including the van&apos;s return trip, using the same formula as our fare estimator.</p>
               <div className={styles.tableWrap}>
                 <table className={styles.table}>
                   <thead>
@@ -178,7 +186,21 @@ export default async function HouseShiftingVanRanchiPage() {
                 </table>
               </div>
               <p className={styles.note}>
-                Estimates only: vehicle fare with driver. Packing, loading labour and the final price are confirmed when you book.
+                Estimates only: vehicle fare with driver, both ways. Packing, loading labour and the final price are confirmed when you book.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={`container ${styles.narrow}`}>
+            <div className={`glass-panel ${styles.card}`}>
+              <h2>Chota Hathi Booking for Shifting in Ranchi</h2>
+              <p>
+                The Tata Ace, known locally as Chota Hathi, is the most popular vehicle for small home shifting, PG and student moves, and single-item shifting in Ranchi. For a bigger load, book a Mahindra Pickup or 14 ft truck instead.
+              </p>
+              <p lang="hi-Latn">
+                <strong>Ghar ka saman shift karna hai?</strong> Saman shifting ke liye tempo, Chota Hathi, pickup ya truck, driver aur loading labour ke saath, Ranchi se Jharkhand ke kisi bhi zile tak. Call ya WhatsApp karein: 7654722708.
               </p>
             </div>
           </div>
@@ -256,6 +278,9 @@ export default async function HouseShiftingVanRanchiPage() {
                 <Link href="/locations/ramgarh">Shifting in Ramgarh</Link>
                 <Link href="/locations/jamshedpur">Ranchi to Jamshedpur shifting</Link>
                 <Link href="/locations/hazaribagh">Shifting in Hazaribagh</Link>
+                <Link href="/services/goods-transport-ranchi">Goods transport service</Link>
+                <Link href="/services/bike-car-transport-ranchi">Bike and car transport</Link>
+                <Link href="/services/interstate-shifting-ranchi">Interstate shifting</Link>
               </div>
             </div>
           </div>

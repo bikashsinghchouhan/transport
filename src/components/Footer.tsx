@@ -43,9 +43,10 @@ export default function Footer() {
             <ul className={styles.list}>
               <li><Link href="/#services" className={styles.link}>Home Shifting &amp; Packing</Link></li>
               <li><Link href="/#services" className={styles.link}>Office &amp; Shop Shifting</Link></li>
-              <li><Link href="/#services" className={styles.link}>Goods Transport</Link></li>
+              <li><Link href="/services/goods-transport-ranchi" className={styles.link}>Goods Transport</Link></li>
+              <li><Link href="/services/interstate-shifting-ranchi" className={styles.link}>Interstate Shifting</Link></li>
               <li><Link href="/services/house-shifting-van-ranchi" className={styles.link}>House Shifting Van Ranchi</Link></li>
-              <li><Link href="/#services" className={styles.link}>Bike &amp; Car Transport</Link></li>
+              <li><Link href="/services/bike-car-transport-ranchi" className={styles.link}>Bike &amp; Car Transport</Link></li>
             </ul>
           </div>
 
