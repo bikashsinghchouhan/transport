@@ -74,6 +74,10 @@ export default function Footer() {
           <p className={styles.copy}>
             &copy; {currentYear} B2 Transport. All Rights Reserved. Ranchi, Jharkhand.
           </p>
+          {/* Staff access. nofollow: admin pages are noindex and blocked in robots.txt. */}
+          <Link href="/admin/login" rel="nofollow" prefetch={false} className={styles.adminLink}>
+            Admin Login
+          </Link>
         </div>
       </div>
     </footer>
