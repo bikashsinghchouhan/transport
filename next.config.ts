@@ -5,7 +5,7 @@ const isStaticExport = process.env.STATIC_EXPORT === 'true';
 const basePath = isNetlify ? '' : (process.env.NODE_ENV === 'production' && isStaticExport ? '/transport' : '');
 
 const nextConfig: NextConfig = {
-  ...(isStaticExport ? { output: 'export' } : {}),
+  output: isStaticExport ? 'export' : 'standalone',
   // Static export (GitHub Pages) has no image optimizer. On Vercel, let Next.js
   // resize and compress images (hero.png goes from ~764 KB to ~46 KB).
   images: {
