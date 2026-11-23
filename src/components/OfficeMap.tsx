@@ -8,8 +8,7 @@ import styles from './OfficeMap.module.css';
 
 export default function OfficeMap() {
   const { contact } = useContact();
-  const [zoomScale, setZoomScale] = useState(1);
-  const [fullscreenZoomScale, setFullscreenZoomScale] = useState(1);
+  const [mapZoom, setMapZoom] = useState(16);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -30,26 +29,14 @@ export default function OfficeMap() {
     };
   }, [isFullscreen]);
 
-  const handleZoomIn = () => {
-    setZoomScale((prev) => Math.min(Number((prev + 0.25).toFixed(2)), 2.5));
-  };
-
-  const handleZoomOut = () => {
-    setZoomScale((prev) => Math.max(Number((prev - 0.25).toFixed(2)), 0.8));
-  };
-
-  const handleFullscreenZoomIn = () => {
-    setFullscreenZoomScale((prev) => Math.min(Number((prev + 0.25).toFixed(2)), 2.5));
-  };
-
-  const handleFullscreenZoomOut = () => {
-    setFullscreenZoomScale((prev) => Math.max(Number((prev - 0.25).toFixed(2)), 0.8));
-  };
-
-  const stableEmbedUrl =
+  const rawEmbedUrl =
     (mounted && contact.officeMapEmbedUrl) ||
     contact.officeMapEmbedUrl ||
     DEFAULT_OFFICE_MAP_EMBED_URL;
+
+  const embedUrlWithZoom = rawEmbedUrl.includes('z=')
+    ? rawEmbedUrl.replace(/([?&]z=)\d+/, (_, p1) => `${p1}${mapZoom}`)
+    : `${rawEmbedUrl}${rawEmbedUrl.includes('?') ? '&' : '?'}z=${mapZoom}`;
 
   return (
     <section className={styles.mapSection} aria-label="Office Location">
@@ -113,7 +100,7 @@ export default function OfficeMap() {
             <div className={styles.zoomGroup}>
               <button
                 type="button"
-                onClick={handleZoomIn}
+                onClick={() => setMapZoom((prev) => Math.min(prev + 1, 19))}
                 className={styles.zoomBtn}
                 title="Zoom In"
                 aria-label="Zoom In"
@@ -122,7 +109,7 @@ export default function OfficeMap() {
               </button>
               <button
                 type="button"
-                onClick={handleZoomOut}
+                onClick={() => setMapZoom((prev) => Math.max(prev - 1, 11))}
                 className={styles.zoomBtn}
                 title="Zoom Out"
                 aria-label="Zoom Out"
@@ -144,7 +131,7 @@ export default function OfficeMap() {
           {/* Google Map Embed Iframe */}
           <iframe
             suppressHydrationWarning
-            src={stableEmbedUrl}
+            src={embedUrlWithZoom}
             title="B2 Transport Office Location - Bariatu Road, Morabadi, Ranchi"
             className={styles.mapIframe}
             style={{
@@ -152,9 +139,6 @@ export default function OfficeMap() {
               height: '100%',
               border: 0,
               display: 'block',
-              transform: `scale(${zoomScale})`,
-              transformOrigin: '50% 50%',
-              transition: 'transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1)',
             }}
             loading="lazy"
             allowFullScreen
@@ -199,7 +183,7 @@ export default function OfficeMap() {
                 <div className={styles.zoomGroup}>
                   <button
                     type="button"
-                    onClick={handleFullscreenZoomIn}
+                    onClick={() => setMapZoom((prev) => Math.min(prev + 1, 19))}
                     className={styles.zoomBtn}
                     title="Zoom In"
                     aria-label="Zoom In"
@@ -208,7 +192,7 @@ export default function OfficeMap() {
                   </button>
                   <button
                     type="button"
-                    onClick={handleFullscreenZoomOut}
+                    onClick={() => setMapZoom((prev) => Math.max(prev - 1, 11))}
                     className={styles.zoomBtn}
                     title="Zoom Out"
                     aria-label="Zoom Out"
@@ -220,18 +204,10 @@ export default function OfficeMap() {
 
               <iframe
                 suppressHydrationWarning
-                src={stableEmbedUrl}
+                src={embedUrlWithZoom}
                 title="Office Location Map Fullscreen"
                 className={styles.mapIframe}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 0,
-                  display: 'block',
-                  transform: `scale(${fullscreenZoomScale})`,
-                  transformOrigin: '50% 50%',
-                  transition: 'transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1)',
-                }}
+                style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
