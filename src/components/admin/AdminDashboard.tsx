@@ -43,6 +43,12 @@ import {
 import { useContact } from '@/context/ContactContext';
 import { calculateFare } from '@/lib/fare';
 import FleetManagement, { FleetSubTab } from '@/components/fleet/FleetManagement';
+import {
+  parseGoogleMapInput,
+  DEFAULT_OFFICE_ADDRESS,
+  DEFAULT_OFFICE_MAP_URL,
+  DEFAULT_OFFICE_MAP_EMBED_URL,
+} from '@/utils/mapUtils';
 import styles from '@/app/admin/admin.module.css';
 
 interface AdminInfo {
@@ -245,8 +251,10 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
   const [contactForm, setContactForm] = useState({
     phone: contact.phone || '7654722708',
     whatsapp: contact.whatsapp || '917654722708',
-    address: contact.address || 'Ranchi, Jharkhand (HQ)',
+    address: contact.address || DEFAULT_OFFICE_ADDRESS,
     email: contact.email || 'support@b2transport.in',
+    officeMapUrl: contact.officeMapUrl || DEFAULT_OFFICE_MAP_URL,
+    officeMapEmbedUrl: contact.officeMapEmbedUrl || DEFAULT_OFFICE_MAP_EMBED_URL,
   });
   const [contactSaving, setContactSaving] = useState(false);
   const [contactError, setContactError] = useState('');
@@ -257,11 +265,22 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
       setContactForm({
         phone: contact.phone || '7654722708',
         whatsapp: contact.whatsapp || '917654722708',
-        address: contact.address || 'Ranchi, Jharkhand (HQ)',
+        address: contact.address || DEFAULT_OFFICE_ADDRESS,
         email: contact.email || 'support@b2transport.in',
+        officeMapUrl: contact.officeMapUrl || DEFAULT_OFFICE_MAP_URL,
+        officeMapEmbedUrl: contact.officeMapEmbedUrl || DEFAULT_OFFICE_MAP_EMBED_URL,
       });
     }
   }, [contact]);
+
+  const handleMapUrlChange = (value: string) => {
+    const parsed = parseGoogleMapInput(value, contactForm.address);
+    setContactForm((prev) => ({
+      ...prev,
+      officeMapUrl: value,
+      officeMapEmbedUrl: parsed.embedUrl,
+    }));
+  };
 
   // Vehicles state
   const [vehicles, setVehicles] = useState<VehicleItem[]>([]);
@@ -1247,12 +1266,29 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                     <input
                       type="text"
                       className={styles.input}
-                      placeholder="e.g. Ranchi, Jharkhand (HQ)"
+                      placeholder="e.g. Bariatu Road, Morabadi, Ranchi, Jharkhand 834008"
                       value={contactForm.address}
                       onChange={(e) => setContactForm({ ...contactForm, address: e.target.value })}
                       required
                     />
                   </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Office Google Map Location Link</label>
+                  <div className={styles.inputWrapper}>
+                    <MapPin className={styles.inputIcon} />
+                    <input
+                      type="text"
+                      className={styles.input}
+                      placeholder="https://maps.app.goo.gl/YycvaTm3dYoeduYF6?g_st=aw"
+                      value={contactForm.officeMapUrl}
+                      onChange={(e) => handleMapUrlChange(e.target.value)}
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    Enter Google Map share link, place URL, or coordinates. Default: https://maps.app.goo.gl/YycvaTm3dYoeduYF6?g_st=aw
+                  </span>
                 </div>
 
                 <div className={styles.inputGroup}>

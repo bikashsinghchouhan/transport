@@ -2767,7 +2767,7 @@
 
 /* Printable report styles */
 @media print {
-  body {
+  :global(body) {
     background: #ffffff !important;
     color: #000000 !important;
   }

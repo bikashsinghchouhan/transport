@@ -47,9 +47,9 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       {/* Top Call Bar for Mobile Devices */}
       <div className={styles.topNoticeBar}>
-        <a href={telHref(contact.phone)} className={styles.topNoticeLink}>
+        <a href={telHref(contact.phone)} className={styles.topNoticeLink} suppressHydrationWarning>
           <Phone size={13} />
-          <span>Call for Booking: <strong>{contact.phone}</strong></span>
+          <span suppressHydrationWarning>Call for Booking: <strong>{contact.phone}</strong></span>
         </a>
       </div>
 
@@ -80,9 +80,9 @@ export default function Header() {
         </nav>
 
         <div className={styles.actions}>
-          <a href={telHref(contact.phone)} className={`${styles.headerPhoneBtn} btn-neon`}>
+          <a href={telHref(contact.phone)} className={`${styles.headerPhoneBtn} btn-neon`} suppressHydrationWarning>
             <Phone size={16} />
-            <span className={styles.phoneText}>{contact.phone}</span>
+            <span className={styles.phoneText} suppressHydrationWarning>{contact.phone}</span>
           </a>
           <button
             className={styles.mobileMenuBtn}

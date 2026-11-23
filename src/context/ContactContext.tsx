@@ -1,12 +1,19 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import {
+  DEFAULT_OFFICE_ADDRESS,
+  DEFAULT_OFFICE_MAP_URL,
+  DEFAULT_OFFICE_MAP_EMBED_URL,
+} from '@/utils/mapUtils';
 
 export interface ContactInfo {
   phone: string;
   whatsapp: string;
   address: string;
   email: string;
+  officeMapUrl: string;
+  officeMapEmbedUrl: string;
 }
 
 interface ContactContextType {
@@ -19,8 +26,10 @@ interface ContactContextType {
 const defaultContact: ContactInfo = {
   phone: '7654722708',
   whatsapp: '917654722708',
-  address: 'Ranchi, Jharkhand (HQ)',
+  address: DEFAULT_OFFICE_ADDRESS,
   email: 'support@b2transport.in',
+  officeMapUrl: DEFAULT_OFFICE_MAP_URL,
+  officeMapEmbedUrl: DEFAULT_OFFICE_MAP_EMBED_URL,
 };
 
 const ContactContext = createContext<ContactContextType>({
@@ -44,6 +53,8 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({ child
           whatsapp: data.config.whatsapp || defaultContact.whatsapp,
           address: data.config.address || defaultContact.address,
           email: data.config.email || defaultContact.email,
+          officeMapUrl: data.config.officeMapUrl || defaultContact.officeMapUrl,
+          officeMapEmbedUrl: data.config.officeMapEmbedUrl || defaultContact.officeMapEmbedUrl,
         });
       }
     } catch (err) {

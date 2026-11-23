@@ -26,13 +26,13 @@ export default function Footer() {
               Packers and movers and goods transport based in Ranchi, serving all districts of Jharkhand and neighbouring states.
             </p>
             <div className={styles.contactList}>
-              <a href={telHref(contact.phone)} className={styles.contactItem}>
+              <a href={telHref(contact.phone)} className={styles.contactItem} suppressHydrationWarning>
                 <Phone size={16} />
-                <span>+91-{contact.phone}</span>
+                <span suppressHydrationWarning>+91-{contact.phone}</span>
               </a>
               <div className={styles.contactItem}>
                 <MapPin size={16} />
-                <span>{contact.address}</span>
+                <span suppressHydrationWarning>{contact.address}</span>
               </div>
             </div>
           </div>

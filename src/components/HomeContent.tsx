@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import Estimator from '@/components/Estimator';
 import Fleet from '@/components/Fleet';
+import OfficeMap from '@/components/OfficeMap';
 import { useContact } from '@/context/ContactContext';
 import { telHref } from '@/lib/seo';
 import styles from '@/app/page.module.css';
@@ -62,9 +63,9 @@ export default function HomeContent() {
                   <span>Calculate Fare Estimate</span>
                   <ArrowRight size={18} />
                 </Link>
-                <a href={telHref(contact.phone)} className="btn-secondary">
+                <a href={telHref(contact.phone)} className="btn-secondary" suppressHydrationWarning>
                   <Phone size={18} />
-                  <span>Call {contact.phone}</span>
+                  <span suppressHydrationWarning>Call {contact.phone}</span>
                 </a>
               </div>
 
@@ -346,9 +347,9 @@ export default function HomeContent() {
               Call or WhatsApp our Ranchi office to book a vehicle, with packing and loading help if you need it.
             </p>
             <div className={styles.ctaButtonGroup}>
-              <a href={telHref(contact.phone)} className="btn-neon">
+              <a href={telHref(contact.phone)} className="btn-neon" suppressHydrationWarning>
                 <Phone size={18} />
-                <span>Call Now: {contact.phone}</span>
+                <span suppressHydrationWarning>Call Now: {contact.phone}</span>
               </a>
               <a href={`https://wa.me/${contact.whatsapp}?text=Hello%20B2%20Transport,%20I%20want%20to%20book%20a%20vehicle%20for%20household%20shifting.`} target="_blank" rel="noopener noreferrer" className={`btn-secondary ${styles.whatsappBtn}`}>
                 <MessageSquare size={18} />
@@ -358,6 +359,9 @@ export default function HomeContent() {
           </div>
         </div>
       </section>
+
+      {/* 9. OFFICE LOCATION GOOGLE MAP */}
+      <OfficeMap />
     </div>
   );
 }
