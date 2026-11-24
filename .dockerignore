@@ -1,7 +1,25 @@
+# Keep the build context small: Docker uploads everything not listed here on every build.
 node_modules
 .next
+out
 .git
-.gitignore
+.github
+.claude
+.vscode
+.idea
+coverage
+*.log
+npm-debug.log*
+
+# Docs and deploy files are not needed inside the image
 README.md
 *.md
+docs
+Dockerfile
+docker-compose.yml
+.dockerignore
+deploy.sh
+netlify.toml
+
+# Secrets stay out of the image; runtime env comes from docker-compose env_file
 .env*.local

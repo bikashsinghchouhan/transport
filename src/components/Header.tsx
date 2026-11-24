@@ -167,6 +167,10 @@ export default function Header() {
             </div>
 
             <div className={styles.drawerFooter}>
+              <div className={styles.drawerThemeRow}>
+                <span>Dark / Light Mode</span>
+                <ThemeToggle className={styles.themeToggle} />
+              </div>
               <a href={telHref(contact.phone)} className="btn-neon" onClick={handleCloseDrawer} style={{ width: '100%', justifyContent: 'center' }}>
                 <Phone size={18} />
                 <span>Call Now: {contact.phone}</span>

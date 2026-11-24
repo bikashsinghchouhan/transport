@@ -368,7 +368,18 @@
   color: var(--hb-accent);
 }
 
+/* Holds the trust list; on tablets/phones a small Jharkhand map sits faintly behind it */
+.trustWrap {
+  position: relative;
+}
+
+.mapMobile {
+  display: none;
+}
+
 .trust {
+  position: relative;
+  z-index: 1;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
@@ -391,6 +402,29 @@
 /* ---------- Tablet & phone: stack copy above the photo ---------- */
 
 @media (max-width: 992px) {
+  .trustWrap {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  /* Faint outline centred behind the trust list */
+  .mapMobile {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 200px;
+    transform: translate(-50%, -50%);
+    opacity: 0.6;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Small version: outline only, so nothing sits on top of the trust text */
+  .mapMobile .mapPin {
+    display: none;
+  }
+
   .hero {
     flex-direction: column;
     align-items: stretch;
@@ -400,7 +434,7 @@
   .content {
     order: -1;
     width: 100%;
-    padding: 32px clamp(16px, 5vw, 48px) 28px;
+    padding: 32px clamp(16px, 5vw, 48px) 4px;
     align-items: center;
     text-align: center;
   }
@@ -436,7 +470,7 @@
     top: -1px;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 22px;
     background: var(--hb-wave);
     clip-path: ellipse(70% 100% at 50% 0%);
     z-index: 1;
