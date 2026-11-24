@@ -180,7 +180,7 @@ export default function FleetReports() {
 
         <div className={styles.drawerFieldGroup}>
           <label className={styles.drawerLabel}>Date Range</label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '0.6rem' }}>
             <div>
               <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '0.2rem' }}>From</span>
               <input

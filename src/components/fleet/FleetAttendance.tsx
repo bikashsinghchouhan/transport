@@ -1282,7 +1282,7 @@ export default function FleetAttendance({
 
               {/* Punch Timings (if present or half-day) */}
               {(popupStatus === 'PRESENT' || popupStatus === 'HALF_DAY') && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '0.65rem' }}>
                   <div>
                     <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--a-text-3)', display: 'block', marginBottom: '0.25rem' }}>
                       Punch In

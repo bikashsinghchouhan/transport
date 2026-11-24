@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import HeroBanner from './HeroBanner';
+import ServiceHighlights from './ServiceHighlights';
 import Link from 'next/link';
 import {
   Truck,
@@ -9,10 +10,7 @@ import {
   ShieldCheck,
   Phone,
   MessageSquare,
-  Activity,
   ArrowRight,
-  Package,
-  CheckCircle,
   HelpCircle,
   Compass,
   Building2,
@@ -42,77 +40,9 @@ export default function HomeContent() {
   return (
     <div className={styles.wrapper}>
       {/* 1. HERO SECTION */}
-      <section className={styles.heroSection}>
-        <div className={styles.container}>
-          <div className={styles.heroGrid}>
-            <div className={styles.heroLeft}>
-              <div className={styles.badgeRow}>
-                <Activity size={14} className={styles.pulseIcon} />
-                <span>RANCHI-BASED SHIFTING &amp; TRANSPORT</span>
-              </div>
-              <h1 className={styles.heroTitle}>
-                Packers and Movers in Ranchi <br />
-                <span className="text-gradient">Across Jharkhand</span>
-              </h1>
-              <p className={styles.heroDescription}>
-                Need to shift your house or transport goods? <strong>B2 Transport</strong> is based in Ranchi and provides home shifting, packing, loading help and pickup or truck hire across all districts of Jharkhand.
-              </p>
+      <HeroBanner />
 
-              <div className={styles.heroCtas}>
-                <Link href="#estimator" className="btn-neon">
-                  <span>Calculate Fare Estimate</span>
-                  <ArrowRight size={18} />
-                </Link>
-                <a href={telHref(contact.phone)} className="btn-secondary" suppressHydrationWarning>
-                  <Phone size={18} />
-                  <span suppressHydrationWarning>Call {contact.phone}</span>
-                </a>
-              </div>
-
-              <div className={styles.heroTrust}>
-                <div className={styles.trustItem}>
-                  <CheckCircle size={16} className={styles.trustIcon} />
-                  <span>Packing &amp; Loading Help</span>
-                </div>
-                <div className={styles.trustItem}>
-                  <CheckCircle size={16} className={styles.trustIcon} />
-                  <span>Fare Estimate Before Booking</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.heroRight}>
-              <div className={styles.imageContainer}>
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/hero.png`}
-                  alt="Illustration of a goods transport truck"
-                  width={600}
-                  height={450}
-                  sizes="(max-width: 992px) 100vw, 50vw"
-                  className={styles.heroImage}
-                  priority
-                />
-                <div className={styles.heroBadgesWrapper}>
-                  <div className={styles.glassBadgeHq}>
-                    <MapPin size={18} className={styles.hqPin} />
-                    <div>
-                      <strong>Ranchi Head Office</strong>
-                      <p>Serving all of Jharkhand</p>
-                    </div>
-                  </div>
-                  <div className={styles.glassBadgeActive}>
-                    <Package size={18} className={styles.activeUsers} />
-                    <div>
-                      <strong>Local &amp; Interstate</strong>
-                      <p>House &amp; goods shifting</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceHighlights />
 
       {/* 2. KEY FACTS BAR */}
       <section className={styles.statsSection}>

@@ -1,0 +1,226 @@
+/* "Our Services" highlight strip shown right after the hero. */
+
+.section {
+  padding: var(--section-space) clamp(16px, 5vw, 80px);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-bottom: var(--section-header-gap);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0b1b3f;
+  line-height: 1.2;
+}
+
+.titleAccent {
+  position: relative;
+  display: inline-block;
+  color: #1d4ed8;
+}
+
+.underline {
+  position: absolute;
+  left: -6%;
+  bottom: -12px;
+  width: 42%;
+  height: 12px;
+  fill: none;
+  stroke: #f97316;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+:global([data-theme='dark']) .badge {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+}
+
+:global([data-theme='dark']) .title {
+  color: #f8fafc;
+}
+
+:global([data-theme='dark']) .titleAccent {
+  color: #38bdf8;
+}
+
+/* ---------- Cards ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 28px);
+}
+
+.card {
+  --tone-bg: #eef4ff;
+  --tone-arrow-bg: #dbe7ff;
+  --tone-arrow: #2563eb;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 170px;
+  padding: 18px 20px 20px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, var(--tone-bg) 0%, #ffffff 100%);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 14px var(--shadow-soft);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px var(--shadow-strong);
+}
+
+.toneBlue {
+  --tone-bg: #e6efff;
+  --tone-arrow-bg: #d6e4ff;
+  --tone-arrow: #2563eb;
+}
+
+.tonePeach {
+  --tone-bg: #fff0e3;
+  --tone-arrow-bg: #ffe2c9;
+  --tone-arrow: #ea580c;
+}
+
+.toneGreen {
+  --tone-bg: #e3f6ec;
+  --tone-arrow-bg: #cdeedc;
+  --tone-arrow: #16a34a;
+}
+
+.toneLavender {
+  --tone-bg: #ecebff;
+  --tone-arrow-bg: #dcdaff;
+  --tone-arrow: #4f46e5;
+}
+
+:global([data-theme='dark']) .card {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tone-arrow) 18%, #0b1220) 0%, #0b1220 100%);
+  border-color: rgba(255, 255, 255, 0.06);
+  --tone-arrow-bg: color-mix(in srgb, var(--tone-arrow) 25%, transparent);
+}
+
+.art {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: clamp(70px, 7vw, 96px);
+  margin-bottom: 12px;
+}
+
+.artImg {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 8px rgba(15, 23, 42, 0.12));
+}
+
+.body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 700;
+  color: #0b1b3f;
+  margin-bottom: 4px;
+}
+
+.cardText {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #475569;
+}
+
+:global([data-theme='dark']) .cardTitle {
+  color: #f8fafc;
+}
+
+:global([data-theme='dark']) .cardText {
+  color: #cbd5e1;
+}
+
+.arrow {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tone-arrow-bg);
+  color: var(--tone-arrow);
+  transition: transform 0.2s ease;
+}
+
+.card:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Phone: image beside the text so four cards stay short */
+  .card {
+    flex-direction: row;
+    align-items: center;
+    min-height: 0;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .art {
+    width: 84px;
+    height: 56px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .body {
+    flex: 1;
+    align-items: center;
+    margin: 0;
+  }
+}

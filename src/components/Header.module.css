@@ -312,6 +312,48 @@
   margin-top: 1.5rem;
 }
 
+/* Small laptops / landscape tablets: keep logo, menu and actions on one row */
+@media (max-width: 1120px) {
+  .desktopNav {
+    gap: 18px;
+  }
+
+  .navLink {
+    font-size: 0.85rem;
+  }
+
+  .logo {
+    font-size: 1.15rem;
+  }
+
+  .actions .headerPhoneBtn {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 960px) {
+  .phoneText {
+    display: none;
+  }
+}
+
+/* Tablets: switch to the drawer menu before the links get cramped */
+@media (max-width: 900px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .phoneText {
+    display: inline;
+  }
+}
+
 @media (max-width: 768px) {
   .topNoticeBar {
     display: flex;

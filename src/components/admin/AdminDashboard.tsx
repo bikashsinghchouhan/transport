@@ -1502,7 +1502,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                 <div className={styles.inputGroup}>
                   <label className={styles.label}>Payload Capacity</label>
                   <input
@@ -1536,7 +1536,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                   <Calculator size={18} style={{ color: 'var(--a-sky)' }} /> Dual-Slab Dynamic Fare Configuration
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                   <div className={styles.inputGroup}>
                     <label className={styles.label}>First 100 KM Rate (₹/KM)</label>
                     <input
@@ -1564,7 +1564,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                   <div className={styles.inputGroup}>
                     <label className={styles.label}>Min Fare Min Range (₹)</label>
                     <input
