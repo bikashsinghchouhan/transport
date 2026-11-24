@@ -3,7 +3,7 @@
 }
 
 .heroSection {
-  padding: 100px 0 60px;
+  padding: var(--section-space) 0;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border-color);
@@ -92,7 +92,7 @@
 
 /* Info Section CSS */
 .infoSection {
-  background: rgba(3, 7, 18, 0.2);
+  background: var(--tint-1);
 }
 
 .infoGrid {
@@ -145,7 +145,7 @@
   align-items: flex-start;
   gap: 16px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--tint-1);
   border: 1px solid var(--border-color);
   border-radius: 12px;
 }
@@ -239,5 +239,5 @@
 
 .estimatorWrapper {
   border-top: 1px solid var(--border-color);
-  background: rgba(3, 7, 18, 0.4);
+  background: var(--tint-1);
 }

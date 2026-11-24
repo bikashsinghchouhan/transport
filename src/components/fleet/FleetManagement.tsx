@@ -134,7 +134,7 @@ export default function FleetManagement({
 
 
       {seedSuccessMsg && (
-        <div style={{ background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.4)', color: '#4ade80', padding: '0.75rem 1rem', borderRadius: '10px', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.4)', color: 'var(--a-green-2)', padding: '0.75rem 1rem', borderRadius: '10px', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <CheckCircle2 size={16} /> {seedSuccessMsg}
         </div>
       )}

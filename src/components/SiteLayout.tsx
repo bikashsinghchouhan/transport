@@ -21,7 +21,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   return (
     <ContactProvider>
       <Header />
-      <main style={{ flex: 1, paddingTop: '80px' }}>
+      <main className="site-main">
         {children}
       </main>
       <Footer />

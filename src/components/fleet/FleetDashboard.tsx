@@ -245,9 +245,9 @@ export default function FleetDashboard({
       <div className={styles.dashboardFilterContainer}>
         <div className={styles.dashboardFilterHeader}>
           <div className={styles.dashboardFilterTitle}>
-            <Calendar size={18} color="#38bdf8" />
+            <Calendar size={18} style={{ color: 'var(--a-sky)' }} />
             <span>Dashboard Date Filter</span>
-            {loading && <Loader2 size={16} className={styles.spinner} style={{ color: '#38bdf8' }} />}
+            {loading && <Loader2 size={16} className={styles.spinner} style={{ color: 'var(--a-sky)' }} />}
             {onRefresh && (
               <button
                 type="button"
@@ -356,7 +356,7 @@ export default function FleetDashboard({
 
           {/* Rule note explaining the interval */}
           <div className={styles.dashboardRuleHint}>
-            <Info size={14} color="#38bdf8" style={{ flexShrink: 0 }} />
+            <Info size={14} style={{ color: 'var(--a-sky)', flexShrink: 0 }} />
             <span>
               <strong>Rule:</strong> From date is <strong>included</strong> in data; To date is <strong>excluded</strong> (e.g. 15 Aug to 15 Sep reflects trips from 15 Aug up to 14 Sep midnight).
             </span>
@@ -367,15 +367,15 @@ export default function FleetDashboard({
         {isFilterActive && (
           <div className={styles.dashboardActiveBanner}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <span style={{ fontWeight: 600, color: '#38bdf8' }}>Active Filter Window:</span>
+              <span style={{ fontWeight: 600, color: 'var(--a-sky)' }}>Active Filter Window:</span>
               <span>
                 {startDate ? formatDateLabel(startDate) : 'Earliest'} → {endDate ? `${formatDateLabel(endDate)} (Excluded)` : 'Latest'}
               </span>
-              <span style={{ color: '#94a3b8' }}>• Reflected in all KPIs & Charts ({kpis.totalTrips} trips found)</span>
+              <span style={{ color: 'var(--a-text-3)' }}>• Reflected in all KPIs & Charts ({kpis.totalTrips} trips found)</span>
             </div>
             <button
               onClick={handleResetFilter}
-              style={{ background: 'none', border: 'none', color: '#fca5a5', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 600 }}
+              style={{ background: 'none', border: 'none', color: 'var(--a-red-2)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 600 }}
             >
               <X size={14} /> Clear
             </button>
@@ -389,7 +389,7 @@ export default function FleetDashboard({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Total Trips</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(56, 189, 248, 0.15)', color: 'var(--a-sky)' }}>
               <Truck size={20} />
             </div>
           </div>
@@ -403,7 +403,7 @@ export default function FleetDashboard({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Total Distance</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(168, 85, 247, 0.15)', color: 'var(--a-purple)' }}>
               <MapPin size={20} />
             </div>
           </div>
@@ -415,11 +415,11 @@ export default function FleetDashboard({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Gross Revenue</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(14, 165, 233, 0.15)', color: 'var(--a-sky)' }}>
               <IndianRupee size={20} />
             </div>
           </div>
-          <div className={styles.kpiValue} style={{ color: '#38bdf8' }}>
+          <div className={styles.kpiValue} style={{ color: 'var(--a-sky)' }}>
             ₹{kpis.grossRevenue.toLocaleString()}
           </div>
           <div className={styles.kpiSubtitle}>Total invoiced trip value</div>
@@ -429,11 +429,11 @@ export default function FleetDashboard({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Total Expenses</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#f87171' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(239, 68, 68, 0.15)', color: 'var(--a-red)' }}>
               <Receipt size={20} />
             </div>
           </div>
-          <div className={styles.kpiValue} style={{ color: '#f87171' }}>
+          <div className={styles.kpiValue} style={{ color: 'var(--a-red)' }}>
             ₹{kpis.totalExpenses.toLocaleString()}
           </div>
           <div className={styles.kpiSubtitle}>Fuel, tolls, repairs, maintenance</div>
@@ -443,11 +443,11 @@ export default function FleetDashboard({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Net Profit</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(16, 185, 129, 0.15)', color: 'var(--a-green)' }}>
               <Wallet size={20} />
             </div>
           </div>
-          <div className={styles.kpiValue} style={{ color: '#34d399' }}>
+          <div className={styles.kpiValue} style={{ color: 'var(--a-green)' }}>
             ₹{kpis.netProfit.toLocaleString()}
           </div>
           <div className={styles.kpiSubtitle}>Revenue minus vehicle expenses</div>
@@ -457,11 +457,11 @@ export default function FleetDashboard({
         <div className={styles.kpiCard} style={{ borderColor: kpis.pendingReceivables > 0 ? 'rgba(245, 158, 11, 0.4)' : undefined }}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Pending Receivables</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(245, 158, 11, 0.15)', color: 'var(--a-amber)' }}>
               <Clock size={20} />
             </div>
           </div>
-          <div className={styles.kpiValue} style={{ color: '#fbbf24' }}>
+          <div className={styles.kpiValue} style={{ color: 'var(--a-amber)' }}>
             ₹{kpis.pendingReceivables.toLocaleString()}
           </div>
           <div className={styles.kpiSubtitle}>
@@ -484,9 +484,9 @@ export default function FleetDashboard({
         <div className={styles.statMetricCard}>
           <div className={styles.statMetricHeader}>
             <span className={styles.statMetricLabel}>Collection Rate</span>
-            <Percent size={16} color="#34d399" />
+            <Percent size={16} style={{ color: 'var(--a-green)' }} />
           </div>
-          <div className={styles.statMetricVal} style={{ color: perf.collectionEfficiency >= 80 ? '#34d399' : '#f59e0b' }}>
+          <div className={styles.statMetricVal} style={{ color: perf.collectionEfficiency >= 80 ? 'var(--a-green)' : '#f59e0b' }}>
             {perf.collectionEfficiency}%
           </div>
           <div className={styles.statMetricDesc}>Collected vs total billed amount</div>
@@ -495,7 +495,7 @@ export default function FleetDashboard({
         <div className={styles.statMetricCard}>
           <div className={styles.statMetricHeader}>
             <span className={styles.statMetricLabel}>Avg Revenue / Trip</span>
-            <TrendingUp size={16} color="#38bdf8" />
+            <TrendingUp size={16} style={{ color: 'var(--a-sky)' }} />
           </div>
           <div className={styles.statMetricVal}>₹{perf.avgRevenuePerTrip.toLocaleString()}</div>
           <div className={styles.statMetricDesc}>Gross earning per dispatch</div>
@@ -506,7 +506,7 @@ export default function FleetDashboard({
             <span className={styles.statMetricLabel}>Avg Profit / Trip</span>
             <Calculator size={16} color="#a855f7" />
           </div>
-          <div className={styles.statMetricVal} style={{ color: perf.avgProfitPerTrip >= 0 ? '#34d399' : '#ef4444' }}>
+          <div className={styles.statMetricVal} style={{ color: perf.avgProfitPerTrip >= 0 ? 'var(--a-green)' : '#ef4444' }}>
             ₹{perf.avgProfitPerTrip.toLocaleString()}
           </div>
           <div className={styles.statMetricDesc}>Net operational gain per trip</div>
@@ -571,7 +571,7 @@ export default function FleetDashboard({
               style={{
                 fontSize: '0.75rem',
                 background: 'rgba(245, 158, 11, 0.15)',
-                color: '#fbbf24',
+                color: 'var(--a-amber)',
                 padding: '0.2rem 0.55rem',
                 borderRadius: '6px',
                 fontWeight: 600,
@@ -583,25 +583,25 @@ export default function FleetDashboard({
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginTop: '0.5rem' }}>
             {pendingSummary.recentPending.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#94a3b8', fontSize: '0.85rem' }}>
+              <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--a-text-3)', fontSize: '0.85rem' }}>
                 🎉 Great job! All customer receivables are cleared.
               </div>
             ) : (
               pendingSummary.recentPending.map((trip: any) => (
-                <div key={trip._id} className={styles.tableRow} style={{ padding: '0.75rem', borderRadius: '8px', background: 'rgba(30, 41, 59, 0.4)' }}>
+                <div key={trip._id} className={styles.tableRow} style={{ padding: '0.75rem', borderRadius: '8px', background: 'color-mix(in srgb, var(--c-800) 40%, transparent)' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontWeight: 600, color: '#f8fafc', fontSize: '0.88rem' }}>
+                      <span style={{ fontWeight: 600, color: 'var(--a-text)', fontSize: '0.88rem' }}>
                         {trip.customerName}
                       </span>
-                      <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
                         • {trip.vehicleId?.registrationNumber || 'N/A'}
                       </span>
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.15rem' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)', marginTop: '0.15rem' }}>
                       {trip.tripRoute} • Total: ₹{trip.tripAmount.toLocaleString()}
                     </div>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fbbf24', marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--a-amber)', marginTop: '0.2rem' }}>
                       Pending: ₹{trip.pendingAmount.toLocaleString()}
                     </div>
                   </div>
@@ -632,7 +632,7 @@ export default function FleetDashboard({
                     <button
                       onClick={() => onOpenRecordPayment(trip._id)}
                       className={styles.secondaryActionBtn}
-                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', color: '#38bdf8' }}
+                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', color: 'var(--a-sky)' }}
                     >
                       Collect
                     </button>
@@ -656,9 +656,9 @@ export default function FleetDashboard({
       <div className={styles.quickActionsPanel} style={{ marginTop: '2rem' }}>
         <div className={styles.quickActionsHeader}>
           <span className={styles.quickActionsTitle}>
-            <Zap size={15} color="#38bdf8" /> Quick Operations & Shortcuts
+            <Zap size={15} style={{ color: 'var(--a-sky)' }} /> Quick Operations & Shortcuts
           </span>
-          <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>1-Tap Direct Navigation</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>1-Tap Direct Navigation</span>
         </div>
 
         <div className={styles.quickActionsGrid}>
@@ -668,7 +668,7 @@ export default function FleetDashboard({
             className={`${styles.quickActionItem} ${styles.quickActionPrimary}`}
             title="Create & record a new trip"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(2, 132, 199, 0.4)', color: '#38bdf8' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(2, 132, 199, 0.4)', color: 'var(--a-sky)' }}>
               <Plus size={18} />
             </div>
             <div className={styles.quickActionContent}>
@@ -683,7 +683,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Browse all recorded trips"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(56, 189, 248, 0.15)', color: 'var(--a-sky)' }}>
               <Navigation size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -698,7 +698,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Manage receivables & freight payments"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(245, 158, 11, 0.15)', color: 'var(--a-amber)' }}>
               <CreditCard size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -715,7 +715,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Driver daily roster & trip duty"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(34, 197, 94, 0.15)', color: 'var(--a-green-2)' }}>
               <CalendarCheck size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -730,7 +730,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Manage drivers & salary advances"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(168, 85, 247, 0.15)', color: 'var(--a-purple)' }}>
               <Users size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -745,7 +745,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Manage fleet vehicles & service records"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(56, 189, 248, 0.15)', color: 'var(--a-sky)' }}>
               <Truck size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -760,7 +760,7 @@ export default function FleetDashboard({
             className={styles.quickActionItem}
             title="Generate P&L and monthly transport reports"
           >
-            <div className={styles.quickActionIcon} style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.quickActionIcon} style={{ background: 'rgba(14, 165, 233, 0.15)', color: 'var(--a-sky)' }}>
               <FileSpreadsheet size={17} />
             </div>
             <div className={styles.quickActionContent}>
@@ -857,7 +857,7 @@ export default function FleetDashboard({
 
           {/* Explanation Rule */}
           <div className={styles.dashboardRuleHint}>
-            <Info size={14} color="#38bdf8" style={{ flexShrink: 0 }} />
+            <Info size={14} style={{ color: 'var(--a-sky)', flexShrink: 0 }} />
             <span>
               <strong>Rule:</strong> Start date is included in data, but End date is excluded (e.g. 15 Aug to 15 Sep reflects trips from 15 Aug to 14 Sep midnight).
             </span>

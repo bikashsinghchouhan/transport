@@ -348,8 +348,8 @@ export default function FleetAttendance({
       <div className={styles.desktopFilterBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Calendar size={18} color="#38bdf8" />
-            <span style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.9rem' }}>Duty Date:</span>
+            <Calendar size={18} style={{ color: 'var(--a-sky)' }} />
+            <span style={{ fontWeight: 600, color: 'var(--a-text)', fontSize: '0.9rem' }}>Duty Date:</span>
           </div>
           <input
             type="date"
@@ -374,7 +374,7 @@ export default function FleetAttendance({
 
         {/* Daily Summary Badges */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+          <span style={{ fontSize: '0.8rem', color: 'var(--a-text-3)' }}>
             Total: <strong>{summary.totalDrivers}</strong>
           </span>
           <span className={`${styles.statusBadge} ${styles.statusActive}`}>
@@ -451,7 +451,7 @@ export default function FleetAttendance({
           <tbody>
             {filteredRoster.length === 0 ? (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--a-text-3)' }}>
                   {loading ? 'Loading attendance roster...' : 'No active drivers found.'}
                 </td>
               </tr>
@@ -463,8 +463,8 @@ export default function FleetAttendance({
                 return (
                   <tr key={driver._id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#ffffff' }}>{driver.fullName}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{driver.phone}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{driver.fullName}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{driver.phone}</div>
                     </td>
                     <td>
                       {driver.assignedVehicle ? (
@@ -478,12 +478,12 @@ export default function FleetAttendance({
                     </td>
                     <td>
                       {/* One-Click Quick Status Toggle Buttons */}
-                      <div style={{ display: 'inline-flex', gap: '0.25rem', background: 'rgba(30, 41, 59, 0.6)', padding: '0.2rem', borderRadius: '8px' }}>
+                      <div style={{ display: 'inline-flex', gap: '0.25rem', background: 'color-mix(in srgb, var(--c-800) 60%, transparent)', padding: '0.2rem', borderRadius: '8px' }}>
                         <button
                           onClick={() => handleQuickStatusChange(driver._id, 'PRESENT')}
                           style={{
                             background: item.status === 'PRESENT' ? '#10b981' : 'transparent',
-                            color: item.status === 'PRESENT' ? '#ffffff' : '#94a3b8',
+                            color: item.status === 'PRESENT' ? 'var(--a-text)' : 'var(--a-text-3)',
                             border: 'none',
                             padding: '0.25rem 0.6rem',
                             borderRadius: '6px',
@@ -499,7 +499,7 @@ export default function FleetAttendance({
                           onClick={() => handleQuickStatusChange(driver._id, 'HALF_DAY')}
                           style={{
                             background: item.status === 'HALF_DAY' ? '#f59e0b' : 'transparent',
-                            color: item.status === 'HALF_DAY' ? '#ffffff' : '#94a3b8',
+                            color: item.status === 'HALF_DAY' ? 'var(--a-text)' : 'var(--a-text-3)',
                             border: 'none',
                             padding: '0.25rem 0.6rem',
                             borderRadius: '6px',
@@ -515,7 +515,7 @@ export default function FleetAttendance({
                           onClick={() => handleQuickStatusChange(driver._id, 'ABSENT')}
                           style={{
                             background: item.status === 'ABSENT' ? '#ef4444' : 'transparent',
-                            color: item.status === 'ABSENT' ? '#ffffff' : '#94a3b8',
+                            color: item.status === 'ABSENT' ? 'var(--a-text)' : 'var(--a-text-3)',
                             border: 'none',
                             padding: '0.25rem 0.6rem',
                             borderRadius: '6px',
@@ -531,7 +531,7 @@ export default function FleetAttendance({
                           onClick={() => handleQuickStatusChange(driver._id, 'LEAVE')}
                           style={{
                             background: item.status === 'LEAVE' ? '#64748b' : 'transparent',
-                            color: item.status === 'LEAVE' ? '#ffffff' : '#94a3b8',
+                            color: item.status === 'LEAVE' ? 'var(--a-text)' : 'var(--a-text-3)',
                             border: 'none',
                             padding: '0.25rem 0.6rem',
                             borderRadius: '6px',
@@ -568,7 +568,7 @@ export default function FleetAttendance({
                       />
                     </td>
                     <td>
-                      <span style={{ fontWeight: 700, color: '#38bdf8', fontSize: '0.85rem' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--a-sky)', fontSize: '0.85rem' }}>
                         {item.totalDutyHours || 0} hrs
                       </span>
                     </td>
@@ -587,7 +587,7 @@ export default function FleetAttendance({
                           );
                         }}
                         className={styles.searchInput}
-                        style={{ background: 'rgba(30, 41, 59, 0.5)', padding: '0.25rem 0.5rem', borderRadius: '6px', fontSize: '0.8rem' }}
+                        style={{ background: 'color-mix(in srgb, var(--c-800) 50%, transparent)', padding: '0.25rem 0.5rem', borderRadius: '6px', fontSize: '0.8rem' }}
                       />
                     </td>
                   </tr>
@@ -602,8 +602,8 @@ export default function FleetAttendance({
       <div className={styles.mobileDutyDateBar}>
         <div className={styles.mobileDutyDateHeader}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-            <Calendar size={15} color="#38bdf8" />
-            <span style={{ fontWeight: 700, color: '#f8fafc', fontSize: '0.85rem' }}>Duty Date</span>
+            <Calendar size={15} style={{ color: 'var(--a-sky)' }} />
+            <span style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '0.85rem' }}>Duty Date</span>
           </div>
           {selectedDate === todayStr ? (
             <span className={styles.dutyTodayPill}>Today</span>
@@ -660,7 +660,7 @@ export default function FleetAttendance({
       {/* Mobile Responsive Roster Cards */}
       <div className={styles.mobileCardsGrid}>
         {filteredRoster.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#94a3b8' }}>
+          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--a-text-3)' }}>
             No drivers found matching status filter.
           </div>
         ) : (
@@ -670,12 +670,12 @@ export default function FleetAttendance({
             <div key={driver._id} className={styles.mobileCard}>
               <div className={styles.mobileCardHeader}>
                 <div>
-                  <div style={{ fontWeight: 700, color: '#ffffff' }}>{driver.fullName}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--a-text)' }}>{driver.fullName}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>
                     {driver.assignedVehicle?.registrationNumber || 'No truck assigned'}
                   </div>
                 </div>
-                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--a-sky)' }}>
                   {item.totalDutyHours || 0} hrs duty
                 </span>
               </div>
@@ -685,8 +685,8 @@ export default function FleetAttendance({
                 <button
                   onClick={() => handleQuickStatusChange(driver._id, 'PRESENT')}
                   style={{
-                    background: item.status === 'PRESENT' ? '#10b981' : 'rgba(30, 41, 59, 0.6)',
-                    color: item.status === 'PRESENT' ? '#ffffff' : '#94a3b8',
+                    background: item.status === 'PRESENT' ? '#10b981' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                    color: item.status === 'PRESENT' ? 'var(--a-text)' : 'var(--a-text-3)',
                     border: 'none',
                     padding: '0.35rem',
                     borderRadius: '6px',
@@ -699,8 +699,8 @@ export default function FleetAttendance({
                 <button
                   onClick={() => handleQuickStatusChange(driver._id, 'HALF_DAY')}
                   style={{
-                    background: item.status === 'HALF_DAY' ? '#f59e0b' : 'rgba(30, 41, 59, 0.6)',
-                    color: item.status === 'HALF_DAY' ? '#ffffff' : '#94a3b8',
+                    background: item.status === 'HALF_DAY' ? '#f59e0b' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                    color: item.status === 'HALF_DAY' ? 'var(--a-text)' : 'var(--a-text-3)',
                     border: 'none',
                     padding: '0.35rem',
                     borderRadius: '6px',
@@ -713,8 +713,8 @@ export default function FleetAttendance({
                 <button
                   onClick={() => handleQuickStatusChange(driver._id, 'ABSENT')}
                   style={{
-                    background: item.status === 'ABSENT' ? '#ef4444' : 'rgba(30, 41, 59, 0.6)',
-                    color: item.status === 'ABSENT' ? '#ffffff' : '#94a3b8',
+                    background: item.status === 'ABSENT' ? '#ef4444' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                    color: item.status === 'ABSENT' ? 'var(--a-text)' : 'var(--a-text-3)',
                     border: 'none',
                     padding: '0.35rem',
                     borderRadius: '6px',
@@ -727,8 +727,8 @@ export default function FleetAttendance({
                 <button
                   onClick={() => handleQuickStatusChange(driver._id, 'LEAVE')}
                   style={{
-                    background: item.status === 'LEAVE' ? '#64748b' : 'rgba(30, 41, 59, 0.6)',
-                    color: item.status === 'LEAVE' ? '#ffffff' : '#94a3b8',
+                    background: item.status === 'LEAVE' ? '#64748b' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                    color: item.status === 'LEAVE' ? 'var(--a-text)' : 'var(--a-text-3)',
                     border: 'none',
                     padding: '0.35rem',
                     borderRadius: '6px',
@@ -743,7 +743,7 @@ export default function FleetAttendance({
               {/* Punch In / Out */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.2rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Punch In</label>
+                  <label style={{ fontSize: '0.7rem', color: 'var(--a-text-3)' }}>Punch In</label>
                   <input
                     type="time"
                     value={item.dutyStartTime || ''}
@@ -755,7 +755,7 @@ export default function FleetAttendance({
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Punch Out</label>
+                  <label style={{ fontSize: '0.7rem', color: 'var(--a-text-3)' }}>Punch Out</label>
                   <input
                     type="time"
                     value={item.dutyEndTime || ''}
@@ -782,7 +782,7 @@ export default function FleetAttendance({
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f8fafc', margin: 0 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--a-text)', margin: 0 }}>
                   Driver Monthly Attendance Calendar
                 </h3>
                 {drivers.length === 1 && (
@@ -793,7 +793,7 @@ export default function FleetAttendance({
                       padding: '0.15rem 0.45rem',
                       borderRadius: '6px',
                       background: 'rgba(56, 189, 248, 0.15)',
-                      color: '#38bdf8',
+                      color: 'var(--a-sky)',
                       border: '1px solid rgba(56, 189, 248, 0.3)',
                     }}
                   >
@@ -801,7 +801,7 @@ export default function FleetAttendance({
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>
+              <p style={{ fontSize: '0.8rem', color: 'var(--a-text-3)', margin: '0.2rem 0 0 0' }}>
                 Monthly attendance breakdown, duty shifts, and calendar status for selected driver
               </p>
             </div>
@@ -810,7 +810,7 @@ export default function FleetAttendance({
           <div className={styles.monthlyControlsRow}>
             {/* Driver Dropdown (auto-selected when 1 driver) */}
             <div className={styles.monthlyDriverSelector}>
-              <UserCheck size={16} color="#38bdf8" />
+              <UserCheck size={16} style={{ color: 'var(--a-sky)' }} />
               <select
                 id="driver-attendance-dropdown"
                 value={selectedDriverId}
@@ -879,8 +879,8 @@ export default function FleetAttendance({
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '0.75rem',
-              background: 'rgba(30, 41, 59, 0.4)',
-              border: '1px solid rgba(51, 65, 85, 0.45)',
+              background: 'color-mix(in srgb, var(--c-800) 40%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--c-700) 45%, transparent)',
               borderRadius: '10px',
               padding: '0.65rem 0.9rem',
               flexWrap: 'wrap',
@@ -897,7 +897,7 @@ export default function FleetAttendance({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#38bdf8',
+                  color: 'var(--a-sky)',
                   fontWeight: 700,
                   fontSize: '0.85rem',
                 }}
@@ -905,27 +905,27 @@ export default function FleetAttendance({
                 {selectedDriver.fullName?.charAt(0)?.toUpperCase() || 'D'}
               </div>
               <div>
-                <span style={{ fontWeight: 700, color: '#f8fafc', fontSize: '0.9rem' }}>
+                <span style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '0.9rem' }}>
                   {selectedDriver.fullName}
                 </span>
                 {selectedDriver.phone && (
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginLeft: '0.5rem' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--a-text-3)', marginLeft: '0.5rem' }}>
                     📱 {selectedDriver.phone}
                   </span>
                 )}
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.78rem', color: '#94a3b8', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.78rem', color: 'var(--a-text-3)', flexWrap: 'wrap' }}>
               {selectedDriver.assignedVehicleId?.registrationNumber ? (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#38bdf8' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--a-sky)' }}>
                   <Truck size={14} /> {selectedDriver.assignedVehicleId.registrationNumber}
                 </span>
               ) : (
                 <span style={{ color: '#64748b' }}>Unassigned Vehicle</span>
               )}
               {selectedDriver.licenseNumber && (
-                <span>• License: <strong style={{ color: '#e2e8f0' }}>{selectedDriver.licenseNumber}</strong></span>
+                <span>• License: <strong style={{ color: 'var(--a-text)' }}>{selectedDriver.licenseNumber}</strong></span>
               )}
             </div>
           </div>
@@ -938,7 +938,7 @@ export default function FleetAttendance({
               <span>Present Days</span>
               <CheckCircle2 size={14} color="#10b981" />
             </div>
-            <div className={styles.monthlyStatVal} style={{ color: '#34d399' }}>
+            <div className={styles.monthlyStatVal} style={{ color: 'var(--a-green)' }}>
               {monthlySummary.present}
             </div>
           </div>
@@ -948,7 +948,7 @@ export default function FleetAttendance({
               <span>Half Days</span>
               <Clock size={14} color="#f59e0b" />
             </div>
-            <div className={styles.monthlyStatVal} style={{ color: '#fbbf24' }}>
+            <div className={styles.monthlyStatVal} style={{ color: 'var(--a-amber)' }}>
               {monthlySummary.halfDay}
             </div>
           </div>
@@ -958,7 +958,7 @@ export default function FleetAttendance({
               <span>Absent</span>
               <XCircle size={14} color="#ef4444" />
             </div>
-            <div className={styles.monthlyStatVal} style={{ color: '#f87171' }}>
+            <div className={styles.monthlyStatVal} style={{ color: 'var(--a-red)' }}>
               {monthlySummary.absent}
             </div>
           </div>
@@ -968,7 +968,7 @@ export default function FleetAttendance({
               <span>On Leave</span>
               <AlertCircle size={14} color="#818cf8" />
             </div>
-            <div className={styles.monthlyStatVal} style={{ color: '#a5b4fc' }}>
+            <div className={styles.monthlyStatVal} style={{ color: 'var(--a-indigo)' }}>
               {monthlySummary.leave}
             </div>
           </div>
@@ -976,10 +976,10 @@ export default function FleetAttendance({
           <div className={styles.monthlyStatCard}>
             <div className={styles.monthlyStatLabel}>
               <span>Total Duty Hours</span>
-              <Clock size={14} color="#38bdf8" />
+              <Clock size={14} style={{ color: 'var(--a-sky)' }} />
             </div>
-            <div className={styles.monthlyStatVal} style={{ color: '#38bdf8' }}>
-              {monthlySummary.totalDutyHours} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#94a3b8' }}>hrs</span>
+            <div className={styles.monthlyStatVal} style={{ color: 'var(--a-sky)' }}>
+              {monthlySummary.totalDutyHours} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--a-text-3)' }}>hrs</span>
             </div>
           </div>
         </div>
@@ -1000,7 +1000,7 @@ export default function FleetAttendance({
               <div
                 key={w.short + idx}
                 className={styles.calendarWeekdayLabel}
-                style={{ color: idx === 0 ? '#f87171' : idx === 6 ? '#38bdf8' : '#94a3b8' }}
+                style={{ color: idx === 0 ? 'var(--a-red)' : idx === 6 ? 'var(--a-sky)' : 'var(--a-text-3)' }}
               >
                 <span className={styles.calendarWeekdayDesktop}>{w.short}</span>
                 <span className={styles.calendarWeekdayMobile}>{w.letter}</span>
@@ -1039,25 +1039,25 @@ export default function FleetAttendance({
                     {att?.attendance === 'PRESENT' && (
                       <div className={styles.calendarStatusRow}>
                         <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterP}`}>P</span>
-                        <span className={styles.calendarStatusTextDesktop} style={{ color: '#34d399' }}>Present</span>
+                        <span className={styles.calendarStatusTextDesktop} style={{ color: 'var(--a-green)' }}>Present</span>
                       </div>
                     )}
                     {att?.attendance === 'HALF_DAY' && (
                       <div className={styles.calendarStatusRow}>
                         <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterH}`}>H</span>
-                        <span className={styles.calendarStatusTextDesktop} style={{ color: '#fbbf24' }}>Half Day</span>
+                        <span className={styles.calendarStatusTextDesktop} style={{ color: 'var(--a-amber)' }}>Half Day</span>
                       </div>
                     )}
                     {att?.attendance === 'ABSENT' && (
                       <div className={styles.calendarStatusRow}>
                         <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterA}`}>A</span>
-                        <span className={styles.calendarStatusTextDesktop} style={{ color: '#f87171' }}>Absent</span>
+                        <span className={styles.calendarStatusTextDesktop} style={{ color: 'var(--a-red)' }}>Absent</span>
                       </div>
                     )}
                     {att?.attendance === 'LEAVE' && (
                       <div className={styles.calendarStatusRow}>
                         <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterL}`}>L</span>
-                        <span className={styles.calendarStatusTextDesktop} style={{ color: '#a5b4fc' }}>Leave</span>
+                        <span className={styles.calendarStatusTextDesktop} style={{ color: 'var(--a-indigo)' }}>Leave</span>
                       </div>
                     )}
                     {!att && (
@@ -1085,31 +1085,31 @@ export default function FleetAttendance({
 
         {/* Calendar Legend Bar */}
         <div className={styles.calendarLegendBar}>
-          <div style={{ fontWeight: 700, color: '#f8fafc', fontSize: '0.78rem' }}>
+          <div style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '0.78rem' }}>
             Status Key:
           </div>
           <div className={styles.calendarLegendItem}>
             <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterP}`} style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}>P</span>
-            <span style={{ color: '#34d399', fontWeight: 600 }}>Present</span>
+            <span style={{ color: 'var(--a-green)', fontWeight: 600 }}>Present</span>
           </div>
           <div className={styles.calendarLegendItem}>
             <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterH}`} style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}>H</span>
-            <span style={{ color: '#fbbf24', fontWeight: 600 }}>Half Day</span>
+            <span style={{ color: 'var(--a-amber)', fontWeight: 600 }}>Half Day</span>
           </div>
           <div className={styles.calendarLegendItem}>
             <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterA}`} style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}>A</span>
-            <span style={{ color: '#f87171', fontWeight: 600 }}>Absent</span>
+            <span style={{ color: 'var(--a-red)', fontWeight: 600 }}>Absent</span>
           </div>
           <div className={styles.calendarLegendItem}>
             <span className={`${styles.calendarLetterBadge} ${styles.badgeLetterL}`} style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}>L</span>
-            <span style={{ color: '#a5b4fc', fontWeight: 600 }}>Leave</span>
+            <span style={{ color: 'var(--a-indigo)', fontWeight: 600 }}>Leave</span>
           </div>
         </div>
 
         {/* Footer info note */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', flexWrap: 'wrap', gap: '0.5rem' }}>
           <span>💡 Tip: Click on any date to quickly mark attendance in popup or scroll to the daily roster above.</span>
-          {monthlyLoading && <span style={{ color: '#38bdf8' }}>Refreshing calendar...</span>}
+          {monthlyLoading && <span style={{ color: 'var(--a-sky)' }}>Refreshing calendar...</span>}
         </div>
       </div>
 
@@ -1126,7 +1126,7 @@ export default function FleetAttendance({
                 <h3 className={styles.modalTitle} style={{ fontSize: '1.05rem', margin: 0 }}>
                   Mark Driver Attendance
                 </h3>
-                <div style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '0.2rem', fontWeight: 600 }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--a-sky)', marginTop: '0.2rem', fontWeight: 600 }}>
                   📅 {new Date(modalDate).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
               </div>
@@ -1147,18 +1147,18 @@ export default function FleetAttendance({
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.6rem',
-                  background: 'rgba(30, 41, 59, 0.6)',
+                  background: 'color-mix(in srgb, var(--c-800) 60%, transparent)',
                   padding: '0.55rem 0.75rem',
                   borderRadius: '8px',
-                  border: '1px solid rgba(51, 65, 85, 0.5)',
+                  border: '1px solid color-mix(in srgb, var(--c-700) 50%, transparent)',
                 }}
               >
-                <User size={16} color="#38bdf8" />
-                <span style={{ fontWeight: 700, color: '#f8fafc', fontSize: '0.88rem' }}>
+                <User size={16} style={{ color: 'var(--a-sky)' }} />
+                <span style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '0.88rem' }}>
                   {selectedDriver?.fullName || 'Driver'}
                 </span>
                 {selectedDriver?.assignedVehicleId?.registrationNumber && (
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginLeft: 'auto' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--a-text-3)', marginLeft: 'auto' }}>
                     {selectedDriver.assignedVehicleId.registrationNumber}
                   </span>
                 )}
@@ -1166,7 +1166,7 @@ export default function FleetAttendance({
 
               {/* Status 1-Click Buttons */}
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '0.4rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--a-text-3)', display: 'block', marginBottom: '0.4rem' }}>
                   Select Status
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem' }}>
@@ -1184,9 +1184,9 @@ export default function FleetAttendance({
                       gap: '0.2rem',
                       padding: '0.55rem 0.2rem',
                       borderRadius: '8px',
-                      border: popupStatus === 'PRESENT' ? '2px solid #10b981' : '1px solid rgba(51, 65, 85, 0.6)',
-                      background: popupStatus === 'PRESENT' ? 'rgba(16, 185, 129, 0.25)' : 'rgba(30, 41, 59, 0.6)',
-                      color: popupStatus === 'PRESENT' ? '#34d399' : '#94a3b8',
+                      border: popupStatus === 'PRESENT' ? '2px solid #10b981' : '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)',
+                      background: popupStatus === 'PRESENT' ? 'rgba(16, 185, 129, 0.25)' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                      color: popupStatus === 'PRESENT' ? 'var(--a-green)' : 'var(--a-text-3)',
                       cursor: 'pointer',
                       fontWeight: 700,
                       fontSize: '0.75rem',
@@ -1211,9 +1211,9 @@ export default function FleetAttendance({
                       gap: '0.2rem',
                       padding: '0.55rem 0.2rem',
                       borderRadius: '8px',
-                      border: popupStatus === 'HALF_DAY' ? '2px solid #f59e0b' : '1px solid rgba(51, 65, 85, 0.6)',
-                      background: popupStatus === 'HALF_DAY' ? 'rgba(245, 158, 11, 0.25)' : 'rgba(30, 41, 59, 0.6)',
-                      color: popupStatus === 'HALF_DAY' ? '#fbbf24' : '#94a3b8',
+                      border: popupStatus === 'HALF_DAY' ? '2px solid #f59e0b' : '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)',
+                      background: popupStatus === 'HALF_DAY' ? 'rgba(245, 158, 11, 0.25)' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                      color: popupStatus === 'HALF_DAY' ? 'var(--a-amber)' : 'var(--a-text-3)',
                       cursor: 'pointer',
                       fontWeight: 700,
                       fontSize: '0.75rem',
@@ -1238,9 +1238,9 @@ export default function FleetAttendance({
                       gap: '0.2rem',
                       padding: '0.55rem 0.2rem',
                       borderRadius: '8px',
-                      border: popupStatus === 'ABSENT' ? '2px solid #ef4444' : '1px solid rgba(51, 65, 85, 0.6)',
-                      background: popupStatus === 'ABSENT' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(30, 41, 59, 0.6)',
-                      color: popupStatus === 'ABSENT' ? '#f87171' : '#94a3b8',
+                      border: popupStatus === 'ABSENT' ? '2px solid #ef4444' : '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)',
+                      background: popupStatus === 'ABSENT' ? 'rgba(239, 68, 68, 0.25)' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                      color: popupStatus === 'ABSENT' ? 'var(--a-red)' : 'var(--a-text-3)',
                       cursor: 'pointer',
                       fontWeight: 700,
                       fontSize: '0.75rem',
@@ -1265,9 +1265,9 @@ export default function FleetAttendance({
                       gap: '0.2rem',
                       padding: '0.55rem 0.2rem',
                       borderRadius: '8px',
-                      border: popupStatus === 'LEAVE' ? '2px solid #818cf8' : '1px solid rgba(51, 65, 85, 0.6)',
-                      background: popupStatus === 'LEAVE' ? 'rgba(129, 140, 248, 0.25)' : 'rgba(30, 41, 59, 0.6)',
-                      color: popupStatus === 'LEAVE' ? '#a5b4fc' : '#94a3b8',
+                      border: popupStatus === 'LEAVE' ? '2px solid var(--a-indigo)' : '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)',
+                      background: popupStatus === 'LEAVE' ? 'rgba(129, 140, 248, 0.25)' : 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                      color: popupStatus === 'LEAVE' ? 'var(--a-indigo)' : 'var(--a-text-3)',
                       cursor: 'pointer',
                       fontWeight: 700,
                       fontSize: '0.75rem',
@@ -1284,7 +1284,7 @@ export default function FleetAttendance({
               {(popupStatus === 'PRESENT' || popupStatus === 'HALF_DAY') && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem' }}>
                   <div>
-                    <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '0.25rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--a-text-3)', display: 'block', marginBottom: '0.25rem' }}>
                       Punch In
                     </label>
                     <input
@@ -1296,7 +1296,7 @@ export default function FleetAttendance({
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '0.25rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--a-text-3)', display: 'block', marginBottom: '0.25rem' }}>
                       Punch Out
                     </label>
                     <input
@@ -1312,7 +1312,7 @@ export default function FleetAttendance({
 
               {/* Remarks */}
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '0.25rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--a-text-3)', display: 'block', marginBottom: '0.25rem' }}>
                   Remarks (Optional)
                 </label>
                 <input
@@ -1333,7 +1333,7 @@ export default function FleetAttendance({
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#38bdf8',
+                  color: 'var(--a-sky)',
                   fontSize: '0.78rem',
                   fontWeight: 600,
                   display: 'flex',

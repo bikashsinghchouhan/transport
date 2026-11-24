@@ -137,7 +137,7 @@ function AdminLoginForm() {
           <Link href="/admin/forgot-password" className={styles.link}>
             Forgot your password? Get reset link
           </Link>
-          <Link href="/" className={styles.link} style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.5rem' }}>
+          <Link href="/" className={styles.link} style={{ color: 'var(--a-text-3)', fontSize: '0.8rem', marginTop: '0.5rem' }}>
             ← Back to Main Website
           </Link>
         </div>
@@ -153,7 +153,7 @@ export default function AdminLoginPage() {
         <div className={styles.adminContainer}>
           <div className={styles.card} style={{ textAlign: 'center', padding: '3rem' }}>
             <div className={styles.spinner} style={{ margin: '0 auto 1rem' }} />
-            <p style={{ color: '#94a3b8' }}>Loading login portal...</p>
+            <p style={{ color: 'var(--a-text-3)' }}>Loading login portal...</p>
           </div>
         </div>
       }

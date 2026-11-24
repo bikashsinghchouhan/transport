@@ -88,7 +88,7 @@ export default function HomeContent() {
                   alt="Illustration of a goods transport truck"
                   width={600}
                   height={450}
-                  sizes="(max-width: 992px) 100vw, 600px"
+                  sizes="(max-width: 992px) 100vw, 50vw"
                   className={styles.heroImage}
                   priority
                 />
@@ -286,7 +286,7 @@ export default function HomeContent() {
       </section>
 
       {/* 7. FAQ SECTION */}
-      <section className="section-padding" style={{ background: 'rgba(3, 7, 18, 0.3)' }}>
+      <section className="section-padding" style={{ background: 'var(--tint-1)' }}>
         <div className="container">
           <div className={styles.sectionHeader}>
             <div className={styles.secBadge}>FAQ</div>

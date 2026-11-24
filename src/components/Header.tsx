@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Phone, Menu, X, ArrowRight, MessageSquare } from 'lucide-react';
 import { useContact } from '@/context/ContactContext';
 import { telHref } from '@/lib/seo';
+import ThemeToggle from './ThemeToggle';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -81,9 +82,10 @@ export default function Header() {
 
         <div className={styles.actions}>
           <a href={telHref(contact.phone)} className={`${styles.headerPhoneBtn} btn-neon`} suppressHydrationWarning>
-            <Phone size={16} />
+            <Phone size={14} />
             <span className={styles.phoneText} suppressHydrationWarning>{contact.phone}</span>
           </a>
+          <ThemeToggle className={styles.themeToggle} />
           <button
             className={styles.mobileMenuBtn}
             onClick={isOpen ? handleCloseDrawer : handleOpenDrawer}

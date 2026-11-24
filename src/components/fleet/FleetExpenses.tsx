@@ -343,7 +343,7 @@ export default function FleetExpenses({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontSize: '0.9rem', color: '#f87171', fontWeight: 700 }}>
+          <span style={{ fontSize: '0.9rem', color: 'var(--a-red)', fontWeight: 700 }}>
             Total: ₹{totalAmount.toLocaleString()}
           </span>
           <button onClick={openAddModal} className={styles.primaryActionBtn}>
@@ -468,7 +468,7 @@ export default function FleetExpenses({
           <tbody>
             {groupedExpenses.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                <td colSpan={5} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--a-text-3)' }}>
                   {loading ? 'Loading expenses...' : 'No expenses found matching criteria.'}
                 </td>
               </tr>
@@ -535,11 +535,11 @@ export default function FleetExpenses({
                       {/* Total Amount */}
                       <td>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                          <span style={{ fontWeight: 700, color: '#f87171', fontSize: '1rem' }}>
+                          <span style={{ fontWeight: 700, color: 'var(--a-red)', fontSize: '1rem' }}>
                             ₹{group.totalAmount.toLocaleString()}
                           </span>
                           {group.items.length > 1 && (
-                            <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
                               {group.items.length} items combined
                             </span>
                           )}
@@ -582,9 +582,9 @@ export default function FleetExpenses({
                     {/* Expanded breakdown row */}
                     {isExpanded && group.items.length > 1 && (
                       <tr>
-                        <td colSpan={5} style={{ background: 'rgba(15, 23, 42, 0.45)', padding: '0.5rem 1rem' }}>
+                        <td colSpan={5} style={{ background: 'color-mix(in srgb, var(--c-900) 45%, transparent)', padding: '0.5rem 1rem' }}>
                           <div className={styles.tripExpandedSubTable}>
-                            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38bdf8', marginBottom: '0.2rem' }}>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--a-sky)', marginBottom: '0.2rem' }}>
                               Itemized Breakdown for Trip: {group.tripRoute}
                             </div>
                             {group.items.map((subItem: any) => (
@@ -593,12 +593,12 @@ export default function FleetExpenses({
                                   <span className={`${styles.expenseChip} ${getCategoryChipClass(subItem.category)}`} style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem' }}>
                                     {subItem.category}
                                   </span>
-                                  <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>
+                                  <span style={{ color: 'var(--a-text-3)', fontSize: '0.75rem' }}>
                                     {subItem.remarks || 'No remarks'}
                                   </span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                  <span style={{ fontWeight: 600, color: '#f87171' }}>
+                                  <span style={{ fontWeight: 600, color: 'var(--a-red)' }}>
                                     ₹{subItem.amount.toLocaleString()}
                                   </span>
                                   <button
@@ -637,11 +637,11 @@ export default function FleetExpenses({
                   {group.vehicle?.registrationNumber || 'Vehicle'}
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontWeight: 700, color: '#f87171', fontSize: '1.05rem' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--a-red)', fontSize: '1.05rem' }}>
                     ₹{group.totalAmount.toLocaleString()}
                   </div>
                   {group.items.length > 1 && (
-                    <div style={{ fontSize: '0.68rem', color: '#94a3b8' }}>
+                    <div style={{ fontSize: '0.68rem', color: 'var(--a-text-3)' }}>
                       {group.items.length} items combined
                     </div>
                   )}
@@ -660,13 +660,13 @@ export default function FleetExpenses({
                 </div>
               )}
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94a3b8' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--a-text-3)' }}>
                 <span>📅 {new Date(group.date).toLocaleDateString()}</span>
                 <span>👤 {group.driver?.fullName || 'Unassigned'}</span>
               </div>
 
               {group.remarks && (
-                <div style={{ fontSize: '0.75rem', color: '#cbd5e1', fontStyle: 'italic' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--a-text-2)', fontStyle: 'italic' }}>
                   💬 {group.remarks}
                 </div>
               )}
@@ -685,12 +685,12 @@ export default function FleetExpenses({
               </div>
 
               {/* Mobile Card Footer */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.35rem', paddingTop: '0.35rem', borderTop: '1px solid rgba(51, 65, 85, 0.4)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.35rem', paddingTop: '0.35rem', borderTop: '1px solid color-mix(in srgb, var(--c-700) 40%, transparent)' }}>
                 {group.items.length > 1 ? (
                   <button
                     type="button"
                     onClick={() => toggleTripExpand(group.key)}
-                    style={{ background: 'transparent', border: 'none', color: '#38bdf8', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer' }}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--a-sky)', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer' }}
                   >
                     {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     {isExpanded ? 'Hide items' : `View ${group.items.length} items`}
@@ -722,7 +722,7 @@ export default function FleetExpenses({
                         {subItem.category}
                       </span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontWeight: 600, color: '#f87171', fontSize: '0.78rem' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--a-red)', fontSize: '0.78rem' }}>
                           ₹{subItem.amount.toLocaleString()}
                         </span>
                         <button
@@ -758,7 +758,7 @@ export default function FleetExpenses({
             <form onSubmit={handleSubmit}>
               <div className={styles.modalBody}>
                 {errorMsg && (
-                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: 'var(--a-red-2)', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <AlertCircle size={16} /> {errorMsg}
                   </div>
                 )}

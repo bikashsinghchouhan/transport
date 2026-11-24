@@ -181,11 +181,11 @@ export default function FleetPayments({
         <div className={styles.kpiCard} style={{ borderColor: 'rgba(245, 158, 11, 0.4)' }}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Total Pending Receivables</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(245, 158, 11, 0.15)', color: 'var(--a-amber)' }}>
               <IndianRupee size={20} />
             </div>
           </div>
-          <div className={styles.kpiValue} style={{ color: '#fbbf24' }}>
+          <div className={styles.kpiValue} style={{ color: 'var(--a-amber)' }}>
             ₹{(pendingData.totalPendingAmount || 0).toLocaleString()}
           </div>
           <div className={styles.kpiSubtitle}>Awaiting customer collection</div>
@@ -194,7 +194,7 @@ export default function FleetPayments({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Unpaid Invoices</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(56, 189, 248, 0.15)', color: 'var(--a-sky)' }}>
               <Clock size={20} />
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function FleetPayments({
         <div className={styles.kpiCard}>
           <div className={styles.kpiCardHeader}>
             <span className={styles.kpiTitle}>Customers with Balance</span>
-            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
+            <div className={styles.kpiIconWrapper} style={{ background: 'rgba(168, 85, 247, 0.15)', color: 'var(--a-purple)' }}>
               <User size={20} />
             </div>
           </div>
@@ -287,8 +287,8 @@ export default function FleetPayments({
           <tbody>
             {filteredPendingTrips.length === 0 ? (
               <tr>
-                <td colSpan={9} style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
-                  <CheckCircle2 size={32} color="#34d399" style={{ margin: '0 auto 0.5rem auto' }} />
+                <td colSpan={9} style={{ textAlign: 'center', padding: '3rem', color: 'var(--a-text-3)' }}>
+                  <CheckCircle2 size={32} style={{ color: 'var(--a-green)', margin: '0 auto 0.5rem auto' }} />
                   <div>{search ? 'No pending payments match your search.' : 'All receivables are clear! No pending customer payments.'}</div>
                 </td>
               </tr>
@@ -300,11 +300,11 @@ export default function FleetPayments({
                 return (
                   <tr key={t._id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#ffffff' }}>{t.customerName}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{t.customerName}</div>
                     </td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                        <span style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{t.customerMobile}</span>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--a-text-2)' }}>{t.customerMobile}</span>
                         {t.customerMobile && (
                           <>
                             <a
@@ -336,21 +336,21 @@ export default function FleetPayments({
                       </div>
                     </td>
                     <td>
-                      <span style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--a-text-2)' }}>
                         {new Date(t.date).toLocaleDateString()}
                       </span>
                     </td>
                     <td>
-                      <span style={{ fontSize: '0.82rem', color: '#e2e8f0' }}>{t.tripRoute}</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--a-text)' }}>{t.tripRoute}</span>
                     </td>
                     <td>
-                      <span style={{ fontWeight: 600, color: '#38bdf8' }}>₹{t.tripAmount.toLocaleString()}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--a-sky)' }}>₹{t.tripAmount.toLocaleString()}</span>
                     </td>
                     <td>
-                      <span style={{ fontWeight: 600, color: '#34d399' }}>₹{totalCollected.toLocaleString()}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--a-green)' }}>₹{totalCollected.toLocaleString()}</span>
                     </td>
                     <td>
-                      <span style={{ fontWeight: 700, color: '#fbbf24', fontSize: '1rem' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--a-amber)', fontSize: '1rem' }}>
                         ₹{t.pendingAmount.toLocaleString()}
                       </span>
                     </td>
@@ -374,7 +374,7 @@ export default function FleetPayments({
       {/* Mobile Responsive Cards */}
       <div className={styles.mobileCardsGrid}>
         {filteredPendingTrips.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#94a3b8' }}>
+          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--a-text-3)' }}>
             No pending payments match your search.
           </div>
         ) : (
@@ -386,21 +386,21 @@ export default function FleetPayments({
             <div key={t._id} className={styles.mobileCard}>
               <div className={styles.mobileCardHeader}>
                 <div>
-                  <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>{t.customerName}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '1rem' }}>{t.customerName}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>
                     {t.tripRoute} • {new Date(t.date).toLocaleDateString()}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Pending</div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fbbf24' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)', textTransform: 'uppercase' }}>Pending</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--a-amber)' }}>
                     ₹{t.pendingAmount.toLocaleString()}
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{t.customerMobile}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--a-text-2)' }}>{t.customerMobile}</span>
                 <div style={{ display: 'flex', gap: '0.4rem' }}>
                   {t.customerMobile && (
                     <>
@@ -425,13 +425,13 @@ export default function FleetPayments({
               <div className={styles.mobileStatRow}>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Invoice</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#38bdf8' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-sky)' }}>
                     ₹{t.tripAmount.toLocaleString()}
                   </span>
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Collected</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#34d399' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-green)' }}>
                     ₹{totalCollected.toLocaleString()}
                   </span>
                 </div>
@@ -458,7 +458,7 @@ export default function FleetPayments({
             <div className={styles.modalHeader}>
               <div>
                 <h3 className={styles.modalTitle}>Record Payment Collection</h3>
-                <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--a-text-3)' }}>
                   Customer: <strong>{selectedTrip.customerName}</strong> ({selectedTrip.tripRoute})
                 </span>
               </div>
@@ -470,7 +470,7 @@ export default function FleetPayments({
             <form onSubmit={handleSubmitPayment}>
               <div className={styles.modalBody}>
                 {errorMsg && (
-                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: 'var(--a-red-2)', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <AlertCircle size={16} /> {errorMsg}
                   </div>
                 )}
@@ -478,8 +478,8 @@ export default function FleetPayments({
                 {/* Trip Financial Snapshot */}
                 <div
                   style={{
-                    background: 'rgba(30, 41, 59, 0.6)',
-                    border: '1px solid rgba(51, 65, 85, 0.8)',
+                    background: 'color-mix(in srgb, var(--c-800) 60%, transparent)',
+                    border: '1px solid color-mix(in srgb, var(--c-700) 80%, transparent)',
                     borderRadius: '12px',
                     padding: '0.85rem 1rem',
                     display: 'grid',
@@ -488,20 +488,20 @@ export default function FleetPayments({
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Invoice</span>
-                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#38bdf8' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)', textTransform: 'uppercase' }}>Invoice</span>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--a-sky)' }}>
                       ₹{selectedTrip.tripAmount.toLocaleString()}
                     </div>
                   </div>
                   <div>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Previously Received</span>
-                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#34d399' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)', textTransform: 'uppercase' }}>Previously Received</span>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--a-green)' }}>
                       ₹{((selectedTrip.driverReceived || 0) + (selectedTrip.managerReceived || 0)).toLocaleString()}
                     </div>
                   </div>
                   <div>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Current Pending</span>
-                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#fbbf24' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--a-text-3)', textTransform: 'uppercase' }}>Current Pending</span>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--a-amber)' }}>
                       ₹{selectedTrip.pendingAmount.toLocaleString()}
                     </div>
                   </div>
@@ -580,7 +580,7 @@ export default function FleetPayments({
                 {/* Historical Payment Logs for this Trip */}
                 {paymentHistory.length > 0 && (
                   <div style={{ marginTop: '0.5rem' }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#38bdf8', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--a-sky)', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <History size={14} /> Collection Transaction History
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', maxHeight: '120px', overflowY: 'auto' }}>
@@ -588,7 +588,7 @@ export default function FleetPayments({
                         <div
                           key={p._id}
                           style={{
-                            background: 'rgba(15, 23, 42, 0.7)',
+                            background: 'color-mix(in srgb, var(--c-900) 70%, transparent)',
                             padding: '0.4rem 0.65rem',
                             borderRadius: '6px',
                             display: 'flex',
@@ -596,10 +596,10 @@ export default function FleetPayments({
                             fontSize: '0.78rem',
                           }}
                         >
-                          <span style={{ color: '#cbd5e1' }}>
+                          <span style={{ color: 'var(--a-text-2)' }}>
                             {new Date(p.date).toLocaleDateString()} via {p.paymentMode} ({p.collectedBy})
                           </span>
-                          <span style={{ color: '#34d399', fontWeight: 600 }}>+₹{p.amount.toLocaleString()}</span>
+                          <span style={{ color: 'var(--a-green)', fontWeight: 600 }}>+₹{p.amount.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>

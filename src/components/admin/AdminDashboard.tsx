@@ -50,6 +50,7 @@ import {
   DEFAULT_OFFICE_MAP_EMBED_URL,
 } from '@/utils/mapUtils';
 import styles from '@/app/admin/admin.module.css';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface AdminInfo {
   id: string;
@@ -750,7 +751,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
     return (
       <div className={styles.adminShell} style={{ alignItems: 'center', justifyContent: 'center' }}>
         <div className={styles.spinner} style={{ width: '40px', height: '40px' }} />
-        <p style={{ marginLeft: '1rem', color: '#94a3b8' }}>Loading Admin Console...</p>
+        <p style={{ marginLeft: '1rem', color: 'var(--a-text-3)' }}>Loading Admin Console...</p>
       </div>
     );
   }
@@ -815,7 +816,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                     marginLeft: 'auto',
                     fontSize: '0.65rem',
                     background: 'rgba(56, 189, 248, 0.2)',
-                    color: '#38bdf8',
+                    color: 'var(--a-sky)',
                     padding: '0.1rem 0.45rem',
                     borderRadius: '999px',
                     fontWeight: 700,
@@ -824,7 +825,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                   PRO
                 </span>
                 <span
-                  style={{ marginLeft: '0.35rem', color: '#94a3b8', display: 'flex', alignItems: 'center' }}
+                  style={{ marginLeft: '0.35rem', color: 'var(--a-text-3)', display: 'flex', alignItems: 'center' }}
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -948,7 +949,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
         </div>
 
         <div className={styles.sidebarFooter}>
-          <Link href="/" target="_blank" className={styles.navItem} onClick={() => setMobileSidebarOpen(false)} style={{ color: '#38bdf8' }}>
+          <Link href="/" target="_blank" className={styles.navItem} onClick={() => setMobileSidebarOpen(false)} style={{ color: 'var(--a-sky)' }}>
             <ExternalLink size={16} /> View Website
           </Link>
           <button onClick={() => { setMobileSidebarOpen(false); handleLogout(); }} className={styles.navItem} style={{ color: '#ef4444' }}>
@@ -988,11 +989,14 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
             </h2>
           </div>
 
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <ThemeToggle className={styles.themeToggle} />
           <div className={styles.userBadge}>
-            <ShieldCheck size={16} color="#38bdf8" />
+            <ShieldCheck size={16} style={{ color: 'var(--a-sky)' }} />
             <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>
               {admin?.email}
             </span>
+          </div>
           </div>
         </div>
 
@@ -1011,7 +1015,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                 {/* Profile Card */}
                 <div className={styles.infoCard}>
                   <h3 className={styles.infoTitle}>
-                    <User size={18} color="#38bdf8" /> Super Admin Details
+                    <User size={18} style={{ color: 'var(--a-sky)' }} /> Super Admin Details
                   </h3>
                   <div className={styles.detailRow}>
                     <span className={styles.detailLabel}>Email</span>
@@ -1023,7 +1027,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                   </div>
                   <div className={styles.detailRow}>
                     <span className={styles.detailLabel}>MongoDB Backend</span>
-                    <span className={styles.detailValue} style={{ color: '#4ade80', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span className={styles.detailValue} style={{ color: 'var(--a-green-2)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <Database size={14} /> Connected
                     </span>
                   </div>
@@ -1032,12 +1036,12 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                 {/* Quick Fleet Card */}
                 <div className={styles.infoCard}>
                   <h3 className={styles.infoTitle}>
-                    <Truck size={18} color="#38bdf8" /> Active Vehicles
+                    <Truck size={18} style={{ color: 'var(--a-sky)' }} /> Active Vehicles
                   </h3>
-                  <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#38bdf8', margin: '0.5rem 0' }}>
+                  <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--a-sky)', margin: '0.5rem 0' }}>
                     {vehicles.length}
                   </div>
-                  <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+                  <p style={{ color: 'var(--a-text-3)', fontSize: '0.85rem' }}>
                     High-Performance Vehicles with dynamic fare calculation configuration.
                   </p>
                   <button
@@ -1053,13 +1057,13 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                 <div className={styles.infoCard}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                     <h3 className={styles.infoTitle} style={{ margin: 0 }}>
-                      <TrendingUp size={18} color="#38bdf8" /> Fleet & Vehicle Income
+                      <TrendingUp size={18} style={{ color: 'var(--a-sky)' }} /> Fleet & Vehicle Income
                     </h3>
                     <span
                       style={{
                         fontSize: '0.72rem',
                         background: 'rgba(16, 185, 129, 0.15)',
-                        color: '#34d399',
+                        color: 'var(--a-green)',
                         padding: '0.15rem 0.55rem',
                         borderRadius: '999px',
                         fontWeight: 600,
@@ -1068,7 +1072,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                       PRO
                     </span>
                   </div>
-                  <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.5rem 0 1rem 0' }}>
+                  <p style={{ color: 'var(--a-text-3)', fontSize: '0.85rem', margin: '0.5rem 0 1rem 0' }}>
                     Track daily vehicle trips, driver duty roster, fuel & toll expenses, pending customer receivables, and net profit.
                   </p>
                   <button
@@ -1123,13 +1127,13 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
               </div>
 
               {vehiclesLoading ? (
-                <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
+                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--a-text-3)' }}>
                   <div className={styles.spinner} style={{ margin: '0 auto 1rem auto' }} />
                   Loading vehicles from MongoDB...
                 </div>
               ) : vehicles.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(30,41,59,0.4)', borderRadius: '12px', border: '1px solid rgba(56,189,248,0.2)' }}>
-                  <p style={{ color: '#94a3b8', marginBottom: '1rem' }}>No vehicles found in database.</p>
+                <div style={{ textAlign: 'center', padding: '3rem', background: 'color-mix(in srgb, var(--c-800) 40%, transparent)', borderRadius: '12px', border: '1px solid rgba(56,189,248,0.2)' }}>
+                  <p style={{ color: 'var(--a-text-3)', marginBottom: '1rem' }}>No vehicles found in database.</p>
                   <button onClick={handleOpenAddVehicle} className={styles.actionBtn} style={{ margin: '0 auto' }}>
                     <Plus size={16} /> Add First Vehicle
                   </button>
@@ -1180,13 +1184,13 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                         </div>
                         <div className={styles.rateBlock}>
                           <span className={styles.rateLabel}>Above 100 KM</span>
-                          <span className={styles.rateValue} style={{ color: '#38bdf8' }}>
+                          <span className={styles.rateValue} style={{ color: 'var(--a-sky)' }}>
                             ₹{veh.rateAfter100} / km
                           </span>
                         </div>
                         <div className={styles.rateBlock} style={{ gridColumn: 'span 2' }}>
                           <span className={styles.rateLabel}>Base / Min Distance Fare Range</span>
-                          <span className={styles.rateValue} style={{ fontSize: '1rem', color: '#fbbf24' }}>
+                          <span className={styles.rateValue} style={{ fontSize: '1rem', color: 'var(--a-amber)' }}>
                             ₹{veh.minFareMin} - ₹{veh.minFareMax}
                           </span>
                         </div>
@@ -1418,24 +1422,24 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
               </form>
 
               {/* Dev/Production Email Recovery Section */}
-              <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid rgba(51, 65, 85, 0.6)' }}>
-                <h4 style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)' }}>
+                <h4 style={{ color: 'var(--a-text)', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
                   Alternative: Reset Link via Registered Email
                 </h4>
-                <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '1rem' }}>
+                <p style={{ color: 'var(--a-text-3)', fontSize: '0.85rem', marginBottom: '1rem' }}>
                   A one-time secure password recovery link will be generated for <strong>{admin?.email}</strong>.
                 </p>
 
                 {emailResetMsg && (
-                  <div style={{ padding: '0.75rem 1rem', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', fontSize: '0.85rem', marginBottom: '1rem' }}>
+                  <div style={{ padding: '0.75rem 1rem', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.3)', color: 'var(--a-sky)', fontSize: '0.85rem', marginBottom: '1rem' }}>
                     {emailResetMsg}
                   </div>
                 )}
 
                 {devResetUrl && (
-                  <div style={{ padding: '0.75rem 1rem', borderRadius: '8px', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', color: '#4ade80', fontSize: '0.85rem', marginBottom: '1rem', wordBreak: 'break-all' }}>
+                  <div style={{ padding: '0.75rem 1rem', borderRadius: '8px', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', color: 'var(--a-green-2)', fontSize: '0.85rem', marginBottom: '1rem', wordBreak: 'break-all' }}>
                     <strong>Direct Local Reset Link:</strong><br />
-                    <a href={devResetUrl} style={{ color: '#38bdf8', textDecoration: 'underline' }}>{devResetUrl}</a>
+                    <a href={devResetUrl} style={{ color: 'var(--a-sky)', textDecoration: 'underline' }}>{devResetUrl}</a>
                   </div>
                 )}
 
@@ -1464,7 +1468,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
         >
           <div className={`${styles.modalContent} ${modalAnimateIn ? styles.modalContentVisible : ''}`}>
             <div className={styles.modalHeader}>
-              <h3 style={{ color: '#ffffff', fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>
+              <h3 style={{ color: 'var(--a-text)', fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>
                 {editingVehicleId ? 'Edit Vehicle & Fare Rate Controls' : 'Add New Vehicle & Set Fare Controls'}
               </h3>
               <button onClick={handleCloseVehicleModal} className={styles.closeBtn} aria-label="Close modal">
@@ -1529,7 +1533,7 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
               {/* Fare Rate Controls */}
               <div className={styles.rateControlsBox}>
                 <div className={styles.rateControlsTitle}>
-                  <Calculator size={18} color="#38bdf8" /> Dual-Slab Dynamic Fare Configuration
+                  <Calculator size={18} style={{ color: 'var(--a-sky)' }} /> Dual-Slab Dynamic Fare Configuration
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
@@ -1599,20 +1603,20 @@ function AdminDashboardContent({ defaultTab = 'overview' }: AdminDashboardProps)
                         value={previewKm}
                         onChange={(e) => setPreviewKm(e.target.value)}
                       />
-                      <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>KM</span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--a-text-3)' }}>KM</span>
                     </div>
                   </div>
 
                   <div className={styles.simResult}>
                     <div>
-                      <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--a-text-2)' }}>
                         {previewResult.distKm <= 100
                           ? <>{previewResult.distKm} km &times; ₹{vehicleForm.rateFirst100}</>
                           : <>(100 km &times; ₹{vehicleForm.rateFirst100}) + ({previewResult.distKm - 100} km &times; ₹{vehicleForm.rateAfter100})</>}
                         {' '}= ₹{previewResult.oneWayFare} one way &times; 2 (return) = ₹{previewResult.roundTripFare}
                       </div>
                       {previewResult.roundTripFare < (Number(vehicleForm.minFareMin) || 0) && (
-                        <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--a-text-2)' }}>
                           Below minimum, so the minimum fare applies
                         </div>
                       )}
@@ -1665,7 +1669,7 @@ export default function AdminDashboard(props: AdminDashboardProps) {
       fallback={
         <div className={styles.adminShell} style={{ alignItems: 'center', justifyContent: 'center' }}>
           <div className={styles.spinner} style={{ width: '40px', height: '40px' }} />
-          <p style={{ marginLeft: '1rem', color: '#94a3b8' }}>Loading Admin Console...</p>
+          <p style={{ marginLeft: '1rem', color: 'var(--a-text-3)' }}>Loading Admin Console...</p>
         </div>
       }
     >

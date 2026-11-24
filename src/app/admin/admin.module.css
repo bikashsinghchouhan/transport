@@ -1,7 +1,7 @@
 /* Admin Container & Login Card Styles */
 .adminContainer {
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 100%);
+  background: radial-gradient(circle at 50% 0%, var(--c-900) 0%, var(--c-950) 100%);
   color: #f8fafc;
   display: flex;
   flex-direction: column;
@@ -29,13 +29,13 @@
 .card {
   width: 100%;
   max-width: 440px;
-  background: rgba(15, 23, 42, 0.85);
+  background: color-mix(in srgb, var(--c-900) 85%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(56, 189, 248, 0.25);
   border-radius: 16px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(14, 165, 233, 0.1);
+  box-shadow: 0 4px 14px var(--shadow-strong);
   z-index: 10;
   transition: border-color 0.3s ease;
 }
@@ -57,7 +57,7 @@
   display: inline-block;
   padding: 0.25rem 0.75rem;
   background: rgba(14, 165, 233, 0.15);
-  color: #38bdf8;
+  color: var(--a-sky);
   border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 9999px;
   font-size: 0.8rem;
@@ -70,13 +70,13 @@
 .title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--a-text);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--a-text-3);
 }
 
 .form {
@@ -94,7 +94,7 @@
 .label {
   font-size: 0.85rem;
   font-weight: 500;
-  color: #cbd5e1;
+  color: var(--a-text-2);
 }
 
 .inputWrapper {
@@ -114,19 +114,19 @@
 .input {
   width: 100%;
   padding: 0.85rem 1rem 0.85rem 2.75rem;
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(51, 65, 85, 0.8);
+  background: color-mix(in srgb, var(--c-800) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-700) 80%, transparent);
   border-radius: 10px;
-  color: #ffffff;
+  color: var(--a-text);
   font-size: 0.95rem;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .input:focus {
-  border-color: #38bdf8;
+  border-color: var(--a-sky);
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-  background: rgba(30, 41, 59, 0.95);
+  background: color-mix(in srgb, var(--c-800) 95%, transparent);
 }
 
 .togglePasswordBtn {
@@ -142,7 +142,7 @@
 }
 
 .togglePasswordBtn:hover {
-  color: #38bdf8;
+  color: var(--a-sky);
 }
 
 .submitBtn {
@@ -179,7 +179,7 @@
 .errorAlert {
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
+  color: var(--a-red-2);
   padding: 0.75rem 1rem;
   border-radius: 8px;
   font-size: 0.85rem;
@@ -191,7 +191,7 @@
 .successAlert {
   background: rgba(34, 197, 94, 0.12);
   border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #4ade80;
+  color: var(--a-green-2);
   padding: 0.85rem 1rem;
   border-radius: 10px;
   font-size: 0.88rem;
@@ -212,7 +212,7 @@
 }
 
 .link {
-  color: #38bdf8;
+  color: var(--a-sky);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -227,7 +227,7 @@
   height: 18px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: #ffffff;
+  border-top-color: var(--a-text);
   animation: spin 0.8s linear infinite;
 }
 
@@ -240,8 +240,8 @@
 /* Dashboard Shell & Sidebar Structure */
 .adminShell {
   min-height: 100vh;
-  background: #030712;
-  color: #f8fafc;
+  background: var(--c-950);
+  color: var(--a-text);
   display: flex;
   font-family: var(--font-sans, system-ui, sans-serif);
   position: relative;
@@ -253,7 +253,7 @@
 
 .sidebar {
   width: 260px;
-  background: rgba(15, 23, 42, 0.98);
+  background: color-mix(in srgb, var(--c-900) 98%, transparent);
   border-right: 1px solid rgba(56, 189, 248, 0.15);
   display: flex;
   flex-direction: column;
@@ -270,7 +270,7 @@
 .sidebarOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--shadow-strong);
   backdrop-filter: blur(4px);
   z-index: 90;
 }
@@ -280,7 +280,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.25rem 0.5rem 1rem 0.5rem;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-700) 50%, transparent);
   margin-bottom: 1.25rem;
 }
 
@@ -298,14 +298,14 @@
 .brandTitle {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--a-text);
   white-space: nowrap;
   line-height: 1.2;
 }
 
 .brandSubtitle {
   font-size: 0.72rem;
-  color: #38bdf8;
+  color: var(--a-sky);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -324,7 +324,7 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   border-radius: 10px;
-  color: #94a3b8;
+  color: var(--a-text-3);
   font-weight: 500;
   font-size: 0.9rem;
   cursor: pointer;
@@ -339,12 +339,12 @@
 }
 
 .navItem:hover {
-  color: #f8fafc;
-  background: rgba(30, 41, 59, 0.6);
+  color: var(--a-text);
+  background: color-mix(in srgb, var(--c-800) 60%, transparent);
 }
 
 .navItemActive {
-  color: #38bdf8;
+  color: var(--a-sky);
   background: rgba(14, 165, 233, 0.15);
   border: 1px solid rgba(56, 189, 248, 0.3);
   font-weight: 600;
@@ -380,7 +380,7 @@
   gap: 0.65rem;
   padding: 0.55rem 0.75rem;
   border-radius: 8px;
-  color: #94a3b8;
+  color: var(--a-text-3);
   font-size: 0.84rem;
   font-weight: 500;
   cursor: pointer;
@@ -395,13 +395,13 @@
 }
 
 .sidebarSubmenuItem:hover {
-  color: #f8fafc;
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(51, 65, 85, 0.5);
+  color: var(--a-text);
+  background: color-mix(in srgb, var(--c-800) 70%, transparent);
+  border-color: color-mix(in srgb, var(--c-700) 50%, transparent);
 }
 
 .sidebarSubmenuItemActive {
-  color: #38bdf8;
+  color: var(--a-sky);
   background: rgba(14, 165, 233, 0.16);
   border-color: rgba(56, 189, 248, 0.35);
   font-weight: 600;
@@ -420,7 +420,7 @@
 
 .sidebarFooter {
   padding-top: 1rem;
-  border-top: 1px solid rgba(51, 65, 85, 0.5);
+  border-top: 1px solid color-mix(in srgb, var(--c-700) 50%, transparent);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -432,7 +432,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 100%);
+  background: radial-gradient(circle at 50% 0%, var(--c-900) 0%, var(--c-950) 100%);
   width: calc(100% - 260px);
   max-width: calc(100% - 260px);
   min-width: 0;
@@ -442,7 +442,7 @@
 
 .topBar {
   height: 70px;
-  background: rgba(15, 23, 42, 0.85);
+  background: color-mix(in srgb, var(--c-900) 85%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(56, 189, 248, 0.15);
   padding: 0 1.5rem;
@@ -459,9 +459,9 @@
 
 .mobileMenuToggle {
   display: none;
-  background: rgba(30, 41, 59, 0.8);
+  background: color-mix(in srgb, var(--c-800) 80%, transparent);
   border: 1px solid rgba(56, 189, 248, 0.3);
-  color: #38bdf8;
+  color: var(--a-sky);
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
@@ -473,7 +473,7 @@
 .topTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--a-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -483,12 +483,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+  background: color-mix(in srgb, var(--c-800) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-700) 60%, transparent);
   padding: 0.4rem 0.9rem;
   border-radius: 9999px;
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--a-text-2);
   flex-shrink: 0;
 }
 
@@ -511,8 +511,8 @@
 }
 
 .infoCard {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+  background: color-mix(in srgb, var(--c-800) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-700) 60%, transparent);
   border-radius: 12px;
   padding: 1.25rem;
 }
@@ -520,7 +520,7 @@
 .infoTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #f8fafc;
+  color: var(--a-text);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -531,7 +531,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.6rem 0;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-700) 40%, transparent);
   font-size: 0.9rem;
 }
 
@@ -540,11 +540,11 @@
 }
 
 .detailLabel {
-  color: #94a3b8;
+  color: var(--a-text-3);
 }
 
 .detailValue {
-  color: #f8fafc;
+  color: var(--a-text);
   font-weight: 500;
 }
 
@@ -561,12 +561,12 @@
 .sectionTitle {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--a-text);
 }
 
 .sectionDesc {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--a-text-3);
   margin-top: 2px;
 }
 
@@ -600,7 +600,7 @@
 }
 
 .vehicleCard {
-  background: rgba(15, 23, 42, 0.7);
+  background: color-mix(in srgb, var(--c-900) 70%, transparent);
   border: 1px solid rgba(56, 189, 248, 0.2);
   border-radius: 14px;
   padding: 1.25rem;
@@ -613,7 +613,7 @@
 
 .vehicleCard:hover {
   border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(14, 165, 233, 0.15);
+  box-shadow: 0 4px 14px var(--shadow-strong);
 }
 
 .vehicleHeader {
@@ -627,12 +627,12 @@
 .vehicleName {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--a-text);
 }
 
 .tagBadge {
   background: rgba(14, 165, 233, 0.2);
-  color: #38bdf8;
+  color: var(--a-sky);
   border: 1px solid rgba(56, 189, 248, 0.3);
   padding: 0.2rem 0.6rem;
   border-radius: 6px;
@@ -642,7 +642,7 @@
 }
 
 .specBox {
-  background: rgba(30, 41, 59, 0.5);
+  background: color-mix(in srgb, var(--c-800) 50%, transparent);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   margin: 0.75rem 0;
@@ -658,17 +658,17 @@
 }
 
 .specLabel {
-  color: #94a3b8;
+  color: var(--a-text-3);
 }
 
 .specValue {
-  color: #f8fafc;
+  color: var(--a-text);
   font-weight: 600;
 }
 
 .vehicleDesc {
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--a-text-2);
   line-height: 1.4;
   margin-bottom: 1rem;
 }
@@ -678,7 +678,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid rgba(51, 65, 85, 0.5);
+  border-top: 1px solid color-mix(in srgb, var(--c-700) 50%, transparent);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -686,7 +686,7 @@
 .priceTag {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #38bdf8;
+  color: var(--a-sky);
   white-space: nowrap;
 }
 
@@ -699,7 +699,7 @@
 
 .editBtn {
   background: rgba(14, 165, 233, 0.15);
-  color: #38bdf8;
+  color: var(--a-sky);
   border: 1px solid rgba(56, 189, 248, 0.3);
   padding: 0.45rem 0.85rem;
   border-radius: 6px;
@@ -731,7 +731,7 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--shadow-strong);
   backdrop-filter: blur(6px);
   z-index: 200;
   display: flex;
@@ -749,11 +749,11 @@
 .modalContent {
   width: 100%;
   max-width: 550px;
-  background: #0f172a;
+  background: var(--c-900);
   border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 14px var(--shadow-strong);
   position: relative;
   max-height: 90vh;
   overflow-y: auto;
@@ -773,13 +773,13 @@
   align-items: center;
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-700) 50%, transparent);
 }
 
 .closeBtn {
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(51, 65, 85, 0.8);
-  color: #94a3b8;
+  background: color-mix(in srgb, var(--c-800) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-700) 80%, transparent);
+  color: var(--a-text-3);
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 8px;
@@ -790,7 +790,7 @@
 }
 
 .closeBtn:hover {
-  color: #ffffff;
+  color: var(--a-text);
   background: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.4);
 }
@@ -891,4 +891,24 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.themeToggle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--c-700) 60%, transparent);
+  background: color-mix(in srgb, var(--c-800) 60%, transparent);
+  color: var(--a-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.themeToggle:hover {
+  border-color: var(--a-sky);
+  color: var(--a-sky);
 }

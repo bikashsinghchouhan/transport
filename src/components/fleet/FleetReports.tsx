@@ -205,10 +205,10 @@ export default function FleetReports() {
 
       {/* Printable Report View */}
       <div className={`${styles.tableWrapper} ${styles.printableReport}`}>
-        <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid rgba(51, 65, 85, 0.6)' }}>
+        <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--a-text)' }}>
                 b2 Transport —{' '}
                 {reportType === 'vehicle'
                   ? 'Vehicle Fleet Report'
@@ -218,13 +218,13 @@ export default function FleetReports() {
                   ? 'Daily Revenue & Expense Report'
                   : 'Monthly Financial Summary'}
               </h3>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>
+              <p style={{ fontSize: '0.8rem', color: 'var(--a-text-3)', margin: '0.2rem 0 0 0' }}>
                 Date Range: {startDate || 'All records'} {endDate ? `to ${endDate}` : ''} • Generated on:{' '}
                 {new Date().toLocaleString()}
               </p>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <span className={styles.statusBadge} style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+              <span className={styles.statusBadge} style={{ background: 'rgba(56, 189, 248, 0.15)', color: 'var(--a-sky)' }}>
                 {reportData.length} Entries
               </span>
             </div>
@@ -284,7 +284,7 @@ export default function FleetReports() {
           <tbody>
             {reportData.length === 0 ? (
               <tr>
-                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
+                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--a-text-3)' }}>
                   {loading ? 'Generating report data...' : 'No records found for the selected criteria.'}
                 </td>
               </tr>
@@ -300,58 +300,58 @@ export default function FleetReports() {
                         </div>
                       </td>
                       <td>
-                        <span style={{ fontWeight: 500, color: '#f8fafc' }}>{row.model}</span>
-                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{row.vehicleType}</div>
+                        <span style={{ fontWeight: 500, color: 'var(--a-text)' }}>{row.model}</span>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{row.vehicleType}</div>
                       </td>
                       <td>{row.trips}</td>
                       <td>{row.totalKm.toLocaleString()} KM</td>
-                      <td style={{ color: '#38bdf8', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
-                      <td style={{ color: '#f87171' }}>₹{row.expenses.toLocaleString()}</td>
-                      <td style={{ color: row.profit >= 0 ? '#34d399' : '#f87171', fontWeight: 700 }}>
+                      <td style={{ color: 'var(--a-sky)', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
+                      <td style={{ color: 'var(--a-red)' }}>₹{row.expenses.toLocaleString()}</td>
+                      <td style={{ color: row.profit >= 0 ? 'var(--a-green)' : 'var(--a-red)', fontWeight: 700 }}>
                         ₹{row.profit.toLocaleString()}
                       </td>
-                      <td style={{ color: row.pending > 0 ? '#fbbf24' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
+                      <td style={{ color: row.pending > 0 ? 'var(--a-amber)' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
                     </>
                   )}
 
                   {reportType === 'driver' && (
                     <>
-                      <td style={{ fontWeight: 600, color: '#ffffff' }}>{row.driver}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--a-text)' }}>{row.driver}</td>
                       <td>{row.phone}</td>
-                      <td style={{ fontFamily: 'monospace', color: '#38bdf8' }}>{row.licenseNumber}</td>
+                      <td style={{ fontFamily: 'monospace', color: 'var(--a-sky)' }}>{row.licenseNumber}</td>
                       <td>{row.trips}</td>
-                      <td style={{ color: '#34d399', fontWeight: 600 }}>{row.attendance} days</td>
+                      <td style={{ color: 'var(--a-green)', fontWeight: 600 }}>{row.attendance} days</td>
                       <td>{row.totalKm.toLocaleString()} KM</td>
-                      <td style={{ color: '#38bdf8', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
-                      <td style={{ color: '#fbbf24', fontWeight: 700 }}>₹{row.collection.toLocaleString()}</td>
+                      <td style={{ color: 'var(--a-sky)', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
+                      <td style={{ color: 'var(--a-amber)', fontWeight: 700 }}>₹{row.collection.toLocaleString()}</td>
                     </>
                   )}
 
                   {reportType === 'daily' && (
                     <>
-                      <td style={{ fontWeight: 600, color: '#f8fafc' }}>{row.date}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--a-text)' }}>{row.date}</td>
                       <td>{row.trips}</td>
                       <td>{row.totalKm.toLocaleString()} KM</td>
-                      <td style={{ color: '#38bdf8', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
-                      <td style={{ color: '#f87171' }}>₹{row.expenses.toLocaleString()}</td>
-                      <td style={{ color: row.profit >= 0 ? '#34d399' : '#f87171', fontWeight: 700 }}>
+                      <td style={{ color: 'var(--a-sky)', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
+                      <td style={{ color: 'var(--a-red)' }}>₹{row.expenses.toLocaleString()}</td>
+                      <td style={{ color: row.profit >= 0 ? 'var(--a-green)' : 'var(--a-red)', fontWeight: 700 }}>
                         ₹{row.profit.toLocaleString()}
                       </td>
-                      <td style={{ color: row.pending > 0 ? '#fbbf24' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
+                      <td style={{ color: row.pending > 0 ? 'var(--a-amber)' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
                     </>
                   )}
 
                   {reportType === 'monthly' && (
                     <>
-                      <td style={{ fontWeight: 700, color: '#ffffff' }}>{row.month}</td>
+                      <td style={{ fontWeight: 700, color: 'var(--a-text)' }}>{row.month}</td>
                       <td>{row.trips}</td>
                       <td>{row.totalKm.toLocaleString()} KM</td>
-                      <td style={{ color: '#38bdf8', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
-                      <td style={{ color: '#f87171' }}>₹{row.expenses.toLocaleString()}</td>
-                      <td style={{ color: row.profit >= 0 ? '#34d399' : '#f87171', fontWeight: 700 }}>
+                      <td style={{ color: 'var(--a-sky)', fontWeight: 600 }}>₹{row.revenue.toLocaleString()}</td>
+                      <td style={{ color: 'var(--a-red)' }}>₹{row.expenses.toLocaleString()}</td>
+                      <td style={{ color: row.profit >= 0 ? 'var(--a-green)' : 'var(--a-red)', fontWeight: 700 }}>
                         ₹{row.profit.toLocaleString()}
                       </td>
-                      <td style={{ color: row.pending > 0 ? '#fbbf24' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
+                      <td style={{ color: row.pending > 0 ? 'var(--a-amber)' : '#64748b' }}>₹{row.pending.toLocaleString()}</td>
                     </>
                   )}
                 </tr>

@@ -276,7 +276,7 @@ export default function FleetDrivers({
           <tbody>
             {filteredDrivers.length === 0 ? (
               <tr>
-                <td colSpan={9} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                <td colSpan={9} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--a-text-3)' }}>
                   No drivers found matching criteria.
                 </td>
               </tr>
@@ -286,16 +286,16 @@ export default function FleetDrivers({
                 return (
                   <tr key={d._id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#ffffff' }}>{d.fullName}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{d.fullName}</div>
                       {d.remarks && (
-                        <div style={{ fontSize: '0.72rem', color: '#94a3b8', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {d.remarks}
                         </div>
                       )}
                     </td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{d.phone}</span>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--a-text-2)' }}>{d.phone}</span>
                         <a
                           href={`tel:${d.phone}`}
                           className={`${styles.actionIconBtn} ${styles.actionIconCall}`}
@@ -317,10 +317,10 @@ export default function FleetDrivers({
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontFamily: 'monospace', fontWeight: 600, color: '#38bdf8' }}>
+                      <div style={{ fontFamily: 'monospace', fontWeight: 600, color: 'var(--a-sky)' }}>
                         {d.licenseNumber}
                       </div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
                         {d.licenseExpiryDate
                           ? `Expires: ${new Date(d.licenseExpiryDate).toLocaleDateString()}`
                           : 'No Expiry Set'}
@@ -337,22 +337,22 @@ export default function FleetDrivers({
                       )}
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#34d399' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--a-green)' }}>
                         {d.stats?.presentDays || 0} Present Days
                       </div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
                         Total logged: {d.stats?.totalDays || 0}
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#ffffff' }}>{d.stats?.totalTrips || 0} trips</div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{(d.stats?.totalKm || 0).toLocaleString()} KM</div>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{d.stats?.totalTrips || 0} trips</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>{(d.stats?.totalKm || 0).toLocaleString()} KM</div>
                     </td>
                     <td>
-                      <div style={{ color: '#fbbf24', fontWeight: 600 }}>
+                      <div style={{ color: 'var(--a-amber)', fontWeight: 600 }}>
                         ₹{(d.stats?.driverCollected || 0).toLocaleString()}
                       </div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
                         Total Revenue: ₹{(d.stats?.totalRevenue || 0).toLocaleString()}
                       </div>
                     </td>
@@ -400,8 +400,8 @@ export default function FleetDrivers({
             <div key={d._id} className={styles.mobileCard}>
               <div className={styles.mobileCardHeader}>
                 <div>
-                  <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>{d.fullName}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#38bdf8', fontFamily: 'monospace' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '1rem' }}>{d.fullName}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--a-sky)', fontFamily: 'monospace' }}>
                     {d.licenseNumber}
                   </div>
                 </div>
@@ -415,7 +415,7 @@ export default function FleetDrivers({
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{d.phone}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--a-text-2)' }}>{d.phone}</span>
                 <div style={{ display: 'flex', gap: '0.4rem' }}>
                   <a
                     href={`tel:${d.phone}`}
@@ -447,7 +447,7 @@ export default function FleetDrivers({
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Present Days</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#34d399' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-green)' }}>
                     {d.stats?.presentDays || 0}
                   </span>
                 </div>
@@ -457,7 +457,7 @@ export default function FleetDrivers({
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Driver Cash</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#fbbf24' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-amber)' }}>
                     ₹{(d.stats?.driverCollected || 0).toLocaleString()}
                   </span>
                 </div>
@@ -492,7 +492,7 @@ export default function FleetDrivers({
             <form onSubmit={handleSubmit}>
               <div className={styles.modalBody}>
                 {errorMsg && (
-                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: 'var(--a-red-2)', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <AlertCircle size={16} /> {errorMsg}
                   </div>
                 )}

@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
 
         {resultMessage && (
           <div className={styles.successAlert} style={{ marginBottom: '1.25rem' }}>
-            <CheckCircle2 size={20} style={{ flexShrink: 0, color: '#4ade80' }} />
+            <CheckCircle2 size={20} style={{ flexShrink: 0, color: 'var(--a-green-2)' }} />
             <span>{resultMessage}</span>
           </div>
         )}

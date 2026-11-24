@@ -543,7 +543,7 @@ export default function FleetTrips({
           <tbody>
             {filteredTrips.length === 0 ? (
               <tr>
-                <td colSpan={12} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                <td colSpan={12} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--a-text-3)' }}>
                   No trips found matching criteria.
                 </td>
               </tr>
@@ -553,7 +553,7 @@ export default function FleetTrips({
                 return (
                   <tr key={t._id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#f8fafc' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>
                         {new Date(t.date).toLocaleDateString()}
                       </div>
                     </td>
@@ -564,12 +564,12 @@ export default function FleetTrips({
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 500, color: '#ffffff' }}>{t.driverId?.fullName || 'Unassigned'}</div>
+                      <div style={{ fontWeight: 500, color: 'var(--a-text)' }}>{t.driverId?.fullName || 'Unassigned'}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#ffffff' }}>{t.customerName}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{t.customerName}</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.2rem' }}>
-                        <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.customerMobile}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{t.customerMobile}</span>
                         {t.customerMobile && (
                           <>
                             <a
@@ -597,32 +597,32 @@ export default function FleetTrips({
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 500, color: '#e2e8f0' }}>{t.tripRoute}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{t.totalKm} KM</div>
+                      <div style={{ fontWeight: 500, color: 'var(--a-text)' }}>{t.tripRoute}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--a-sky)' }}>{t.totalKm} KM</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#38bdf8' }}>₹{t.tripAmount.toLocaleString()}</div>
+                      <div style={{ fontWeight: 700, color: 'var(--a-sky)' }}>₹{t.tripAmount.toLocaleString()}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#34d399' }}>₹{totalCollected.toLocaleString()}</div>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--a-green)' }}>₹{totalCollected.toLocaleString()}</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--a-text-3)' }}>
                         Dr: ₹{t.driverReceived} | Mgr: ₹{t.managerReceived}
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: t.pendingAmount > 0 ? '#fbbf24' : '#64748b' }}>
+                      <div style={{ fontWeight: 700, color: t.pendingAmount > 0 ? 'var(--a-amber)' : '#64748b' }}>
                         ₹{t.pendingAmount.toLocaleString()}
                       </div>
                     </td>
                     <td>
-                      <div style={{ color: '#f87171', fontWeight: 600 }}>₹{t.totalVehicleExpense.toLocaleString()}</div>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Fuel: ₹{t.fuelExpense}</div>
+                      <div style={{ color: 'var(--a-red)', fontWeight: 600 }}>₹{t.totalVehicleExpense.toLocaleString()}</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--a-text-3)' }}>Fuel: ₹{t.fuelExpense}</div>
                     </td>
                     <td>
                       <span
                         style={{
                           fontWeight: 700,
-                          color: t.netBalance >= 0 ? '#34d399' : '#f87171',
+                          color: t.netBalance >= 0 ? 'var(--a-green)' : 'var(--a-red)',
                         }}
                       >
                         ₹{t.netBalance.toLocaleString()}
@@ -647,7 +647,7 @@ export default function FleetTrips({
                           <button
                             onClick={() => onOpenRecordPayment(t._id)}
                             className={styles.actionIconBtn}
-                            style={{ color: '#fbbf24' }}
+                            style={{ color: 'var(--a-amber)' }}
                             title="Record Payment"
                           >
                             <CreditCard size={14} />
@@ -690,7 +690,7 @@ export default function FleetTrips({
                   {t.vehicleId?.registrationNumber || 'Vehicle'}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>
                     {new Date(t.date).toLocaleDateString()}
                   </span>
                   <span
@@ -708,11 +708,11 @@ export default function FleetTrips({
               </div>
 
               <div>
-                <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>{t.customerName}</div>
-                <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                <div style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '1rem' }}>{t.customerName}</div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--a-text-2)' }}>
                   {t.tripRoute} ({t.totalKm} KM)
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>
                   Driver: {t.driverId?.fullName || 'Unassigned'}
                 </div>
               </div>
@@ -720,25 +720,25 @@ export default function FleetTrips({
               <div className={styles.mobileStatRow}>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Revenue</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#38bdf8' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-sky)' }}>
                     ₹{t.tripAmount.toLocaleString()}
                   </span>
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Collected</span>
-                  <span className={styles.mobileStatVal} style={{ color: '#34d399' }}>
+                  <span className={styles.mobileStatVal} style={{ color: 'var(--a-green)' }}>
                     ₹{totalCollected.toLocaleString()}
                   </span>
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Pending</span>
-                  <span className={styles.mobileStatVal} style={{ color: t.pendingAmount > 0 ? '#fbbf24' : '#64748b' }}>
+                  <span className={styles.mobileStatVal} style={{ color: t.pendingAmount > 0 ? 'var(--a-amber)' : '#64748b' }}>
                     ₹{t.pendingAmount.toLocaleString()}
                   </span>
                 </div>
                 <div className={styles.mobileStatItem}>
                   <span className={styles.mobileStatLabel}>Net Profit</span>
-                  <span className={styles.mobileStatVal} style={{ color: t.netBalance >= 0 ? '#34d399' : '#f87171' }}>
+                  <span className={styles.mobileStatVal} style={{ color: t.netBalance >= 0 ? 'var(--a-green)' : 'var(--a-red)' }}>
                     ₹{t.netBalance.toLocaleString()}
                   </span>
                 </div>
@@ -770,7 +770,7 @@ export default function FleetTrips({
                     <button
                       onClick={() => onOpenRecordPayment(t._id)}
                       className={styles.secondaryActionBtn}
-                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem', color: '#fbbf24' }}
+                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem', color: 'var(--a-amber)' }}
                     >
                       Collect
                     </button>
@@ -804,7 +804,7 @@ export default function FleetTrips({
             <form onSubmit={handleSubmit}>
               <div className={styles.modalBody}>
                 {errorMsg && (
-                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: 'var(--a-red-2)', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <AlertCircle size={16} /> {errorMsg}
                   </div>
                 )}
@@ -1090,37 +1090,37 @@ export default function FleetTrips({
                 <div className={styles.liveSummaryBanner}>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Gross Revenue</span>
-                    <span className={styles.summaryValAmount} style={{ color: '#38bdf8' }}>
+                    <span className={styles.summaryValAmount} style={{ color: 'var(--a-sky)' }}>
                       ₹{liveCalc.tripAmount.toLocaleString()}
                     </span>
                   </div>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Collected</span>
-                    <span className={styles.summaryValAmount} style={{ color: '#34d399' }}>
+                    <span className={styles.summaryValAmount} style={{ color: 'var(--a-green)' }}>
                       ₹{liveCalc.totalCollected.toLocaleString()}
                     </span>
                   </div>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Pending</span>
-                    <span className={styles.summaryValAmount} style={{ color: liveCalc.pendingAmount > 0 ? '#fbbf24' : '#64748b' }}>
+                    <span className={styles.summaryValAmount} style={{ color: liveCalc.pendingAmount > 0 ? 'var(--a-amber)' : '#64748b' }}>
                       ₹{liveCalc.pendingAmount.toLocaleString()}
                     </span>
                   </div>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Total Expenses</span>
-                    <span className={styles.summaryValAmount} style={{ color: '#f87171' }}>
+                    <span className={styles.summaryValAmount} style={{ color: 'var(--a-red)' }}>
                       ₹{liveCalc.totalVehicleExpense.toLocaleString()}
                     </span>
                   </div>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Net Profit</span>
-                    <span className={styles.summaryValAmount} style={{ color: liveCalc.netBalance >= 0 ? '#34d399' : '#f87171' }}>
+                    <span className={styles.summaryValAmount} style={{ color: liveCalc.netBalance >= 0 ? 'var(--a-green)' : 'var(--a-red)' }}>
                       ₹{liveCalc.netBalance.toLocaleString()}
                     </span>
                   </div>
                   <div className={styles.summaryValBlock}>
                     <span className={styles.summaryValLabel}>Fuel / KM</span>
-                    <span className={styles.summaryValAmount} style={{ color: '#e2e8f0', fontSize: '0.95rem' }}>
+                    <span className={styles.summaryValAmount} style={{ color: 'var(--a-text)', fontSize: '0.95rem' }}>
                       ₹{liveCalc.fuelCostPerKm}
                     </span>
                   </div>

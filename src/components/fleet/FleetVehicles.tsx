@@ -275,7 +275,7 @@ export default function FleetVehicles({
           <tbody>
             {filteredVehicles.length === 0 ? (
               <tr>
-                <td colSpan={8} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                <td colSpan={8} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--a-text-3)' }}>
                   No fleet vehicles found matching criteria.
                 </td>
               </tr>
@@ -289,8 +289,8 @@ export default function FleetVehicles({
                     </div>
                   </td>
                   <td>
-                    <div style={{ fontWeight: 600, color: '#ffffff' }}>{v.model}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{v.vehicleType}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{v.model}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{v.vehicleType}</div>
                   </td>
                   <td>
                     <span
@@ -308,29 +308,29 @@ export default function FleetVehicles({
                   <td>
                     {v.assignedDriverId ? (
                       <div>
-                        <div style={{ fontWeight: 500, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <User size={13} color="#38bdf8" />
+                        <div style={{ fontWeight: 500, color: 'var(--a-text)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <User size={13} style={{ color: 'var(--a-sky)' }} />
                           {v.assignedDriverId.fullName}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{v.assignedDriverId.phone}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{v.assignedDriverId.phone}</div>
                       </div>
                     ) : (
                       <span style={{ color: '#64748b', fontSize: '0.8rem' }}>Unassigned</span>
                     )}
                   </td>
                   <td>
-                    <div style={{ fontWeight: 600, color: '#ffffff' }}>{v.stats?.totalTrips || 0} trips</div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{(v.stats?.totalKm || 0).toLocaleString()} KM</div>
+                    <div style={{ fontWeight: 600, color: 'var(--a-text)' }}>{v.stats?.totalTrips || 0} trips</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--a-text-3)' }}>{(v.stats?.totalKm || 0).toLocaleString()} KM</div>
                   </td>
                   <td>
-                    <div style={{ color: '#38bdf8', fontWeight: 600 }}>₹{(v.stats?.totalRevenue || 0).toLocaleString()}</div>
-                    <div style={{ color: '#f87171', fontSize: '0.75rem' }}>-₹{(v.stats?.totalExpenses || 0).toLocaleString()}</div>
+                    <div style={{ color: 'var(--a-sky)', fontWeight: 600 }}>₹{(v.stats?.totalRevenue || 0).toLocaleString()}</div>
+                    <div style={{ color: 'var(--a-red)', fontSize: '0.75rem' }}>-₹{(v.stats?.totalExpenses || 0).toLocaleString()}</div>
                   </td>
                   <td>
                     <span
                       style={{
                         fontWeight: 700,
-                        color: (v.stats?.totalNetProfit || 0) >= 0 ? '#34d399' : '#f87171',
+                        color: (v.stats?.totalNetProfit || 0) >= 0 ? 'var(--a-green)' : 'var(--a-red)',
                       }}
                     >
                       ₹{(v.stats?.totalNetProfit || 0).toLocaleString()}
@@ -385,8 +385,8 @@ export default function FleetVehicles({
             </div>
 
             <div>
-              <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>{v.model}</div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+              <div style={{ fontWeight: 700, color: 'var(--a-text)', fontSize: '1rem' }}>{v.model}</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--a-text-3)' }}>
                 {v.vehicleType} • Driver: {v.assignedDriverId?.fullName || 'Unassigned'}
               </div>
             </div>
@@ -402,13 +402,13 @@ export default function FleetVehicles({
               </div>
               <div className={styles.mobileStatItem}>
                 <span className={styles.mobileStatLabel}>Revenue</span>
-                <span className={styles.mobileStatVal} style={{ color: '#38bdf8' }}>
+                <span className={styles.mobileStatVal} style={{ color: 'var(--a-sky)' }}>
                   ₹{(v.stats?.totalRevenue || 0).toLocaleString()}
                 </span>
               </div>
               <div className={styles.mobileStatItem}>
                 <span className={styles.mobileStatLabel}>Net Profit</span>
-                <span className={styles.mobileStatVal} style={{ color: '#34d399' }}>
+                <span className={styles.mobileStatVal} style={{ color: 'var(--a-green)' }}>
                   ₹{(v.stats?.totalNetProfit || 0).toLocaleString()}
                 </span>
               </div>
@@ -442,7 +442,7 @@ export default function FleetVehicles({
             <form onSubmit={handleSubmit}>
               <div className={styles.modalBody}>
                 {errorMsg && (
-                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: 'var(--a-red-2)', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <AlertCircle size={16} /> {errorMsg}
                   </div>
                 )}

@@ -147,21 +147,21 @@ export function RevenueExpenseTrendChart({ data }: { data: TrendItem[] }) {
             position: 'absolute',
             top: '0px',
             right: '10px',
-            background: 'rgba(15, 23, 42, 0.95)',
+            background: 'color-mix(in srgb, var(--c-900) 95%, transparent)',
             border: '1px solid rgba(56, 189, 248, 0.3)',
             borderRadius: '8px',
             padding: '0.5rem 0.75rem',
             fontSize: '0.75rem',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
+            boxShadow: '0 4px 14px var(--shadow-strong)',
             zIndex: 10,
           }}
         >
-          <div style={{ fontWeight: 600, color: '#ffffff', marginBottom: '0.2rem' }}>
+          <div style={{ fontWeight: 600, color: 'var(--a-text)', marginBottom: '0.2rem' }}>
             {data[hoveredIdx].date} ({data[hoveredIdx].trips} trips)
           </div>
-          <div style={{ color: '#38bdf8' }}>Revenue: ₹{data[hoveredIdx].revenue.toLocaleString()}</div>
+          <div style={{ color: 'var(--a-sky)' }}>Revenue: ₹{data[hoveredIdx].revenue.toLocaleString()}</div>
           <div style={{ color: '#f43f5e' }}>Expense: ₹{data[hoveredIdx].expense.toLocaleString()}</div>
-          <div style={{ color: '#4ade80', fontWeight: 600 }}>
+          <div style={{ color: 'var(--a-green-2)', fontWeight: 600 }}>
             Net Profit: ₹{(data[hoveredIdx].revenue - data[hoveredIdx].expense).toLocaleString()}
           </div>
         </div>
@@ -252,10 +252,10 @@ export function ExpenseDonutChart({ data }: { data: ExpenseCategory[] }) {
             pointerEvents: 'none',
           }}
         >
-          <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: '0.7rem', color: 'var(--a-text-3)', textTransform: 'uppercase' }}>
             {hoveredIdx !== null ? slices.find((s) => s.idx === hoveredIdx)?.category : 'Total'}
           </span>
-          <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>
+          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--a-text)' }}>
             ₹
             {hoveredIdx !== null
               ? (slices.find((s) => s.idx === hoveredIdx)?.amount || 0).toLocaleString()
@@ -286,9 +286,9 @@ export function ExpenseDonutChart({ data }: { data: ExpenseCategory[] }) {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
-                <span style={{ color: '#cbd5e1' }}>{item.category}</span>
+                <span style={{ color: 'var(--a-text-2)' }}>{item.category}</span>
               </div>
-              <span style={{ color: '#94a3b8', fontWeight: 600 }}>₹{item.amount.toLocaleString()}</span>
+              <span style={{ color: 'var(--a-text-3)', fontWeight: 600 }}>₹{item.amount.toLocaleString()}</span>
             </div>
           ))}
       </div>
@@ -314,8 +314,8 @@ export function VehiclePerformanceChart({ vehicles, data }: { vehicles?: Vehicle
           <div
             key={idx}
             style={{
-              background: 'rgba(30, 41, 59, 0.5)',
-              border: '1px solid rgba(51, 65, 85, 0.6)',
+              background: 'color-mix(in srgb, var(--c-800) 50%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--c-700) 60%, transparent)',
               borderRadius: '10px',
               padding: '0.75rem 1rem',
               display: 'flex',
@@ -325,33 +325,33 @@ export function VehiclePerformanceChart({ vehicles, data }: { vehicles?: Vehicle
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <span style={{ fontWeight: 700, color: '#ffffff', marginRight: '0.5rem' }}>
+                <span style={{ fontWeight: 700, color: 'var(--a-text)', marginRight: '0.5rem' }}>
                   {v.registrationNumber}
                 </span>
-                <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--a-text-3)' }}>
                   {v.model} • {v.trips} trips ({v.totalKm} km)
                 </span>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#4ade80' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--a-green-2)' }}>
                   Profit: ₹{v.profit.toLocaleString()}
                 </span>
               </div>
             </div>
 
             {/* Comparison bar */}
-            <div style={{ height: '8px', width: '100%', background: 'rgba(15, 23, 42, 0.6)', borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
+            <div style={{ height: '8px', width: '100%', background: 'color-mix(in srgb, var(--c-900) 60%, transparent)', borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
               <div
                 style={{
                   height: '100%',
                   width: `${revPct}%`,
-                  background: 'linear-gradient(90deg, #0284c7, #38bdf8)',
+                  background: 'linear-gradient(90deg, #0284c7, var(--a-sky))',
                   borderRadius: '4px',
                 }}
               />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94a3b8' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--a-text-3)' }}>
               <span>Revenue: ₹{v.revenue.toLocaleString()}</span>
               <span>Expenses: ₹{v.expense.toLocaleString()}</span>
             </div>

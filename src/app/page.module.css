@@ -4,16 +4,45 @@
 
 /* Hero Section */
 .heroSection {
-  padding: 80px 0 60px;
+  padding: var(--section-space) 0;
   position: relative;
   overflow: hidden;
+  background: var(--hero-bg);
 }
 
+.heroSection::before,
+.heroSection::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroSection::before {
+  width: 420px;
+  height: 420px;
+  top: -120px;
+  left: -100px;
+  background: var(--hero-blob-1);
+}
+
+.heroSection::after {
+  width: 380px;
+  height: 380px;
+  bottom: -140px;
+  right: 8%;
+  background: var(--hero-blob-2);
+}
+
+/* Full-width hero container */
 .container {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(16px, 5vw, 80px);
 }
 
 .heroGrid {
@@ -126,6 +155,7 @@
 }
 
 .heroRight {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -134,11 +164,13 @@
 
 .imageContainer {
   position: relative;
+  width: 100%;
+  max-width: 720px;
   border-radius: 20px;
   padding: 10px;
   background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--tint-4);
+  box-shadow: 0 4px 14px var(--shadow-strong);
   overflow: visible;
 }
 
@@ -146,6 +178,8 @@
   border-radius: 12px;
   object-fit: cover;
   display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 600px) {
@@ -163,7 +197,7 @@
   position: absolute;
   bottom: 30px;
   left: -20px;
-  background: rgba(9, 14, 26, 0.75);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   padding: 12px 18px;
@@ -171,7 +205,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 14px var(--shadow-strong);
   z-index: 10;
   text-align: left;
 }
@@ -198,7 +232,7 @@
   position: absolute;
   top: 30px;
   right: -20px;
-  background: rgba(9, 14, 26, 0.75);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   padding: 12px 18px;
@@ -206,7 +240,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 14px var(--shadow-strong);
   z-index: 10;
   text-align: left;
 }
@@ -237,7 +271,7 @@
 
 /* Stats Section */
 .statsSection {
-  padding: 30px 0;
+  padding: 24px 0 0;
 }
 
 .statsGrid {
@@ -272,7 +306,7 @@
 .sectionHeader {
   text-align: center;
   max-width: 700px;
-  margin: 0 auto 60px;
+  margin: 0 auto var(--section-header-gap);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -375,7 +409,7 @@
 
 /* Locations Section */
 .locationsSection {
-  background: rgba(3, 7, 18, 0.1);
+  background: var(--tint-1);
 }
 
 .locationsGrid {
@@ -475,7 +509,7 @@
 
 /* CTA Bar */
 .ctaBar {
-  padding: 80px 0;
+  padding: var(--section-space) 0;
 }
 
 .ctaContainer {
@@ -531,7 +565,7 @@
 
 .whatsappBtn {
   background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-  color: #fff;
+  color: var(--text-primary);
   border-color: transparent;
 }
 
@@ -543,7 +577,7 @@
 /* Mobile Breakpoint Optimizations for 99% Mobile Traffic */
 @media (max-width: 768px) {
   .heroSection {
-    padding: 64px 0 20px;
+    padding: 40px 0 var(--section-space);
   }
 
   .heroGrid {

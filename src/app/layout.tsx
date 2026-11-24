@@ -15,7 +15,7 @@ const outfit = Outfit({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#030712",
+  themeColor: "#f6f8fc",
   width: "device-width",
   initialScale: 1,
 };
@@ -89,8 +89,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en-IN" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+    <html lang="en-IN" className={`${spaceGrotesk.variable} ${outfit.variable}`} suppressHydrationWarning>
       <head>
+        {/* Apply saved theme before paint (no light flash), and follow theme changes made in other tabs (website <-> admin) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){function a(t){var r=document.documentElement;if(t==='dark')r.setAttribute('data-theme','dark');else r.removeAttribute('data-theme')}try{a(localStorage.getItem('b2-theme'))}catch(e){}window.addEventListener('storage',function(e){if(e.key==='b2-theme')a(e.newValue)})})()`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([websiteLd, jsonLd]) }}
